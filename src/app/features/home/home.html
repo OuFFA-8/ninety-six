@@ -1,60 +1,79 @@
-<!-- Cursors -->
 <div #cursor class="cursor"></div>
 <div #cursorDot class="cursor-dot"></div>
 
-<!-- ═══════════════ HERO ═══════════════ -->
-<section class="hero">
-  <!-- Three.js Canvas -->
-  <canvas #threeCanvas class="hero__canvas"></canvas>
-
-  <!-- Hero Content -->
-  <div class="hero__content">
-    <div #heroContent class="hero__content-inner">
-      <span class="hero__label">Ninety Six Marketing</span>
-      <h1 class="hero__title">
-        We Don't Just <span class="gradient-text">Create</span><br />
-        We <span class="gradient-text">Target</span> Results
-      </h1>
-      <p class="hero__subtitle">
-        A marketing agency that hits every goal — brand strategy, visual identity, motion & web
-        experiences built for impact.
-      </p>
-      <div class="hero__cta">
-        <a routerLink="/categories" class="btn-primary">Explore Services</a>
-        <a routerLink="/products" class="btn-ghost">View Our Work</a>
+<div class="wrapper">
+  <!-- ═══ HERO CONTENT (في الخلف) ═══ -->
+  <div class="hero-bg">
+    <canvas #threeCanvas class="hero__canvas"></canvas>
+    <div class="hero__content">
+      <div #heroContent class="hero__content-inner">
+        <span class="hero__eyebrow">Ninety Six Marketing</span>
+        <h1 class="hero__title">
+          We Don't Just <span class="gradient-text">Create</span><br />
+          We <span class="gradient-text">Target</span> Results
+        </h1>
+        <p class="hero__subtitle">
+          A marketing agency that hits every goal — brand strategy, visual identity, motion & web
+          built for impact.
+        </p>
+        <div class="hero__cta">
+          <a routerLink="/categories" class="btn-primary">Explore Services</a>
+          <a routerLink="/products" class="btn-ghost">View Our Work</a>
+        </div>
       </div>
     </div>
-  </div>
-
-  <!-- Scroll -->
-  <div class="hero__scroll">
-    <div class="scroll-line"></div>
-    <span>Scroll</span>
-  </div>
-</section>
-
-<!-- ═══════════════ SERVICES ═══════════════ -->
-<section class="services">
-  <div class="services__container">
-    <div class="services__header">
-      <span class="label">What We Do</span>
-      <h2>Services Built to <span class="gradient-text">Perform</span></h2>
-      <p>Every service we offer is engineered with one goal — your success.</p>
+    <div class="hero__scroll">
+      <div class="scroll-line"></div>
+      <span>Scroll into the target</span>
     </div>
-    <div class="services__grid">
-      @for (service of services; track service.title) {
-        <div class="service-card">
-          <span class="service-card__icon">{{ service.icon }}</span>
-          <h3>{{ service.title }}</h3>
-          <p>{{ service.desc }}</p>
-          <div class="service-card__line"></div>
-        </div>
+  </div>
+
+  <!-- ═══ DOT OVERLAY (فوق الهيرو) ═══ -->
+  <div class="dot-container">
+    <div #dotOverlay class="dot-overlay"></div>
+  </div>
+</div>
+
+<!-- ═══ SERVICES (بره الـ wrapper) ═══ -->
+<section class="services-portal">
+  <div class="services-portal__header">
+    <span class="label">What We Do</span>
+    <h2>Services Built to <span class="gradient-text">Perform</span></h2>
+    <p>Every service engineered with one goal — your success.</p>
+  </div>
+
+  <div class="cards-deck-wrapper">
+    <ul class="cards-deck">
+      @for (service of services; track service.title; let i = $index) {
+        <li class="deck-card" [attr.id]="'deck-card-' + i" [style.--i]="i">
+          <div class="deck-card__inner">
+            <div class="deck-card__left">
+              <span class="deck-card__tag">{{ service.tag }}</span>
+              <span class="deck-card__icon">{{ service.icon }}</span>
+              <h3>{{ service.title }}</h3>
+              <p>{{ service.desc }}</p>
+              <span class="deck-card__cta">Explore Work →</span>
+            </div>
+
+            <div class="deck-card__right">
+              <div class="deck-card__works">
+                @for (work of service.works; track work.title; let wi = $index) {
+                  <div class="deck-work-item" [style.--wi]="wi" [style.--accent]="work.color">
+                    <span class="deck-work-item__num">{{ '0' + (wi + 1) }}</span>
+                    <span class="deck-work-item__title">{{ work.title }}</span>
+                    <span class="deck-work-item__arrow">→</span>
+                  </div>
+                }
+              </div>
+            </div>
+          </div>
+        </li>
       }
-    </div>
+    </ul>
   </div>
 </section>
 
-<!-- ═══════════════ STATS ═══════════════ -->
+<!-- ═══ STATS ═══ -->
 <section class="stats">
   <div class="stats__container">
     @for (stat of stats; track stat.label) {
@@ -66,7 +85,7 @@
   </div>
 </section>
 
-<!-- ═══════════════ WORKS ═══════════════ -->
+<!-- ═══ WORKS ═══ -->
 <section class="works">
   <div class="works__container">
     <div class="works__header">
@@ -87,12 +106,12 @@
   </div>
 </section>
 
-<!-- ═══════════════ CTA ═══════════════ -->
+<!-- ═══ CTA ═══ -->
 <section class="cta">
   <div class="cta__content">
     <span class="label">Ready?</span>
     <h2>Let's Hit Your <span class="gradient-text">Target</span></h2>
-    <p>Tell us about your project and let's build something remarkable together.</p>
+    <p>Tell us about your project and let's build something remarkable.</p>
     <a routerLink="/cart" class="btn-primary">Start a Project</a>
   </div>
   <div class="cta__glow"></div>

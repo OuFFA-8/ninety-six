@@ -18,47 +18,86 @@ export class Home implements AfterViewInit, OnDestroy {
   @ViewChild('heroContent') heroContent!: ElementRef;
   @ViewChild('cursor') cursor!: ElementRef;
   @ViewChild('cursorDot') cursorDot!: ElementRef;
+  // @ViewChild('portalFlash') portalFlash!: ElementRef;
+  @ViewChild('dotOverlay') dotOverlay!: ElementRef;
 
   private renderer!: THREE.WebGLRenderer;
   private scene!: THREE.Scene;
   private camera!: THREE.PerspectiveCamera;
   private animationId!: number;
-  private logoGroup!: THREE.Group;
+  private targetGroup!: THREE.Group;
   private rings: THREE.Mesh[] = [];
   private particles!: THREE.Points;
-  private mouseMoveHandler!: (e: MouseEvent) => void;
+  private tunnelRings: THREE.Mesh[] = [];
   private mouse = { x: 0, y: 0 };
+  private mouseMoveHandler!: (e: MouseEvent) => void;
 
   services = [
     {
+      tag: '01',
       icon: '🎯',
       title: 'Brand Strategy',
-      desc: 'We craft powerful brand identities that resonate with your audience and stand out in the market.',
+      desc: 'Powerful brand identities that resonate with your audience and dominate the market.',
+      works: [
+        { title: 'Nike MENA', color: '#8a4fff' },
+        { title: 'Adidas Gulf', color: '#6a3bbf' },
+        { title: 'Pepsi Egypt', color: '#9d6fff' },
+      ],
     },
     {
+      tag: '02',
       icon: '✦',
       title: 'Visual Identity',
-      desc: 'Logos, color systems, typography — we build cohesive visual languages that tell your story.',
+      desc: 'Logos, color systems, typography — cohesive visual languages that tell your story.',
+      works: [
+        { title: 'Noon Brand', color: '#5c2ea8' },
+        { title: 'Careem ID', color: '#8a4fff' },
+        { title: 'Talabat VI', color: '#7b52d4' },
+      ],
     },
     {
+      tag: '03',
       icon: '▶',
       title: 'Motion & Video',
       desc: 'Cinematic video production and motion graphics that captivate and convert.',
+      works: [
+        { title: 'Ramadan Campaign', color: '#9d6fff' },
+        { title: 'Product Reel', color: '#8a4fff' },
+        { title: 'Brand Film', color: '#6a3bbf' },
+      ],
     },
     {
+      tag: '04',
       icon: '◈',
       title: 'Web Design',
       desc: 'Pixel-perfect websites with immersive experiences that drive real results.',
+      works: [
+        { title: 'E-Commerce', color: '#7b52d4' },
+        { title: 'SaaS Landing', color: '#8a4fff' },
+        { title: 'Portfolio Site', color: '#5c2ea8' },
+      ],
     },
     {
+      tag: '05',
       icon: '◎',
       title: 'Graphic Design',
       desc: 'From social media to print — creative designs that make your brand unforgettable.',
+      works: [
+        { title: 'Social Pack', color: '#8a4fff' },
+        { title: 'OOH Campaign', color: '#9d6fff' },
+        { title: 'Print Design', color: '#6a3bbf' },
+      ],
     },
     {
+      tag: '06',
       icon: '⬡',
       title: 'Digital Marketing',
       desc: 'Data-driven campaigns that grow your reach and maximize your ROI.',
+      works: [
+        { title: 'Meta Ads', color: '#5c2ea8' },
+        { title: 'SEO Campaign', color: '#8a4fff' },
+        { title: 'Email Marketing', color: '#7b52d4' },
+      ],
     },
   ];
 
@@ -81,56 +120,41 @@ export class Home implements AfterViewInit, OnDestroy {
   ngAfterViewInit() {
     this.initThree();
     this.initCursor();
-    this.initScrollAnimation();
-    this.initSections();
+    this.initHeroScroll();
+    this.initServiceCards();
+    this.initStats();
+    this.initWorks();
+    this.initCTA();
   }
 
   // ══════════════════════════════
-  // THREE.JS SETUP
+  // THREE.JS
   // ══════════════════════════════
   initThree() {
     const canvas = this.threeCanvas.nativeElement;
     const w = window.innerWidth;
     const h = window.innerHeight;
 
-    // Renderer
     this.renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
     this.renderer.setSize(w, h);
     this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
     this.renderer.setClearColor(0x000000, 0);
 
-    // Scene
     this.scene = new THREE.Scene();
-
-    // Camera
     this.camera = new THREE.PerspectiveCamera(60, w / h, 0.1, 1000);
     this.camera.position.z = 5;
 
-    // Build scene
-    this.createLogoRings();
+    this.createTargetRings();
+    this.createTunnelRings();
     this.createParticles();
-    this.createTunnel();
+    this.createLights();
 
-    // Lighting
-    const ambientLight = new THREE.AmbientLight(0x8a4fff, 0.5);
-    this.scene.add(ambientLight);
-
-    const pointLight = new THREE.PointLight(0x8a4fff, 2, 20);
-    pointLight.position.set(0, 0, 3);
-    this.scene.add(pointLight);
-
-    const pointLight2 = new THREE.PointLight(0xc49bff, 1, 15);
-    pointLight2.position.set(3, 2, -2);
-    this.scene.add(pointLight2);
-
-    // Mouse interaction
     this.mouseMoveHandler = (e: MouseEvent) => {
       this.mouse.x = (e.clientX / window.innerWidth - 0.5) * 2;
       this.mouse.y = -(e.clientY / window.innerHeight - 0.5) * 2;
     };
     window.addEventListener('mousemove', this.mouseMoveHandler);
 
-    // Resize
     window.addEventListener('resize', () => {
       const w = window.innerWidth;
       const h = window.innerHeight;
@@ -139,236 +163,213 @@ export class Home implements AfterViewInit, OnDestroy {
       this.renderer.setSize(w, h);
     });
 
-    // Start render loop
     this.animate();
-
-    // Entrance animation
     this.entranceAnimation();
   }
 
-  createLogoRings() {
-    this.logoGroup = new THREE.Group();
+  createTargetRings() {
+    this.targetGroup = new THREE.Group();
 
     const ringData = [
-      { radius: 0.3, tube: 0.015, color: 0xc49bff, speed: 0.008 },
-      { radius: 0.6, tube: 0.012, color: 0x8a4fff, speed: -0.006 },
-      { radius: 0.95, tube: 0.01, color: 0x6a3bbf, speed: 0.004 },
-      { radius: 1.35, tube: 0.008, color: 0x5c2ea8, speed: -0.003 },
-      { radius: 1.8, tube: 0.006, color: 0x3d1a7a, speed: 0.002 },
+      { r: 2.2, tube: 0.025, color: 0x1a0a3a, emissive: 0x1a0a3a },
+      { r: 1.7, tube: 0.03, color: 0x2d1260, emissive: 0x2d1260 },
+      { r: 1.2, tube: 0.035, color: 0x5c2ea8, emissive: 0x3d1a7a },
+      { r: 0.75, tube: 0.04, color: 0x8a4fff, emissive: 0x6a3bbf },
+      { r: 0.35, tube: 0.045, color: 0xc49bff, emissive: 0x8a4fff },
     ];
 
     ringData.forEach((data, i) => {
-      const geo = new THREE.TorusGeometry(data.radius, data.tube, 16, 100);
+      const geo = new THREE.TorusGeometry(data.r, data.tube, 16, 120);
       const mat = new THREE.MeshStandardMaterial({
         color: data.color,
-        emissive: data.color,
+        emissive: data.emissive,
         emissiveIntensity: 0.8,
-        metalness: 0.8,
-        roughness: 0.2,
+        metalness: 0.9,
+        roughness: 0.1,
       });
       const ring = new THREE.Mesh(geo, mat);
-      ring.userData['speed'] = data.speed;
-      ring.userData['initialScale'] = 0;
+      ring.userData['speed'] = i % 2 === 0 ? 0.003 : -0.002;
       ring.scale.set(0, 0, 0);
-
-      // Slight tilt for 3D effect
-      ring.rotation.x = i % 2 === 0 ? 0.1 : -0.1;
-
       this.rings.push(ring);
-      this.logoGroup.add(ring);
+      this.targetGroup.add(ring);
     });
 
-    // Center sphere (the dot of the logo)
-    const sphereGeo = new THREE.SphereGeometry(0.12, 32, 32);
-    const sphereMat = new THREE.MeshStandardMaterial({
-      color: 0xc49bff,
+    // Center dot - THE PORTAL
+    const dotGeo = new THREE.SphereGeometry(0.12, 32, 32);
+    const dotMat = new THREE.MeshStandardMaterial({
+      color: 0xffffff,
       emissive: 0xc49bff,
-      emissiveIntensity: 1,
+      emissiveIntensity: 3,
       metalness: 1,
       roughness: 0,
     });
-    const sphere = new THREE.Mesh(sphereGeo, sphereMat);
-    this.logoGroup.add(sphere);
+    const dot = new THREE.Mesh(dotGeo, dotMat);
+    dot.userData['isPortal'] = true;
+    this.targetGroup.add(dot);
 
-    // Glow sphere
-    const glowGeo = new THREE.SphereGeometry(0.25, 32, 32);
+    // Dot glow
+    const glowGeo = new THREE.SphereGeometry(0.22, 32, 32);
     const glowMat = new THREE.MeshBasicMaterial({
       color: 0x8a4fff,
       transparent: true,
-      opacity: 0.15,
+      opacity: 0.2,
     });
-    const glow = new THREE.Mesh(glowGeo, glowMat);
-    this.logoGroup.add(glow);
+    this.targetGroup.add(new THREE.Mesh(glowGeo, glowMat));
 
-    this.scene.add(this.logoGroup);
+    this.targetGroup.scale.set(0, 0, 0);
+    this.scene.add(this.targetGroup);
+  }
+
+  createTunnelRings() {
+    for (let i = 0; i < 30; i++) {
+      const geo = new THREE.TorusGeometry(0.12 + i * 0.08, 0.005, 8, 60);
+      const mat = new THREE.MeshBasicMaterial({
+        color: 0x8a4fff,
+        transparent: true,
+        opacity: 0.15 - i * 0.004,
+      });
+      const ring = new THREE.Mesh(geo, mat);
+      ring.position.z = -i * 0.8;
+      ring.visible = false;
+      this.tunnelRings.push(ring);
+      this.scene.add(ring);
+    }
   }
 
   createParticles() {
-    const count = 2000;
+    const count = 3000;
     const positions = new Float32Array(count * 3);
     const colors = new Float32Array(count * 3);
-
-    const color1 = new THREE.Color(0x8a4fff);
-    const color2 = new THREE.Color(0xc49bff);
+    const c1 = new THREE.Color(0x8a4fff);
+    const c2 = new THREE.Color(0xc49bff);
 
     for (let i = 0; i < count; i++) {
       const i3 = i * 3;
-      positions[i3] = (Math.random() - 0.5) * 20;
-      positions[i3 + 1] = (Math.random() - 0.5) * 20;
-      positions[i3 + 2] = (Math.random() - 0.5) * 20;
-
-      const mixedColor = color1.clone().lerp(color2, Math.random());
-      colors[i3] = mixedColor.r;
-      colors[i3 + 1] = mixedColor.g;
-      colors[i3 + 2] = mixedColor.b;
+      positions[i3] = (Math.random() - 0.5) * 25;
+      positions[i3 + 1] = (Math.random() - 0.5) * 25;
+      positions[i3 + 2] = (Math.random() - 0.5) * 25;
+      const c = c1.clone().lerp(c2, Math.random());
+      colors[i3] = c.r;
+      colors[i3 + 1] = c.g;
+      colors[i3 + 2] = c.b;
     }
 
     const geo = new THREE.BufferGeometry();
     geo.setAttribute('position', new THREE.BufferAttribute(positions, 3));
     geo.setAttribute('color', new THREE.BufferAttribute(colors, 3));
 
-    const mat = new THREE.PointsMaterial({
-      size: 0.03,
-      vertexColors: true,
-      transparent: true,
-      opacity: 0.6,
-    });
-
-    this.particles = new THREE.Points(geo, mat);
+    this.particles = new THREE.Points(
+      geo,
+      new THREE.PointsMaterial({
+        size: 0.025,
+        vertexColors: true,
+        transparent: true,
+        opacity: 0.5,
+      }),
+    );
     this.scene.add(this.particles);
   }
 
-  createTunnel() {
-    // Tunnel rings for the "enter" effect
-    for (let i = 0; i < 20; i++) {
-      const geo = new THREE.TorusGeometry(2.5 + i * 0.1, 0.008, 8, 80);
-      const mat = new THREE.MeshBasicMaterial({
-        color: 0x8a4fff,
-        transparent: true,
-        opacity: 0.08 - i * 0.003,
-      });
-      const ring = new THREE.Mesh(geo, mat);
-      ring.position.z = -i * 1.5;
-      ring.userData['isTunnel'] = true;
-      this.scene.add(ring);
-    }
+  createLights() {
+    this.scene.add(new THREE.AmbientLight(0x8a4fff, 0.5));
+    const p1 = new THREE.PointLight(0xc49bff, 3, 20);
+    p1.position.set(0, 3, 4);
+    this.scene.add(p1);
+    const p2 = new THREE.PointLight(0x8a4fff, 2, 15);
+    p2.position.set(-3, -2, 2);
+    this.scene.add(p2);
   }
 
   entranceAnimation() {
-    // Camera starts far back
-    this.camera.position.z = 12;
+    const tl = gsap.timeline({ delay: 0.3 });
 
-    gsap.to(this.camera.position, {
-      z: 5,
-      duration: 2.5,
-      ease: 'power3.out',
-      delay: 0.3,
+    tl.to(this.targetGroup.scale, {
+      x: 1,
+      y: 1,
+      z: 1,
+      duration: 1.8,
+      ease: 'elastic.out(1, 0.5)',
     });
 
-    // Rings scale in one by one
     this.rings.forEach((ring, i) => {
       gsap.to(ring.scale, {
         x: 1,
         y: 1,
         z: 1,
         duration: 1,
-        delay: 0.5 + i * 0.15,
-        ease: 'back.out(1.7)',
+        delay: 0.4 + i * 0.12,
+        ease: 'back.out(2)',
       });
     });
 
-    // Content fade in
     gsap.from(this.heroContent.nativeElement.children, {
       y: 60,
       opacity: 0,
       duration: 1,
       stagger: 0.15,
-      delay: 1.2,
+      delay: 0.8,
       ease: 'power3.out',
     });
-  }
 
-  animate() {
-    this.animationId = requestAnimationFrame(() => this.animate());
-
-    const time = Date.now() * 0.001;
-
-    // Rotate rings
-    this.rings.forEach((ring, i) => {
-      ring.rotation.z += ring.userData['speed'];
-      ring.rotation.x = Math.sin(time * 0.3 + i) * 0.15;
-    });
-
-    // Logo group mouse follow
-    gsap.to(this.logoGroup.rotation, {
-      x: -this.mouse.y * 0.3,
-      y: this.mouse.x * 0.3,
+    gsap.to(this.camera.position, {
+      z: 5,
       duration: 2,
-      ease: 'power2.out',
-    });
-
-    // Particles slow rotation
-    this.particles.rotation.y = time * 0.02;
-    this.particles.rotation.x = time * 0.01;
-
-    // Tunnel rings rotation
-    this.scene.children.forEach((child) => {
-      if (child.userData['isTunnel']) {
-        (child as THREE.Mesh).rotation.z += 0.001;
-      }
-    });
-
-    this.renderer.render(this.scene, this.camera);
-  }
-
-  // ══════════════════════════════
-  // SCROLL ANIMATION
-  // ══════════════════════════════
-  initScrollAnimation() {
-    const heroEl = document.querySelector('.hero') as HTMLElement;
-
-    ScrollTrigger.create({
-      trigger: heroEl,
-      start: 'top top',
-      end: 'bottom top',
-      scrub: 1,
-      onUpdate: (self) => {
-        const p = self.progress;
-
-        // Camera flies into the logo (tunnel effect)
-        this.camera.position.z = 5 - p * 20;
-        this.camera.position.y = p * 2;
-
-        // Logo group spins as we enter
-        this.logoGroup.rotation.z = p * Math.PI * 2;
-        this.logoGroup.scale.setScalar(1 + p * 3);
-
-        // Particles spread out
-        this.particles.rotation.z = p * Math.PI;
-
-        // Content fades out
-        gsap.set(this.heroContent.nativeElement, {
-          y: p * -120,
-          opacity: 1 - p * 2,
-        });
-      },
-    });
-  }
-
-  // ══════════════════════════════
-  // OTHER SECTIONS
-  // ══════════════════════════════
-  initSections() {
-    // Services
-    gsap.from('.services__header', {
-      scrollTrigger: { trigger: '.services', start: 'top 75%' },
-      y: 60,
-      opacity: 0,
-      duration: 0.9,
       ease: 'power3.out',
+      delay: 0.2,
     });
-    gsap.from('.service-card', {
-      scrollTrigger: { trigger: '.services__grid', start: 'top 80%' },
+
+    // Rings rotation on entrance
+    gsap.to('.hero-ring', {
+      rotation: 360,
+      duration: 20,
+      ease: 'none',
+      repeat: -1,
+    });
+  }
+
+  // ══════════════════════════════
+  // SCROLL → PORTAL
+  // ══════════════════════════════
+
+  initHeroScroll() {
+    gsap
+      .timeline({
+        scrollTrigger: {
+          trigger: '.wrapper',
+          start: 'top top',
+          end: '+=150%',
+          pin: true,
+          scrub: true,
+        },
+      })
+      .to('.dot-overlay', {
+        opacity: 1,
+        duration: 0.1,
+      })
+      .to('.dot-overlay', {
+        scale: 120,
+        z: 350,
+        transformOrigin: 'center center',
+        ease: 'power1.inOut',
+      })
+      .to(
+        this.heroContent.nativeElement,
+        {
+          scale: 1.05,
+          opacity: 0,
+          transformOrigin: 'center center',
+          ease: 'power1.inOut',
+        },
+        '<',
+      );
+
+    // Services cards
+    gsap.from('.service-card-new', {
+      scrollTrigger: {
+        trigger: '.services-portal',
+        start: 'top 85%',
+        toggleActions: 'play none none reverse',
+      },
       y: 80,
       opacity: 0,
       duration: 0.7,
@@ -396,6 +397,62 @@ export class Home implements AfterViewInit, OnDestroy {
         },
       });
     });
+  }
+
+  // ══════════════════════════════
+  // SERVICES CARDS
+  // ══════════════════════════════
+  initServiceCards() {
+    gsap.from('.services-portal__header', {
+      scrollTrigger: {
+        trigger: '.services-portal',
+        start: 'top 80%',
+      },
+      y: 60,
+      opacity: 0,
+      duration: 0.9,
+      ease: 'power3.out',
+    });
+
+    gsap.utils.toArray<HTMLElement>('.deck-card').forEach((card, i) => {
+      gsap.from(card, {
+        scrollTrigger: {
+          trigger: card,
+          start: 'top 90%',
+        },
+        opacity: 0,
+        y: 40,
+        duration: 0.7,
+        delay: i * 0.05,
+        ease: 'power2.out',
+      });
+    });
+  }
+
+  // ══════════════════════════════
+  // STATS
+  // ══════════════════════════════
+  initStats() {
+    this.stats.forEach((stat, i) => {
+      const el = document.querySelectorAll('.stat__value')[i];
+      const obj = { val: 0 };
+      ScrollTrigger.create({
+        trigger: '.stats',
+        start: 'top 80%',
+        once: true,
+        onEnter: () => {
+          gsap.to(obj, {
+            val: stat.value,
+            duration: 2.5,
+            ease: 'power2.out',
+            onUpdate: () => {
+              el.textContent = Math.round(obj.val) + stat.suffix;
+            },
+          });
+        },
+      });
+    });
+
     gsap.from('.stat-item', {
       scrollTrigger: { trigger: '.stats', start: 'top 80%' },
       y: 50,
@@ -404,8 +461,12 @@ export class Home implements AfterViewInit, OnDestroy {
       duration: 0.8,
       ease: 'power3.out',
     });
+  }
 
-    // Works
+  // ══════════════════════════════
+  // WORKS
+  // ══════════════════════════════
+  initWorks() {
     gsap.from('.works__header', {
       scrollTrigger: { trigger: '.works', start: 'top 75%' },
       y: 60,
@@ -421,8 +482,12 @@ export class Home implements AfterViewInit, OnDestroy {
       stagger: 0.1,
       ease: 'back.out(1.4)',
     });
+  }
 
-    // CTA
+  // ══════════════════════════════
+  // CTA
+  // ══════════════════════════════
+  initCTA() {
     gsap.from('.cta__content > *', {
       scrollTrigger: { trigger: '.cta', start: 'top 75%' },
       y: 60,
@@ -445,14 +510,36 @@ export class Home implements AfterViewInit, OnDestroy {
       gsap.to(dot, { x: e.clientX, y: e.clientY, duration: 0.1 });
     });
 
-    document.querySelectorAll('a, button, .service-card, .work-card').forEach((el) => {
-      el.addEventListener('mouseenter', () => {
-        gsap.to(cursor, { scale: 2.5, opacity: 0.3, duration: 0.3 });
-      });
-      el.addEventListener('mouseleave', () => {
-        gsap.to(cursor, { scale: 1, opacity: 1, duration: 0.3 });
-      });
+    document.querySelectorAll('a, button, .service-card-new, .work-card').forEach((el) => {
+      el.addEventListener('mouseenter', () =>
+        gsap.to(cursor, { scale: 2.5, opacity: 0.3, duration: 0.3 }),
+      );
+      el.addEventListener('mouseleave', () =>
+        gsap.to(cursor, { scale: 1, opacity: 1, duration: 0.3 }),
+      );
     });
+  }
+
+  // ══════════════════════════════
+  // RENDER LOOP
+  // ══════════════════════════════
+  animate() {
+    this.animationId = requestAnimationFrame(() => this.animate());
+    const time = Date.now() * 0.001;
+
+    this.rings.forEach((ring, i) => {
+      ring.rotation.z += ring.userData['speed'];
+      ring.rotation.x = Math.sin(time * 0.3 + i) * 0.08;
+    });
+
+    this.targetGroup.rotation.y = Math.sin(time * 0.2) * 0.1;
+
+    this.camera.position.x += (this.mouse.x * 0.3 - this.camera.position.x) * 0.03;
+    this.camera.position.y += (this.mouse.y * 0.2 - this.camera.position.y) * 0.03;
+
+    this.particles.rotation.y = time * 0.015;
+
+    this.renderer.render(this.scene, this.camera);
   }
 
   ngOnDestroy() {
