@@ -1,0 +1,208 @@
+.intro {
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  position: relative;
+  background: #080808;
+  cursor: none;
+
+  &__canvas {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    display: block;
+  }
+
+  // ── Crosshair ──
+  .crosshair {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 30px;
+    height: 30px;
+    pointer-events: none;
+    z-index: 100;
+
+    &__line {
+      position: absolute;
+      background: rgba(138, 79, 255, 0.7);
+
+      &--h {
+        width: 30px;
+        height: 1px;
+        top: 50%;
+        left: 0;
+        transform: translateY(-50%);
+      }
+
+      &--v {
+        width: 1px;
+        height: 30px;
+        left: 50%;
+        top: 0;
+        transform: translateX(-50%);
+      }
+    }
+
+    &__dot {
+      width: 4px;
+      height: 4px;
+      background: #c49bff;
+      border-radius: 50%;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      box-shadow: 0 0 6px #8a4fff;
+    }
+  }
+
+  // ── Instruction ──
+  &__instruction {
+    position: absolute;
+    bottom: 3rem;
+    left: 50%;
+    transform: translateX(-50%);
+    text-align: center;
+    opacity: 0;
+    z-index: 10;
+
+    &-inner {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    p {
+      color: rgba(255, 255, 255, 0.5);
+      font-size: 0.85rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+    }
+  }
+
+  &__key {
+    display: inline-block;
+    padding: 0.3rem 1rem;
+    border: 1px solid rgba(138, 79, 255, 0.5);
+    border-radius: 50px;
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    color: #8a4fff;
+    animation: pulse 2s ease-in-out infinite;
+  }
+
+  &__arrow-hint {
+    color: rgba(138, 79, 255, 0.6);
+    font-size: 1.2rem;
+    animation: bounce 1.5s ease-in-out infinite;
+  }
+
+  // ── Hit Feedback ──
+  &__hit {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0.5);
+    text-align: center;
+    opacity: 0;
+    z-index: 20;
+    pointer-events: none;
+
+    span {
+      display: block;
+      font-size: 3rem;
+      font-weight: 900;
+      background: linear-gradient(135deg, #8a4fff, #c49bff);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      letter-spacing: 0.1em;
+    }
+
+    p {
+      color: rgba(255, 255, 255, 0.5);
+      font-size: 0.85rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      margin-top: 0.5rem;
+    }
+  }
+
+  &__hit-ring {
+    width: 120px;
+    height: 120px;
+    border: 2px solid #8a4fff;
+    border-radius: 50%;
+    margin: 0 auto 1rem;
+    animation: expandRing 1s ease-out infinite;
+  }
+
+  // ── Brand ──
+  &__brand {
+    position: absolute;
+    top: 2rem;
+    left: 50%;
+    transform: translateX(-50%);
+    text-align: center;
+    z-index: 10;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.2rem;
+
+    span {
+      font-size: 1rem;
+      font-weight: 800;
+      letter-spacing: 0.4em;
+      color: rgba(255, 255, 255, 0.9);
+    }
+
+    &-sub {
+      font-size: 0.6rem !important;
+      font-weight: 400 !important;
+      letter-spacing: 0.5em !important;
+      color: rgba(138, 79, 255, 0.8) !important;
+    }
+  }
+}
+
+// ══════════════════════════════
+// ANIMATIONS
+// ══════════════════════════════
+@keyframes pulse {
+  0%,
+  100% {
+    opacity: 1;
+    box-shadow: 0 0 0 0 rgba(138, 79, 255, 0.4);
+  }
+  50% {
+    opacity: 0.7;
+    box-shadow: 0 0 0 8px rgba(138, 79, 255, 0);
+  }
+}
+
+@keyframes bounce {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(6px);
+  }
+}
+
+@keyframes expandRing {
+  0% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(2);
+    opacity: 0;
+  }
+}

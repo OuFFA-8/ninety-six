@@ -1,0 +1,34 @@
+<nav #navbar class="navbar">
+  <div class="navbar__container">
+    <a routerLink="/" class="navbar__logo">
+      <img src="/Logo.png" alt="Ninety Six" />
+    </a>
+
+    <ul class="navbar__links">
+      <li>
+        <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }"
+          >Home</a
+        >
+      </li>
+      <li><a routerLink="/categories" routerLinkActive="active">Services</a></li>
+      <li><a routerLink="/products" routerLinkActive="active">Work</a></li>
+      <li><a routerLink="/brands" routerLinkActive="active">Brands</a></li>
+    </ul>
+
+    <a routerLink="/cart" class="navbar__cta">Let's Talk</a>
+
+    <button class="navbar__burger" (click)="toggleMenu()">
+      <span [class.open]="isMenuOpen"></span>
+      <span [class.open]="isMenuOpen"></span>
+      <span [class.open]="isMenuOpen"></span>
+    </button>
+  </div>
+
+  <div class="mobile-menu" [class.active]="isMenuOpen">
+    <a routerLink="/" (click)="toggleMenu()">Home</a>
+    <a routerLink="/categories" (click)="toggleMenu()">Services</a>
+    <a routerLink="/products" (click)="toggleMenu()">Work</a>
+    <a routerLink="/brands" (click)="toggleMenu()">Brands</a>
+    <a routerLink="/cart" (click)="toggleMenu()">Let's Talk</a>
+  </div>
+</nav>

@@ -1,0 +1,99 @@
+<!-- Cursors -->
+<div #cursor class="cursor"></div>
+<div #cursorDot class="cursor-dot"></div>
+
+<!-- ═══════════════ HERO ═══════════════ -->
+<section class="hero">
+  <!-- Three.js Canvas -->
+  <canvas #threeCanvas class="hero__canvas"></canvas>
+
+  <!-- Hero Content -->
+  <div class="hero__content">
+    <div #heroContent class="hero__content-inner">
+      <span class="hero__label">Ninety Six Marketing</span>
+      <h1 class="hero__title">
+        We Don't Just <span class="gradient-text">Create</span><br />
+        We <span class="gradient-text">Target</span> Results
+      </h1>
+      <p class="hero__subtitle">
+        A marketing agency that hits every goal — brand strategy, visual identity, motion & web
+        experiences built for impact.
+      </p>
+      <div class="hero__cta">
+        <a routerLink="/categories" class="btn-primary">Explore Services</a>
+        <a routerLink="/products" class="btn-ghost">View Our Work</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scroll -->
+  <div class="hero__scroll">
+    <div class="scroll-line"></div>
+    <span>Scroll</span>
+  </div>
+</section>
+
+<!-- ═══════════════ SERVICES ═══════════════ -->
+<section class="services">
+  <div class="services__container">
+    <div class="services__header">
+      <span class="label">What We Do</span>
+      <h2>Services Built to <span class="gradient-text">Perform</span></h2>
+      <p>Every service we offer is engineered with one goal — your success.</p>
+    </div>
+    <div class="services__grid">
+      @for (service of services; track service.title) {
+        <div class="service-card">
+          <span class="service-card__icon">{{ service.icon }}</span>
+          <h3>{{ service.title }}</h3>
+          <p>{{ service.desc }}</p>
+          <div class="service-card__line"></div>
+        </div>
+      }
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════ STATS ═══════════════ -->
+<section class="stats">
+  <div class="stats__container">
+    @for (stat of stats; track stat.label) {
+      <div class="stat-item">
+        <h3 class="stat__value">0</h3>
+        <p class="stat__label">{{ stat.label }}</p>
+      </div>
+    }
+  </div>
+</section>
+
+<!-- ═══════════════ WORKS ═══════════════ -->
+<section class="works">
+  <div class="works__container">
+    <div class="works__header">
+      <span class="label">Our Portfolio</span>
+      <h2>Work That <span class="gradient-text">Speaks</span></h2>
+    </div>
+    <div class="works__grid">
+      @for (work of works; track work.title) {
+        <div class="work-card" [style.--accent]="work.color">
+          <div class="work-card__inner">
+            <span class="work-card__category">{{ work.category }}</span>
+            <h3 class="work-card__title">{{ work.title }}</h3>
+            <span class="work-card__arrow">→</span>
+          </div>
+        </div>
+      }
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════ CTA ═══════════════ -->
+<section class="cta">
+  <div class="cta__content">
+    <span class="label">Ready?</span>
+    <h2>Let's Hit Your <span class="gradient-text">Target</span></h2>
+    <p>Tell us about your project and let's build something remarkable together.</p>
+    <a routerLink="/cart" class="btn-primary">Start a Project</a>
+  </div>
+  <div class="cta__glow"></div>
+</section>
