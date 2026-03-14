@@ -106,6 +106,87 @@
   </div>
 </section>
 
+<!-- ═══ GALLERY ═══ -->
+<section class="gallery-section">
+  <div class="gallery-section__header">
+    <span class="label">Our Work</span>
+    <h2>Built to <span class="gradient-text">Impress</span></h2>
+  </div>
+  <div class="gallery">
+    <div class="gallery__wrapper">
+      @for (col of galleryColumns; track $index; let i = $index) {
+        <div class="gallery__col" [attr.data-col]="i">
+          @for (item of col; track $index) {
+            <div class="gallery__item">
+              <div class="gallery__item-inner" [style.background]="item.bg">
+                <span class="gallery__item-label">{{ item.label }}</span>
+              </div>
+            </div>
+          }
+        </div>
+      }
+    </div>
+  </div>
+</section>
+
+<!-- ═══ PARTNERS ═══ -->
+<section class="partners">
+  <div class="partners__container">
+    <div class="partners__header">
+      <h2 class="partners__title">OUR<br /><span>PARTNERS</span></h2>
+    </div>
+    <div class="partners__grid">
+      @for (partner of partners; track partner) {
+        <div class="partner-logo">
+          <span>{{ partner }}</span>
+        </div>
+      }
+    </div>
+  </div>
+</section>
+
+<!-- ═══ TESTIMONIALS ═══ -->
+<section class="testimonials">
+  <div class="testimonials__container">
+    <div class="testimonials__left">
+      <span class="label">Client Stories</span>
+      <h2 class="testimonials__title">
+        What our<br />clients <span class="gradient-text">say</span>
+      </h2>
+      <div class="testimonials__nav">
+        <button class="testi-nav-btn" id="testiPrev">←</button>
+        <span class="testi-nav-count">
+          <span id="testiCurrent">1</span> / {{ testimonials.length }}
+        </span>
+        <button class="testi-nav-btn" id="testiNext">→</button>
+      </div>
+    </div>
+
+    <div class="testimonials__right">
+      <div class="testimonials__track-wrapper">
+        <div class="testimonials__track" #testiTrack>
+          @for (t of testimonials; track t.name; let i = $index) {
+            <div class="testi-card" [attr.data-index]="i">
+              <div class="testi-card__top">
+                <div class="testi-card__avatar">{{ t.initials }}</div>
+                <div>
+                  <p class="testi-card__name">{{ t.name }}</p>
+                  <p class="testi-card__role">{{ t.role }}</p>
+                </div>
+              </div>
+              <p class="testi-card__text">"{{ t.text }}"</p>
+              <div class="testi-card__bottom">
+                <span class="testi-card__cta">View Project →</span>
+                <span class="testi-card__index">{{ '0' + (i + 1) }}</span>
+              </div>
+            </div>
+          }
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
 <!-- ═══ CTA ═══ -->
 <section class="cta">
   <div class="cta__content">
@@ -116,3 +197,61 @@
   </div>
   <div class="cta__glow"></div>
 </section>
+
+<!-- ═══ FOOTER ═══ -->
+<div class="footer-wrapper">
+  <div class="footer-sticky">
+    <footer class="footer">
+      <!-- TOP -->
+      <div class="footer__top">
+        <div class="footer__brand">
+          <img src="logo.png" alt="Ninety Six" class="footer__logo" />
+          <p class="footer__tagline">
+            We don't just create.<br />We <span class="gradient-text">target</span> results.
+          </p>
+          <div class="footer__social">
+            <a href="#" class="footer__social-link">Ig</a>
+            <a href="#" class="footer__social-link">Fb</a>
+            <a href="#" class="footer__social-link">Li</a>
+            <a href="#" class="footer__social-link">Tw</a>
+          </div>
+        </div>
+
+        <div class="footer__links">
+          <div class="footer__col">
+            <h4>Services</h4>
+            <a href="#">Brand Strategy</a>
+            <a href="#">Visual Identity</a>
+            <a href="#">Motion & Video</a>
+            <a href="#">Web Design</a>
+          </div>
+          <div class="footer__col">
+            <h4>Company</h4>
+            <a href="#">About Us</a>
+            <a href="#">Our Work</a>
+            <a href="#">Partners</a>
+            <a href="#">Careers</a>
+          </div>
+          <div class="footer__col">
+            <h4>Contact</h4>
+            <a href="#">hello&#64;ninetysix.com</a>
+            <a href="#">+20 100 000 0000</a>
+            <a href="#">Cairo, Egypt</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- BIG TEXT -->
+      <div class="footer__big-text">
+        <span>NINETY</span>
+        <span>SIX</span>
+      </div>
+
+      <!-- BOTTOM -->
+      <div class="footer__bottom">
+        <p>© 2025 Ninety Six Marketing. All rights reserved.</p>
+        <p>Built with precision. Designed to win.</p>
+      </div>
+    </footer>
+  </div>
+</div>

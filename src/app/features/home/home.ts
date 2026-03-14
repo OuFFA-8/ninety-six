@@ -3,6 +3,8 @@ import { RouterLink } from '@angular/router';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import * as THREE from 'three';
+import { Draggable } from 'gsap/Draggable';
+gsap.registerPlugin(Draggable);
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -20,6 +22,7 @@ export class Home implements AfterViewInit, OnDestroy {
   @ViewChild('cursorDot') cursorDot!: ElementRef;
   // @ViewChild('portalFlash') portalFlash!: ElementRef;
   @ViewChild('dotOverlay') dotOverlay!: ElementRef;
+  @ViewChild('testiTrack') testiTrack!: ElementRef;
 
   private renderer!: THREE.WebGLRenderer;
   private scene!: THREE.Scene;
@@ -117,6 +120,87 @@ export class Home implements AfterViewInit, OnDestroy {
     { title: 'Ad Campaign', category: 'Marketing', color: '#a67fff' },
   ];
 
+  partners = [
+    'Nike',
+    'Adidas',
+    'Pepsi',
+    'Samsung',
+    'Noon',
+    'Careem',
+    'Talabat',
+    'Spotify',
+    'Apple',
+    'Google',
+    'Meta',
+    'Amazon',
+    'Uber',
+    'Netflix',
+    'Airbnb',
+    'Adobe',
+  ];
+
+  galleryColumns = [
+    [
+      { label: 'Brand Strategy', bg: 'linear-gradient(135deg, #1a0535, #3d1a7a)' },
+      { label: 'Visual Identity', bg: 'linear-gradient(135deg, #0a0318, #6a3bbf)' },
+      { label: 'Motion Design', bg: 'linear-gradient(135deg, #120526, #8a4fff)' },
+    ],
+    [
+      { label: 'Web Design', bg: 'linear-gradient(135deg, #0d0520, #5c2ea8)' },
+      { label: 'Social Media', bg: 'linear-gradient(135deg, #1a0535, #9d6fff)' },
+      { label: 'Campaigns', bg: 'linear-gradient(135deg, #080314, #7b52d4)' },
+    ],
+    [
+      { label: 'Photography', bg: 'linear-gradient(135deg, #120526, #4a1a96)' },
+      { label: 'Print Design', bg: 'linear-gradient(135deg, #0a0318, #8a4fff)' },
+      { label: 'Branding', bg: 'linear-gradient(135deg, #1a0535, #6a3bbf)' },
+    ],
+    [
+      { label: 'UI/UX Design', bg: 'linear-gradient(135deg, #0d0520, #c49bff)' },
+      { label: 'Digital Ads', bg: 'linear-gradient(135deg, #080314, #8a4fff)' },
+      { label: 'Marketing', bg: 'linear-gradient(135deg, #120526, #5c2ea8)' },
+    ],
+  ];
+
+  testimonials = [
+    {
+      text: 'Ninety Six completely transformed our brand. The strategy was sharp, the execution was flawless, and results came faster than expected.',
+      name: 'Ahmed Khalil',
+      role: 'CEO, Noon Egypt',
+      initials: 'AK',
+    },
+    {
+      text: 'The team understood our vision from day one. Our new identity feels premium and has been noticed by everyone in the industry.',
+      name: 'Sara Mostafa',
+      role: 'Marketing Director, Careem',
+      initials: 'SM',
+    },
+    {
+      text: 'Best investment we made. Our social media engagement went up 5x in just two months after working with Ninety Six.',
+      name: 'Omar Fathy',
+      role: 'Founder, Bounce',
+      initials: 'OF',
+    },
+    {
+      text: "Creative, professional, and always on time. They don't just deliver — they deliver wow.",
+      name: 'Nour Hassan',
+      role: 'Brand Manager, Diageo',
+      initials: 'NH',
+    },
+    {
+      text: 'Our website redesign exceeded all expectations. The animations and UX are on another level.',
+      name: 'Karim Adel',
+      role: 'CTO, Tribepad',
+      initials: 'KA',
+    },
+    {
+      text: 'Working with Ninety Six felt like having an in-house creative team that truly cares about your success.',
+      name: 'Laila Ramzy',
+      role: 'Director, British Red Cross Egypt',
+      initials: 'LR',
+    },
+  ];
+
   ngAfterViewInit() {
     this.initThree();
     this.initCursor();
@@ -125,6 +209,191 @@ export class Home implements AfterViewInit, OnDestroy {
     this.initStats();
     this.initWorks();
     this.initCTA();
+    this.initPartners();
+    this.initFooter();
+    this.initGallery();
+    this.initTestimonials();
+  }
+
+  initGallery() {
+    gsap.from('.gallery-section__header', {
+      scrollTrigger: {
+        trigger: '.gallery-section',
+        start: 'top 80%',
+      },
+      y: 60,
+      opacity: 0,
+      duration: 0.9,
+      ease: 'power3.out',
+    });
+
+    gsap.from('.gallery__item', {
+      scrollTrigger: {
+        trigger: '.gallery',
+        start: 'top 90%',
+      },
+      opacity: 0,
+      scale: 0.92,
+      duration: 0.7,
+      stagger: { amount: 0.8, from: 'random' },
+      ease: 'power2.out',
+    });
+
+    // عمود 1 و 3 → لفوق | عمود 2 و 4 → لتحت
+    const directions = [-150, 150, -100, 120];
+
+    document.querySelectorAll<HTMLElement>('.gallery__col').forEach((col, i) => {
+      gsap.fromTo(
+        col,
+        { y: directions[i] > 0 ? -directions[i] / 2 : -directions[i] / 2 },
+        {
+          y: directions[i],
+          ease: 'none',
+          scrollTrigger: {
+            trigger: '.gallery',
+            start: 'top bottom',
+            end: 'bottom top',
+            scrub: 2,
+          },
+        },
+      );
+    });
+  }
+
+  initTestimonials() {
+    // Register Draggable
+    gsap.registerPlugin(Draggable);
+
+    const track = this.testiTrack.nativeElement as HTMLElement;
+    const cards = track.querySelectorAll<HTMLElement>('.testi-card');
+    const cardWidth = 480 + 24; // width + gap
+    let current = 0;
+    const total = this.testimonials.length;
+
+    const updateCounter = () => {
+      const el = document.getElementById('testiCurrent');
+      if (el) el.textContent = String(current + 1);
+    };
+
+    const goTo = (index: number) => {
+      current = Math.max(0, Math.min(index, total - 1));
+      gsap.to(track, {
+        x: -current * cardWidth,
+        duration: 0.7,
+        ease: 'power3.out',
+      });
+      updateCounter();
+    };
+
+    // Draggable
+    Draggable.create(track, {
+      type: 'x',
+      edgeResistance: 0.85,
+      bounds: {
+        minX: -(total - 1) * cardWidth,
+        maxX: 0,
+      },
+      inertia: true,
+      onDragEnd: function (this: Draggable.Vars) {
+        const snapped = Math.round(-this['x'] / cardWidth);
+        current = Math.max(0, Math.min(snapped, total - 1));
+        gsap.to(track, {
+          x: -current * cardWidth,
+          duration: 0.5,
+          ease: 'power3.out',
+        });
+        updateCounter();
+      },
+    });
+
+    // Buttons
+    document.getElementById('testiNext')?.addEventListener('click', () => goTo(current + 1));
+    document.getElementById('testiPrev')?.addEventListener('click', () => goTo(current - 1));
+
+    // Entrance animation
+    gsap.from('.testimonials__left', {
+      scrollTrigger: { trigger: '.testimonials', start: 'top 80%' },
+      x: -80,
+      opacity: 0,
+      duration: 1,
+      ease: 'power3.out',
+    });
+
+    gsap.from('.testi-card', {
+      scrollTrigger: { trigger: '.testimonials', start: 'top 75%' },
+      x: 100,
+      opacity: 0,
+      duration: 0.8,
+      stagger: 0.1,
+      ease: 'power3.out',
+    });
+  }
+
+  initPartners() {
+    // Title entrance
+    gsap.from('.partners__title', {
+      scrollTrigger: {
+        trigger: '.partners',
+        start: 'top 80%',
+      },
+      x: -80,
+      opacity: 0,
+      duration: 1,
+      ease: 'power3.out',
+    });
+
+    // Grid logos stagger
+    gsap.from('.partner-logo', {
+      scrollTrigger: {
+        trigger: '.partners__grid',
+        start: 'top 85%',
+      },
+      opacity: 0,
+      y: 30,
+      duration: 0.6,
+      stagger: {
+        amount: 1.2,
+        from: 'start',
+      },
+      ease: 'power2.out',
+    });
+  }
+
+  initFooter() {
+    gsap.from('.footer__brand', {
+      scrollTrigger: {
+        trigger: '.footer-wrapper',
+        start: 'top 90%',
+      },
+      x: -50,
+      opacity: 0,
+      duration: 0.9,
+      ease: 'power3.out',
+    });
+
+    gsap.from('.footer__col', {
+      scrollTrigger: {
+        trigger: '.footer-wrapper',
+        start: 'top 90%',
+      },
+      y: 40,
+      opacity: 0,
+      duration: 0.7,
+      stagger: 0.12,
+      ease: 'power2.out',
+    });
+
+    gsap.from('.footer__big-text span', {
+      scrollTrigger: {
+        trigger: '.footer-wrapper',
+        start: 'top 80%',
+      },
+      y: 60,
+      opacity: 0,
+      duration: 1,
+      stagger: 0.15,
+      ease: 'power3.out',
+    });
   }
 
   // ══════════════════════════════
