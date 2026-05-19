@@ -29,10 +29,10 @@
 
 <!-- ═══ SERVICES ═══ -->
 <section class="services-portal">
-  <div class="services-portal__header">
-    <!-- <span class="label">What We Do</span> -->
-    <h2>Services Built to <span class="gradient-text">Perform</span></h2>
-    <p>Every service engineered with one goal — your success.</p>
+  <div class="section-head">
+    <div class="section-head__label" data-num="01">What We Do</div>
+    <h2 class="section-head__title">Services Built<br>to <em>Perform</em>.</h2>
+    <p class="section-head__sub">Every service engineered with one goal — your success.</p>
   </div>
 
   <div class="cards-deck-wrapper">
@@ -43,7 +43,7 @@
             <div class="deck-card__left">
               <span class="deck-card__tag">{{ service.tag }}</span>
               <span class="deck-card__icon">{{ service.icon }}</span>
-              <h3>{{ service.title }}</h3>
+              <h3 class="deck-card__title">{{ service.title }}</h3>
               <p>{{ service.desc }}</p>
               <span class="deck-card__cta">Explore Work →</span>
             </div>
@@ -131,9 +131,10 @@
 
 <!-- ═══ GALLERY ═══ -->
 <section class="gallery-section">
-  <div class="gallery-section__header">
-    <span class="label">Our Work</span>
-    <h2>Built to <span class="gradient-text">Impress</span></h2>
+  <div class="section-head">
+    <div class="section-head__label" data-num="03">Portfolio</div>
+    <h2 class="section-head__title">Built to<br><em>Impress</em>.</h2>
+    <p class="section-head__sub">A selection of work spanning six disciplines.</p>
   </div>
   <div class="gallery">
     <div class="gallery__wrapper">
@@ -172,9 +173,9 @@
 <section class="testimonials">
   <div class="testimonials__container">
     <div class="testimonials__left">
-      <span class="label">Client Stories</span>
+      <div class="section-head__label" data-num="04">Client Stories</div>
       <h2 class="testimonials__title">
-        What our<br />clients <span class="gradient-text">say</span>
+        What our<br>clients <em>say</em>.
       </h2>
       <div class="testimonials__nav">
         <button class="testi-nav-btn" id="testiPrev">←</button>
@@ -212,10 +213,10 @@
 
 <!-- ═══ CTA ═══ -->
 <section class="cta">
-  <div class="cta__content">
-    <span class="label">Ready?</span>
-    <h2>Let's Hit Your <span class="gradient-text">Target</span></h2>
-    <p>Tell us about your project and let's build something remarkable.</p>
+  <div class="cta__inner">
+    <div class="section-head__label" data-num="—">Ready?</div>
+    <h2 class="cta__title">Let's Hit<br>Your <em>Target</em>.</h2>
+    <p class="cta__sub">Tell us about your project and let's build something remarkable.</p>
     <a routerLink="/cart" class="btn-primary">Start a Project</a>
   </div>
   <div class="cta__glow"></div>

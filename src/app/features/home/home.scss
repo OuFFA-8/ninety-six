@@ -123,23 +123,72 @@ app-hero,
 // SHARED
 // ══════════════════════════════
 .gradient-text {
-  background: linear-gradient(135deg, #8a4fff, #c49bff);
+  background: linear-gradient(135deg, #c49bff, #8a4fff);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
 }
 
-.label {
-  display: inline-block;
-  font-size: 0.72rem;
-  font-weight: 700;
-  letter-spacing: 0.25em;
-  text-transform: uppercase;
-  color: #8a4fff;
-  margin-bottom: 1rem;
-  border: 1px solid rgba(138, 79, 255, 0.3);
-  padding: 0.3rem 1rem;
-  border-radius: 50px;
+// ── Editorial section header (shared across all sections) ──
+.section-head {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: end;
+  gap: 3rem;
+  padding-bottom: 2.5rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+  margin-bottom: 5rem;
+
+  @media (max-width: 900px) {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+    margin-bottom: 3.5rem;
+  }
+
+  &__label {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.55rem;
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: rgba(196, 155, 255, 0.8);
+
+    &::before {
+      content: attr(data-num) ' /';
+      color: rgba(255, 255, 255, 0.22);
+      font-weight: 500;
+    }
+  }
+
+  &__title {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-weight: 300;
+    font-size: clamp(2.8rem, 5vw, 5.5rem);
+    line-height: 1.05;
+    letter-spacing: -0.03em;
+    color: #fff;
+    margin: 0;
+
+    em {
+      font-style: italic;
+      background: linear-gradient(135deg, #c49bff, #8a4fff);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+  }
+
+  &__sub {
+    max-width: 260px;
+    color: rgba(255, 255, 255, 0.38);
+    font-size: 0.88rem;
+    line-height: 1.65;
+    font-weight: 300;
+
+    @media (max-width: 900px) { max-width: 100%; }
+  }
 }
 
 .btn-primary {
@@ -445,25 +494,12 @@ app-hero,
 // SERVICES PORTAL
 // ══════════════════════════════
 .services-portal {
-  background: rgba(6, 2, 16, 0.15);
-  padding: 6rem 2rem 0;
+  padding: 9rem 5rem 0;
   position: relative;
   z-index: 1;
+  border-top: 1px solid rgba(255, 255, 255, 0.07);
 
-  &__header {
-    text-align: center;
-    margin-bottom: 5rem;
-
-    h2 {
-      font-size: clamp(2.2rem, 4vw, 3.8rem);
-      font-weight: 800;
-      margin: 0.8rem 0;
-    }
-    p {
-      color: rgba(255, 255, 255, 0.5);
-      font-size: 1.05rem;
-    }
-  }
+  @media (max-width: 768px) { padding: 7rem 1.5rem 0; }
 }
 
 // ══════════════════════════════
@@ -534,12 +570,13 @@ app-hero,
     line-height: 1;
   }
 
-  h3 {
-    font-size: clamp(2.2rem, 4vw, 3.2rem);
-    font-weight: 900;
+  &__title {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: clamp(2.2rem, 4vw, 3.5rem);
+    font-weight: 300;
     color: #fff;
     line-height: 1.05;
-    letter-spacing: -0.02em;
+    letter-spacing: -0.025em;
   }
 
   p {
@@ -1045,22 +1082,13 @@ app-hero,
 // GALLERY
 // ══════════════════════════════
 .gallery-section {
-  background: rgba(4, 0, 10, 0.18);
-  padding: 8rem 2rem;
+  padding: 9rem 5rem 8rem;
   overflow: hidden;
   position: relative;
   z-index: 1;
+  border-top: 1px solid rgba(255, 255, 255, 0.07);
 
-  &__header {
-    text-align: center;
-    margin-bottom: 5rem;
-
-    h2 {
-      font-size: clamp(2.2rem, 4vw, 3.8rem);
-      font-weight: 800;
-      margin: 0.8rem 0;
-    }
-  }
+  @media (max-width: 768px) { padding: 7rem 1.5rem 6rem; }
 }
 
 .gallery {
@@ -1229,11 +1257,11 @@ app-hero,
 // TESTIMONIALS
 // ══════════════════════════════
 .testimonials {
-  background: rgba(4, 0, 10, 0.18);
-  padding: 10rem 0 10rem 5rem;
+  padding: 9rem 0 9rem 5rem;
   overflow: hidden;
   position: relative;
   z-index: 1;
+  border-top: 1px solid rgba(255, 255, 255, 0.07);
 
   &__container {
     display: grid;
@@ -1257,10 +1285,21 @@ app-hero,
   }
 
   &__title {
-    font-size: clamp(2.5rem, 5vw, 4.5rem);
-    font-weight: 900;
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: clamp(2.8rem, 5vw, 5rem);
+    font-weight: 300;
     line-height: 1.05;
     letter-spacing: -0.03em;
+    color: #fff;
+    margin: 1rem 0 2rem;
+
+    em {
+      font-style: italic;
+      background: linear-gradient(135deg, #c49bff, #8a4fff);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
   }
 
 
@@ -1412,44 +1451,59 @@ app-hero,
 // CTA
 // ══════════════════════════════
 .cta {
-  padding: 12rem 2rem;
-  text-align: center;
+  padding: 12rem 5rem 11rem;
   position: relative;
   overflow: hidden;
-  background: rgba(4, 0, 10, 0.18);
   z-index: 1;
+  border-top: 1px solid rgba(255, 255, 255, 0.07);
 
-  &__content {
+  @media (max-width: 768px) { padding: 8rem 1.5rem 8rem; }
+
+  &__inner {
     position: relative;
     z-index: 2;
-    max-width: 640px;
-    margin: 0 auto;
+    max-width: 820px;
     display: flex;
     flex-direction: column;
-    align-items: center;
-    gap: 1.2rem;
+    align-items: flex-start;
+    gap: 1rem;
+  }
 
-    h2 {
-      font-size: clamp(2.8rem, 5vw, 4.5rem);
-      font-weight: 900;
-      line-height: 1.1;
+  &__title {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-weight: 300;
+    font-size: clamp(3.5rem, 7vw, 7rem);
+    line-height: 1.02;
+    letter-spacing: -0.035em;
+    color: #fff;
+    margin: 0.8rem 0 1.2rem;
+
+    em {
+      font-style: italic;
+      background: linear-gradient(135deg, #c49bff, #8a4fff);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
     }
-    p {
-      color: rgba(255, 255, 255, 0.45);
-      font-size: 1.1rem;
-      line-height: 1.7;
-    }
+  }
+
+  &__sub {
+    color: rgba(255, 255, 255, 0.38);
+    font-size: 0.95rem;
+    line-height: 1.7;
+    font-weight: 300;
+    max-width: 400px;
+    margin-bottom: 1rem;
   }
 
   &__glow {
     position: absolute;
-    width: 700px;
-    height: 700px;
-    background: radial-gradient(circle, rgba(138, 79, 255, 0.18) 0%, transparent 65%);
+    width: 800px;
+    height: 600px;
+    background: radial-gradient(ellipse, rgba(138, 79, 255, 0.14) 0%, transparent 65%);
     border-radius: 50%;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+    bottom: -10%;
+    right: -5%;
     pointer-events: none;
   }
 }

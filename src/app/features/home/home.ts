@@ -416,7 +416,7 @@ export class Home implements AfterViewInit, OnDestroy {
   // ── Section animations ──
 
   initServiceCards() {
-    gsap.from('.services-portal__header', {
+    gsap.from('.services-portal .section-head', {
       scrollTrigger: { trigger: '.services-portal', start: 'top 80%' },
       y: 60,
       opacity: 0,
@@ -490,7 +490,7 @@ export class Home implements AfterViewInit, OnDestroy {
   }
 
   initCTA() {
-    gsap.from('.cta__content > *', {
+    gsap.from('.cta__inner > *', {
       scrollTrigger: { trigger: '.cta', start: 'top 75%' },
       y: 60,
       opacity: 0,
@@ -501,7 +501,7 @@ export class Home implements AfterViewInit, OnDestroy {
   }
 
   initGallery() {
-    gsap.from('.gallery-section__header', {
+    gsap.from('.gallery-section .section-head', {
       scrollTrigger: { trigger: '.gallery-section', start: 'top 80%' },
       y: 60,
       opacity: 0,
