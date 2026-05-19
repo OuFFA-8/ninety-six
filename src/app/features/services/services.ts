@@ -37,13 +37,24 @@ export class ServicesPage implements AfterViewInit, OnDestroy {
   protected introCompleted = false;
   protected activeIdx: number | null = null;
 
-  private _starRaf    = 0;
-  private _targetHue  = 270;
+  private _starRaf   = 0;
+  private _targetBgR = 0;
+  private _targetBgG = 0;
+  private _targetBgB = 0;
+  // Selection color — restored when a row is closed
+  private _selBgR    = 0;
+  private _selBgG    = 0;
+  private _selBgB    = 0;
 
   constructor() {
     effect(() => {
       const work = this.selection.selected();
-      if (work) this._targetHue = this.hexToHue(work.color);
+      if (work) {
+        const [r, g, b] = this.hexToRgb(work.color);
+        this._selBgR = this._targetBgR = r * 0.32 | 0;
+        this._selBgG = this._targetBgG = g * 0.32 | 0;
+        this._selBgB = this._targetBgB = b * 0.32 | 0;
+      }
     });
   }
 
@@ -124,7 +135,19 @@ export class ServicesPage implements AfterViewInit, OnDestroy {
   }
 
   protected toggle(i: number): void {
-    this.activeIdx = this.activeIdx === i ? null : i;
+    if (this.activeIdx === i) {
+      this.activeIdx = null;
+      this._targetBgR = this._selBgR;
+      this._targetBgG = this._selBgG;
+      this._targetBgB = this._selBgB;
+    } else {
+      this.activeIdx = i;
+      const color = this.services[i].works[0].color;
+      const [r, g, b] = this.hexToRgb(color);
+      this._targetBgR = r * 0.32 | 0;
+      this._targetBgG = g * 0.32 | 0;
+      this._targetBgB = b * 0.32 | 0;
+    }
   }
 
   onIntroCompleted(_work: Work): void {
@@ -155,17 +178,12 @@ export class ServicesPage implements AfterViewInit, OnDestroy {
     document.documentElement.style.overflow = '';
   }
 
-  private hexToHue(hex: string): number {
-    const r = parseInt(hex.slice(1, 3), 16) / 255;
-    const g = parseInt(hex.slice(3, 5), 16) / 255;
-    const b = parseInt(hex.slice(5, 7), 16) / 255;
-    const max = Math.max(r, g, b), min = Math.min(r, g, b);
-    if (max === min) return 270;
-    const d = max - min;
-    let h = max === r ? (g - b) / d + (g < b ? 6 : 0)
-           : max === g ? (b - r) / d + 2
-           :             (r - g) / d + 4;
-    return h * 60;
+  private hexToRgb(hex: string): [number, number, number] {
+    return [
+      parseInt(hex.slice(1, 3), 16),
+      parseInt(hex.slice(3, 5), 16),
+      parseInt(hex.slice(5, 7), 16),
+    ];
   }
 
   private initStars(): void {
@@ -179,39 +197,39 @@ export class ServicesPage implements AfterViewInit, OnDestroy {
     resize();
     window.addEventListener('resize', resize, { passive: true });
 
-    interface S {
-      x: number; y: number; r: number;
-      baseAlpha: number; phase: number; spd: number;
-      hueOffset: number;
-    }
+    interface S { x: number; y: number; r: number; baseAlpha: number; phase: number; spd: number; }
 
     const stars: S[] = Array.from({ length: 420 }, () => ({
-      x:          Math.random() * window.innerWidth,
-      y:          Math.random() * window.innerHeight,
-      r:          Math.random() * 0.85 + 0.25,
-      baseAlpha:  Math.random() * 0.45 + 0.1,
-      phase:      Math.random() * Math.PI * 2,
-      spd:        Math.random() * 0.6 + 0.3,
-      hueOffset:  (Math.random() - 0.5) * 50,
+      x:         Math.random() * window.innerWidth,
+      y:         Math.random() * window.innerHeight,
+      r:         Math.random() * 0.85 + 0.25,
+      baseAlpha: Math.random() * 0.45 + 0.1,
+      phase:     Math.random() * Math.PI * 2,
+      spd:       Math.random() * 0.6 + 0.3,
     }));
 
-    let currentHue = this._targetHue;
+    // Start canvas at the already-selected color (if any)
+    let bgR = this._targetBgR;
+    let bgG = this._targetBgG;
+    let bgB = this._targetBgB;
     let t = 0;
 
     const draw = () => {
       this._starRaf = requestAnimationFrame(draw);
       t += 0.016;
 
-      currentHue += (this._targetHue - currentHue) * 0.018;
+      bgR += (this._targetBgR - bgR) * 0.025;
+      bgG += (this._targetBgG - bgG) * 0.025;
+      bgB += (this._targetBgB - bgB) * 0.025;
 
-      ctx.fillStyle = '#000';
+      ctx.fillStyle = `rgb(${bgR | 0},${bgG | 0},${bgB | 0})`;
       ctx.fillRect(0, 0, canvas.width, canvas.height);
 
       for (const s of stars) {
         const alpha = s.baseAlpha * (0.55 + 0.45 * Math.sin(t * s.spd + s.phase));
         ctx.beginPath();
         ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
-        ctx.fillStyle = `hsla(${currentHue + s.hueOffset}, 80%, 76%, ${alpha})`;
+        ctx.fillStyle = `rgba(255,255,255,${alpha})`;
         ctx.fill();
       }
     };
