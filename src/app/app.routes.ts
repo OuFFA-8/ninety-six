@@ -3,10 +3,6 @@ import { MainLayout } from './core/layouts/main-layout/main-layout';
 
 export const routes: Routes = [
   {
-    path: 'intro',
-    loadComponent: () => import('./core/intro/intro').then((m) => m.Intro),
-  },
-  {
     path: '',
     component: MainLayout,
     children: [
@@ -19,16 +15,17 @@ export const routes: Routes = [
         loadComponent: () => import('./features/brands/brands').then((m) => m.Brands),
       },
       {
-        path: 'categories',
-        loadComponent: () => import('./features/categories/categories').then((m) => m.Categories),
-      },
-      {
         path: 'products',
         loadComponent: () => import('./features/products/products').then((m) => m.Products),
       },
       {
         path: 'products/:id',
         loadComponent: () => import('./features/details/details').then((m) => m.Details),
+      },
+      {
+        path: 'services',
+        loadComponent: () =>
+          import('./features/services/services').then((m) => m.ServicesPage),
       },
       {
         path: 'cart',

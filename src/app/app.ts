@@ -7,12 +7,8 @@ import { Router, RouterOutlet } from '@angular/router';
   templateUrl: './app.html',
   styleUrl: './app.scss',
 })
-export class App implements OnInit {
+export class App {
   protected readonly title = signal('ninety-six');
 
   constructor(private router: Router) {}
-
-  ngOnInit() {
-    this.router.navigate(['/intro']);
-  }
 }

@@ -1,0 +1,96 @@
+<!-- Color-reactive star background -->
+<canvas #starCanvas class="svc-stars"></canvas>
+
+<!-- Pitch Room intro overlay -->
+<div #introWrap class="intro-wrap">
+  <app-intro (completed)="onIntroCompleted($event)"></app-intro>
+</div>
+
+@if (introCompleted) {
+  <main class="svc-main">
+
+    <!-- ── Hero ──────────────────────────────────────────── -->
+    <section class="svc-hero">
+      <div class="svc-hero__inner">
+        <span class="svc-eyebrow">What We Do</span>
+
+        @if (selection.selected(); as work) {
+          <h1 class="svc-hero__title">
+            You chose<br>
+            <em [style.color]="work.color">{{ work.category }}.</em>
+          </h1>
+          <p class="svc-hero__sub">
+            That's one of six disciplines we've mastered. Here's the full picture.
+          </p>
+        } @else {
+          <h1 class="svc-hero__title">
+            Six Disciplines.<br>
+            <em class="svc-grad">One Vision.</em>
+          </h1>
+          <p class="svc-hero__sub">
+            Every service engineered with one goal — your success.
+          </p>
+        }
+      </div>
+    </section>
+
+    <!-- ── Services accordion ──────────────────────────── -->
+    <section class="svc-list">
+      @for (service of services; track service.title; let i = $index) {
+        <article
+          class="svc-row"
+          [class.is-open]="activeIdx === i"
+          [style.--accent]="service.works[0].color"
+          (click)="toggle(i)">
+
+          <div class="svc-row__head">
+            <span class="svc-row__num">{{ service.tag }}</span>
+            <h2 class="svc-row__title">{{ service.title }}</h2>
+            <span class="svc-row__icon" aria-hidden="true">{{ service.icon }}</span>
+            <div class="svc-row__plus"><span></span><span></span></div>
+          </div>
+
+          <div class="svc-row__body">
+            <div class="svc-row__body-inner">
+
+              <!-- Description + tags -->
+              <div class="svc-row__left">
+                <p class="svc-row__desc">{{ service.desc }}</p>
+                <div class="svc-row__tags">
+                  @for (work of service.works; track work.title) {
+                    <span class="svc-tag" [style.color]="work.color">{{ work.title }}</span>
+                  }
+                </div>
+              </div>
+
+              <!-- Work preview cards -->
+              <div class="svc-row__previews">
+                @for (work of service.works; track work.title; let j = $index) {
+                  <div class="work-prev" [style.--c]="work.color">
+                    <span class="work-prev__num">{{ service.tag }}.0{{ j + 1 }}</span>
+                    <span class="work-prev__label">Case Study</span>
+                    <span class="work-prev__title">{{ work.title }}</span>
+                  </div>
+                }
+              </div>
+
+            </div>
+          </div>
+        </article>
+      }
+    </section>
+
+    <!-- ── CTA ───────────────────────────────────────────── -->
+    <section class="svc-cta">
+      <div class="svc-cta__inner">
+        <span class="svc-eyebrow">Ready?</span>
+        <h2 class="svc-cta__title">
+          Let's Build<br>
+          <em class="svc-grad">Something Real.</em>
+        </h2>
+        <a routerLink="/cart" class="svc-cta__btn">Start a Project →</a>
+      </div>
+    </section>
+
+  </main>
+}

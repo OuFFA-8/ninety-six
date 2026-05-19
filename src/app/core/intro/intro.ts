@@ -1,566 +1,581 @@
-import { Component, AfterViewInit, ElementRef, ViewChild, OnDestroy } from '@angular/core';
-import { Router } from '@angular/router';
-import gsap from 'gsap';
+import {
+  Component,
+  AfterViewInit,
+  ElementRef,
+  ViewChild,
+  OnDestroy,
+  Output,
+  EventEmitter,
+  inject,
+  PLATFORM_ID,
+  NgZone,
+} from '@angular/core';
+import { isPlatformBrowser, CommonModule } from '@angular/common';
 import * as THREE from 'three';
+import { gsap } from 'gsap';
+
+import { SelectionService, Work, WORKS } from '../service/selection-service';
 
 @Component({
   selector: 'app-intro',
   standalone: true,
-  imports: [],
+  imports: [CommonModule],
   templateUrl: './intro.html',
   styleUrl: './intro.scss',
 })
 export class Intro implements AfterViewInit, OnDestroy {
-  @ViewChild('canvas') canvasRef!: ElementRef<HTMLCanvasElement>;
-  @ViewChild('aimDot') aimDot!: ElementRef;
-  @ViewChild('instruction') instruction!: ElementRef;
-  @ViewChild('hitFeedback') hitFeedback!: ElementRef;
+  @ViewChild('canvas', { static: true }) canvasRef!: ElementRef<HTMLCanvasElement>;
+  @ViewChild('introRoot', { static: true }) introRoot!: ElementRef<HTMLElement>;
+  @ViewChild('hudCategory', { static: true }) hudCategory!: ElementRef;
+  @ViewChild('hudClient', { static: true }) hudClient!: ElementRef;
+  @ViewChild('hudHint', { static: true }) hudHint!: ElementRef;
+  @ViewChild('progress', { static: true }) progress!: ElementRef;
 
+  @Output() completed = new EventEmitter<Work>();
+
+  private platformId = inject(PLATFORM_ID);
+  private ngZone = inject(NgZone);
+  private selSvc = inject(SelectionService);
+
+  // ── Three.js ──
   private renderer!: THREE.WebGLRenderer;
   private scene!: THREE.Scene;
   private camera!: THREE.PerspectiveCamera;
-  private animationId!: number;
+  private rafId: number | null = null;
+  private clock = new THREE.Clock();
 
-  // Target (Logo rings)
-  private targetGroup!: THREE.Group;
-  private rings: THREE.Mesh[] = [];
-  private centerDot!: THREE.Mesh;
+  // ── Panels ──
+  private panels: Panel[] = [];
+  private hovered: Panel | null = null;
+  private locked = false;
 
-  // Arrow
-  private arrowGroup!: THREE.Group;
-  private isAiming = false;
-  private aimStart = { x: 0, y: 0 };
-  private currentAim = { x: 0, y: 0 };
-  private arrowFired = false;
-  private hasWon = false;
+  // ── Input ──
+  private mouse = new THREE.Vector2();
+  private mouseTarget = new THREE.Vector2();
+  private mouseSmooth = new THREE.Vector2();
+  private raycaster = new THREE.Raycaster();
 
-  // Aim line
-  private aimLine!: THREE.Line;
+  // ── Haze ──
+  private hazeMat!: THREE.ShaderMaterial;
+  private hazeUniforms!: Record<string, THREE.IUniform>;
 
-  // Mouse
-  private mouse = { x: 0, y: 0 };
-  private mouseMoveHandler!: (e: MouseEvent) => void;
-  private mouseDownHandler!: (e: MouseEvent) => void;
-  private mouseUpHandler!: (e: MouseEvent) => void;
-  private touchStartHandler!: (e: TouchEvent) => void;
-  private touchMoveHandler!: (e: TouchEvent) => void;
-  private touchEndHandler!: (e: TouchEvent) => void;
+  // ── Layout: same as the working preview ──
+  private readonly LAYOUT = [
+    { x: -8.5, y: 1.2, z: -1, ry: 0.35 },
+    { x: -3.5, y: -1.5, z: 3, ry: 0.18 },
+    { x: 1.5, y: 1.6, z: 1, ry: 0.05 },
+    { x: 6.0, y: -1.0, z: -2, ry: -0.22 },
+    { x: -6.5, y: -3.5, z: 4, ry: 0.28 },
+    { x: 4.0, y: 3.2, z: -3, ry: -0.15 },
+  ];
 
-  constructor(private router: Router) {}
-
-  ngAfterViewInit() {
-    this.initThree();
-    this.initEvents();
-    this.entranceAnimation();
+  ngAfterViewInit(): void {
+    if (!isPlatformBrowser(this.platformId)) return;
+    this.ngZone.runOutsideAngular(() => {
+      try {
+        this.init();
+        this.buildPanels();
+        this.entrance();
+        this.bindEvents();
+        this.loop();
+        console.log('[PitchRoom] ready');
+      } catch (e) {
+        console.error('[PitchRoom] init error:', e);
+      }
+    });
   }
 
-  initThree() {
-    const canvas = this.canvasRef.nativeElement;
-    const w = window.innerWidth;
-    const h = window.innerHeight;
+  ngOnDestroy(): void {
+    if (this.rafId !== null) cancelAnimationFrame(this.rafId);
+    const stage = this.introRoot.nativeElement;
+    stage.removeEventListener('mousemove', this.onMouseMove);
+    stage.removeEventListener('click', this.onClickStage);
+    stage.removeEventListener('touchstart', this.onTouchStart as any);
+    stage.removeEventListener('touchend', this.onTouchEnd as any);
+    window.removeEventListener('resize', this.onResize);
+    this.panels.forEach((p) => {
+      p.geo.dispose();
+      p.mat.dispose();
+      p.tex.dispose();
+      p.glowGeo.dispose();
+      p.glowMat.dispose();
+    });
+    this.hazeMat?.dispose();
+    this.renderer?.dispose();
+  }
 
-    this.renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: false });
+  // ─────────────────────────────────────────────────────────
+  //  INIT
+  // ─────────────────────────────────────────────────────────
+
+  private init(): void {
+    const stage = this.introRoot.nativeElement;
+    const w = stage.clientWidth || window.innerWidth;
+    const h = stage.clientHeight || window.innerHeight;
+
+    this.renderer = new THREE.WebGLRenderer({
+      canvas: this.canvasRef.nativeElement,
+      antialias: true,
+    });
     this.renderer.setSize(w, h);
     this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-    this.renderer.setClearColor(0x080808, 1);
+    this.renderer.setClearColor(0x0a0612, 1);
 
     this.scene = new THREE.Scene();
-    this.camera = new THREE.PerspectiveCamera(60, w / h, 0.1, 1000);
-    this.camera.position.z = 6;
+    this.scene.fog = new THREE.FogExp2(0x0a0612, 0.045);
 
-    // Fog for depth
-    this.scene.fog = new THREE.FogExp2(0x080808, 0.04);
+    this.camera = new THREE.PerspectiveCamera(55, w / h, 0.1, 200);
+    this.camera.position.set(0, 0, 18);
 
-    this.createTarget();
-    this.createArrow();
-    this.createAimLine();
-    this.createBackground();
-    this.createLights();
-
-    window.addEventListener('resize', () => {
-      const w = window.innerWidth;
-      const h = window.innerHeight;
-      this.camera.aspect = w / h;
-      this.camera.updateProjectionMatrix();
-      this.renderer.setSize(w, h);
+    // Haze background
+    this.hazeUniforms = {
+      uTime: { value: 0 },
+      uColorA: { value: new THREE.Color('#0a0612') },
+      uColorB: { value: new THREE.Color('#1a0935') },
+      uColorAccent: { value: new THREE.Color('#8a4fff') },
+    };
+    this.hazeMat = new THREE.ShaderMaterial({
+      uniforms: this.hazeUniforms,
+      depthWrite: false,
+      vertexShader: `
+        varying vec2 vUv;
+        void main(){ vUv = uv; gl_Position = projectionMatrix * modelViewMatrix * vec4(position,1.0); }
+      `,
+      fragmentShader: `
+        precision highp float;
+        uniform float uTime; uniform vec3 uColorA, uColorB, uColorAccent;
+        varying vec2 vUv;
+        float h(vec2 p){ p=fract(p*vec2(123.34,456.21)); p+=dot(p,p+45.32); return fract(p.x*p.y); }
+        float n(vec2 p){ vec2 i=floor(p),f=fract(p),u=f*f*(3.0-2.0*f);
+          return mix(mix(h(i),h(i+vec2(1,0)),u.x),mix(h(i+vec2(0,1)),h(i+vec2(1,1)),u.x),u.y); }
+        float fbm(vec2 p){ float v=0.0,a=0.5; for(int i=0;i<4;i++){v+=a*n(p);p*=2.0;a*=0.5;} return v; }
+        void main(){
+          float n1=fbm(vUv*3.0+vec2(uTime*.05,uTime*.03));
+          float n2=fbm(vUv*1.3+vec2(-uTime*.02,uTime*.04));
+          vec3 col=mix(uColorA,uColorB,n1);
+          col=mix(col,uColorAccent*.4,smoothstep(.5,.9,n2)*.4);
+          col*=0.5+0.5*smoothstep(1.5,.3,length(vUv-.5));
+          gl_FragColor=vec4(col,1.0);
+        }
+      `,
     });
-
-    this.animate();
+    const hazeMesh = new THREE.Mesh(new THREE.PlaneGeometry(140, 80), this.hazeMat);
+    hazeMesh.position.z = -25;
+    this.scene.add(hazeMesh);
   }
 
-  createTarget() {
-    this.targetGroup = new THREE.Group();
-    this.targetGroup.position.z = 0;
+  // ─────────────────────────────────────────────────────────
+  //  PANELS — identical logic to the working preview
+  // ─────────────────────────────────────────────────────────
 
-    const ringData = [
-      { r: 1.8, tube: 0.04, color: 0x2a1a4a, emissive: 0x1a0a2a },
-      { r: 1.4, tube: 0.045, color: 0x3d1a7a, emissive: 0x2a0a5a },
-      { r: 1.0, tube: 0.05, color: 0x5c2ea8, emissive: 0x3d1a7a },
-      { r: 0.6, tube: 0.055, color: 0x8a4fff, emissive: 0x6a3bbf },
-      { r: 0.25, tube: 0.06, color: 0xc49bff, emissive: 0x8a4fff },
-    ];
+  private buildPanels(): void {
+    WORKS.forEach((work, i) => {
+      const slot = this.LAYOUT[i];
 
-    ringData.forEach((data, i) => {
-      const geo = new THREE.TorusGeometry(data.r, data.tube, 16, 120);
-      const mat = new THREE.MeshStandardMaterial({
-        color: data.color,
-        emissive: data.emissive,
-        emissiveIntensity: 0.6,
-        metalness: 0.9,
-        roughness: 0.1,
+      // Canvas texture
+      const tex = this.paintPanel(work, i);
+
+      // Main plane
+      const geo = new THREE.PlaneGeometry(4.2, 2.8);
+      const mat = new THREE.MeshBasicMaterial({ map: tex, transparent: true, opacity: 0 });
+      const mesh = new THREE.Mesh(geo, mat);
+      mesh.position.set(slot.x, slot.y, slot.z);
+      mesh.rotation.y = slot.ry;
+      mesh.userData['baseY'] = slot.y;
+      mesh.userData['baseZ'] = slot.z;
+      mesh.userData['phase'] = i * 0.7;
+      this.scene.add(mesh);
+
+      // Glow plane
+      const glowGeo = new THREE.PlaneGeometry(5.4, 4.0);
+      const glowMat = new THREE.MeshBasicMaterial({
+        color: new THREE.Color(work.color),
+        transparent: true,
+        opacity: 0,
+        blending: THREE.AdditiveBlending,
+        depthWrite: false,
       });
-      const ring = new THREE.Mesh(geo, mat);
-      ring.userData['index'] = i;
-      ring.userData['baseEmissive'] = data.emissive;
-      this.rings.push(ring);
-      this.targetGroup.add(ring);
-    });
+      const glow = new THREE.Mesh(glowGeo, glowMat);
+      glow.position.copy(mesh.position);
+      glow.position.z -= 0.05;
+      glow.rotation.y = slot.ry;
+      this.scene.add(glow);
 
-    // Center bullseye dot
-    const dotGeo = new THREE.SphereGeometry(0.1, 32, 32);
-    const dotMat = new THREE.MeshStandardMaterial({
-      color: 0xffffff,
-      emissive: 0xc49bff,
-      emissiveIntensity: 2,
-      metalness: 1,
-      roughness: 0,
-    });
-    this.centerDot = new THREE.Mesh(dotGeo, dotMat);
-    this.targetGroup.add(this.centerDot);
-
-    // Outer glow ring
-    const glowGeo = new THREE.TorusGeometry(2.1, 0.02, 8, 100);
-    const glowMat = new THREE.MeshBasicMaterial({
-      color: 0x8a4fff,
-      transparent: true,
-      opacity: 0.3,
-    });
-    const glowRing = new THREE.Mesh(glowGeo, glowMat);
-    this.targetGroup.add(glowRing);
-
-    // Start invisible
-    this.targetGroup.scale.set(0, 0, 0);
-    this.scene.add(this.targetGroup);
-  }
-
-  createArrow() {
-    this.arrowGroup = new THREE.Group();
-
-    // Shaft - على طول المحور Z
-    const shaftGeo = new THREE.CylinderGeometry(0.015, 0.015, 1.2, 8);
-    const shaftMat = new THREE.MeshStandardMaterial({
-      color: 0xd4a843,
-      metalness: 0.8,
-      roughness: 0.2,
-    });
-    const shaft = new THREE.Mesh(shaftGeo, shaftMat);
-    shaft.rotation.x = Math.PI / 2; // على طول Z
-    this.arrowGroup.add(shaft);
-
-    // Tip
-    const tipGeo = new THREE.ConeGeometry(0.04, 0.2, 8);
-    const tipMat = new THREE.MeshStandardMaterial({
-      color: 0xc0c0c0,
-      metalness: 1,
-      roughness: 0,
-      emissive: 0x8a4fff,
-      emissiveIntensity: 0.3,
-    });
-    const tip = new THREE.Mesh(tipGeo, tipMat);
-    tip.rotation.x = Math.PI / 2;
-    tip.position.z = -0.7; // الطرف الأمامي
-    this.arrowGroup.add(tip);
-
-    // Feathers
-    const featherGeo = new THREE.BoxGeometry(0.15, 0.08, 0.01);
-    const featherMat = new THREE.MeshStandardMaterial({
-      color: 0x8a4fff,
-      emissive: 0x8a4fff,
-      emissiveIntensity: 0.5,
-    });
-    [0, Math.PI / 2, Math.PI, Math.PI * 1.5].forEach((rot) => {
-      const f = new THREE.Mesh(featherGeo, featherMat);
-      f.position.z = 0.5;
-      f.position.y = 0.06;
-      f.rotation.z = rot;
-      this.arrowGroup.add(f);
-    });
-
-    this.arrowGroup.position.set(0, -3, 3);
-    this.arrowGroup.scale.set(0, 0, 0);
-    this.scene.add(this.arrowGroup);
-  }
-
-  createAimLine() {
-    const points = [new THREE.Vector3(0, 0, 0), new THREE.Vector3(0, 0, 0)];
-    const geo = new THREE.BufferGeometry().setFromPoints(points);
-    const mat = new THREE.LineBasicMaterial({
-      color: 0x8a4fff,
-      transparent: true,
-      opacity: 0,
-    });
-    this.aimLine = new THREE.Line(geo, mat);
-    this.scene.add(this.aimLine);
-  }
-
-  createBackground() {
-    // Starfield
-    const count = 1500;
-    const positions = new Float32Array(count * 3);
-    for (let i = 0; i < count * 3; i += 3) {
-      positions[i] = (Math.random() - 0.5) * 40;
-      positions[i + 1] = (Math.random() - 0.5) * 40;
-      positions[i + 2] = (Math.random() - 0.5) * 30 - 5;
-    }
-    const geo = new THREE.BufferGeometry();
-    geo.setAttribute('position', new THREE.BufferAttribute(positions, 3));
-    const mat = new THREE.PointsMaterial({
-      size: 0.025,
-      color: 0x8a4fff,
-      transparent: true,
-      opacity: 0.5,
-    });
-    this.scene.add(new THREE.Points(geo, mat));
-
-    // Grid floor
-    const gridHelper = new THREE.GridHelper(30, 30, 0x8a4fff, 0x1a0a3a);
-    gridHelper.position.y = -4;
-    (gridHelper.material as THREE.LineBasicMaterial).opacity = 0.3;
-    (gridHelper.material as THREE.LineBasicMaterial).transparent = true;
-    this.scene.add(gridHelper);
-  }
-
-  createLights() {
-    this.scene.add(new THREE.AmbientLight(0x8a4fff, 0.4));
-
-    const main = new THREE.PointLight(0xc49bff, 3, 20);
-    main.position.set(0, 3, 5);
-    this.scene.add(main);
-
-    const fill = new THREE.PointLight(0x8a4fff, 2, 15);
-    fill.position.set(-3, -2, 3);
-    this.scene.add(fill);
-
-    const back = new THREE.PointLight(0x4a1a9a, 1.5, 10);
-    back.position.set(0, 0, -3);
-    this.scene.add(back);
-  }
-
-  entranceAnimation() {
-    const tl = gsap.timeline({ delay: 0.3 });
-
-    // Target appears
-    tl.to(this.targetGroup.scale, {
-      x: 1,
-      y: 1,
-      z: 1,
-      duration: 1.5,
-      ease: 'elastic.out(1, 0.5)',
-    })
-
-      // Arrow appears
-      .to(
-        this.arrowGroup.scale,
-        {
-          x: 1,
-          y: 1,
-          z: 1,
-          duration: 0.8,
-          ease: 'back.out(2)',
-        },
-        '-=0.5',
-      )
-
-      // Instruction fades in
-      .to(
-        this.instruction.nativeElement,
-        {
-          opacity: 1,
-          y: 0,
-          duration: 0.6,
-        },
-        '-=0.3',
-      );
-  }
-
-  // ══════════════════════════════
-  // EVENTS
-  // ══════════════════════════════
-  initEvents() {
-    this.mouseMoveHandler = (e: MouseEvent) => {
-      this.mouse.x = (e.clientX / window.innerWidth - 0.5) * 2;
-      this.mouse.y = -(e.clientY / window.innerHeight - 0.5) * 2;
-      if (this.isAiming) this.updateAimLine();
-    };
-
-    this.mouseDownHandler = (e: MouseEvent) => {
-      if (this.arrowFired || this.hasWon) return;
-      this.isAiming = true;
-      this.aimStart = { x: e.clientX, y: e.clientY };
-      this.showAimLine();
-    };
-
-    this.mouseUpHandler = (e: MouseEvent) => {
-      if (!this.isAiming || this.arrowFired || this.hasWon) return;
-      this.isAiming = false;
-      this.hideAimLine();
-      this.fireArrow();
-    };
-
-    // Touch support
-    this.touchStartHandler = (e: TouchEvent) => {
-      if (this.arrowFired || this.hasWon) return;
-      const t = e.touches[0];
-      this.isAiming = true;
-      this.aimStart = { x: t.clientX, y: t.clientY };
-      this.mouse.x = (t.clientX / window.innerWidth - 0.5) * 2;
-      this.mouse.y = -(t.clientY / window.innerHeight - 0.5) * 2;
-      this.showAimLine();
-    };
-
-    this.touchMoveHandler = (e: TouchEvent) => {
-      const t = e.touches[0];
-      this.mouse.x = (t.clientX / window.innerWidth - 0.5) * 2;
-      this.mouse.y = -(t.clientY / window.innerHeight - 0.5) * 2;
-      if (this.isAiming) this.updateAimLine();
-    };
-
-    this.touchEndHandler = () => {
-      if (!this.isAiming || this.arrowFired || this.hasWon) return;
-      this.isAiming = false;
-      this.hideAimLine();
-      this.fireArrow();
-    };
-
-    window.addEventListener('mousemove', this.mouseMoveHandler);
-    window.addEventListener('mousedown', this.mouseDownHandler);
-    window.addEventListener('mouseup', this.mouseUpHandler);
-    window.addEventListener('touchstart', this.touchStartHandler);
-    window.addEventListener('touchmove', this.touchMoveHandler);
-    window.addEventListener('touchend', this.touchEndHandler);
-  }
-
-  showAimLine() {
-    gsap.to(this.aimLine.material as THREE.LineBasicMaterial, {
-      opacity: 0.6,
-      duration: 0.2,
+      this.panels.push({ work, mesh, geo, mat, tex, glow, glowGeo, glowMat });
     });
   }
 
-  hideAimLine() {
-    gsap.to(this.aimLine.material as THREE.LineBasicMaterial, {
-      opacity: 0,
-      duration: 0.2,
-    });
+  private paintPanel(work: Work, idx: number): THREE.CanvasTexture {
+    const W = 1024,
+      H = 640;
+    const c = document.createElement('canvas');
+    c.width = W;
+    c.height = H;
+    const ctx = c.getContext('2d')!;
+
+    // Background
+    const bg = ctx.createLinearGradient(0, 0, W, H);
+    bg.addColorStop(0, '#0d0820');
+    const wk = new THREE.Color(work.color).multiplyScalar(0.55);
+    bg.addColorStop(1, '#' + wk.getHexString());
+    ctx.fillStyle = bg;
+    ctx.fillRect(0, 0, W, H);
+
+    // Blob glow
+    const c2 = new THREE.Color(work.color);
+    const r = Math.round(c2.r * 255),
+      g = Math.round(c2.g * 255),
+      b = Math.round(c2.b * 255);
+    const blob = ctx.createRadialGradient(W * 0.7, H * 0.3, 0, W * 0.7, H * 0.3, W * 0.5);
+    blob.addColorStop(0, `rgba(${r},${g},${b},0.6)`);
+    blob.addColorStop(1, `rgba(${r},${g},${b},0)`);
+    ctx.fillStyle = blob;
+    ctx.fillRect(0, 0, W, H);
+
+    // Text
+    ctx.fillStyle = work.color;
+    ctx.font = '700 14px Inter, sans-serif';
+    ctx.fillText('CASE STUDY', 50, 50);
+
+    ctx.fillStyle = 'rgba(255,255,255,0.55)';
+    ctx.font = '600 22px Inter, sans-serif';
+    ctx.fillText(String(idx + 1).padStart(2, '0'), 50, 80);
+
+    ctx.fillStyle = work.color;
+    ctx.fillRect(50, 95, 60, 3);
+
+    ctx.fillStyle = '#ffffff';
+    ctx.font = '800 64px Inter, sans-serif';
+    ctx.fillText(work.category, 50, 220);
+
+    ctx.fillStyle = 'rgba(255,255,255,0.85)';
+    ctx.font = '500 32px Inter, sans-serif';
+    ctx.fillText(work.title, 50, 280);
+
+    ctx.fillStyle = 'rgba(255,255,255,0.5)';
+    ctx.font = '500 20px Inter, sans-serif';
+    ctx.fillText(work.client.toUpperCase(), 50, H - 60);
+
+    ctx.strokeStyle = 'rgba(255,255,255,0.08)';
+    ctx.lineWidth = 2;
+    ctx.strokeRect(1, 1, W - 2, H - 2);
+
+    const tex = new THREE.CanvasTexture(c);
+    tex.needsUpdate = true;
+    tex.minFilter = THREE.LinearFilter;
+    return tex;
   }
 
-  updateAimLine() {
-    // Draw line from arrow to target direction
-    const start = new THREE.Vector3(this.mouse.x * 3, this.mouse.y * 3 - 1, 3);
-    const end = new THREE.Vector3(0, 0, 0);
+  // ─────────────────────────────────────────────────────────
+  //  ENTRANCE
+  // ─────────────────────────────────────────────────────────
 
-    const positions = new Float32Array([start.x, start.y, start.z, end.x, end.y, end.z]);
-    this.aimLine.geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
-
-    // Arrow follows mouse when aiming
-    gsap.to(this.arrowGroup.position, {
-      x: this.mouse.x * 3,
-      y: this.mouse.y * 3 - 1,
-      duration: 0.1,
-    });
-
-    // Arrow points toward target
-    const dir = new THREE.Vector3(-this.mouse.x * 3, -(this.mouse.y * 3 - 1), -3).normalize();
-    this.arrowGroup.lookAt(0, 0, 0);
-  }
-
-  fireArrow() {
-    if (this.arrowFired) return;
-    this.arrowFired = true;
-
-    // Hide instruction
-    gsap.to(this.instruction.nativeElement, { opacity: 0, duration: 0.3 });
-
-    // Calc accuracy - how close mouse was to center
-    const accuracy = Math.sqrt(this.mouse.x * this.mouse.x + this.mouse.y * this.mouse.y);
-
-    // Fire arrow toward center
+  private entrance(): void {
     const tl = gsap.timeline();
-
-    tl.to(this.arrowGroup.position, {
-      x: 0,
-      y: 0,
-      z: 0.1,
-      duration: 0.35,
-      ease: 'power3.in',
-    }).call(() => {
-      // Check hit - always hit (as per requirement) but show accuracy ring
-      this.onHit(accuracy);
+    this.panels.forEach((p, i) => {
+      const baseZ = p.mesh.userData['baseZ'];
+      gsap.set(p.mesh.position, { z: baseZ - 25 });
+      gsap.set(p.glow.position, { z: baseZ - 25 - 0.05 });
+      tl.to(p.mesh.position, { z: baseZ, duration: 1.4, ease: 'power3.out' }, i * 0.1);
+      tl.to(p.glow.position, { z: baseZ - 0.05, duration: 1.4, ease: 'power3.out' }, i * 0.1);
+      tl.to(p.mat, { opacity: 0.92, duration: 0.9 }, i * 0.1 + 0.2);
     });
+    gsap.fromTo(
+      [this.hudHint.nativeElement, this.progress.nativeElement],
+      { opacity: 0, y: 12 },
+      { opacity: 1, y: 0, duration: 0.8, ease: 'power2.out', delay: 1.4, stagger: 0.1 },
+    );
   }
 
-  onHit(accuracy: number) {
-    this.hasWon = true;
+  // ─────────────────────────────────────────────────────────
+  //  EVENTS — attached to the stage div, same as the preview
+  // ─────────────────────────────────────────────────────────
 
-    // Determine which ring was hit based on accuracy
-    const hitRingIndex = Math.min(Math.floor(accuracy * 4), 4);
+  private bindEvents(): void {
+    const stage = this.introRoot.nativeElement;
 
-    // Flash hit ring
-    const hitRing = this.rings[hitRingIndex];
-    if (hitRing) {
-      gsap.to(hitRing.material as THREE.MeshStandardMaterial, {
-        emissiveIntensity: 3,
-        duration: 0.1,
-        yoyo: true,
-        repeat: 3,
-      });
+    // Arrow-function members so removeEventListener works
+    stage.addEventListener('mousemove', this.onMouseMove, { passive: true });
+    stage.addEventListener('click', this.onClickStage);
+    stage.addEventListener('touchstart', this.onTouchStart as any, { passive: true });
+    stage.addEventListener('touchend', this.onTouchEnd as any);
+    window.addEventListener('resize', this.onResize);
+  }
+
+  private onMouseMove = (e: MouseEvent): void => {
+    if (this.locked) return;
+    const r = this.introRoot.nativeElement.getBoundingClientRect();
+    this.mouseTarget.x = ((e.clientX - r.left) / r.width) * 2 - 1;
+    this.mouseTarget.y = -((e.clientY - r.top) / r.height) * 2 + 1;
+  };
+
+  private onClickStage = (e: MouseEvent): void => {
+    if (this.locked) return;
+
+    // Sync raycaster from click position (don't trust this.hovered)
+    const r = this.introRoot.nativeElement.getBoundingClientRect();
+    const ndx = ((e.clientX - r.left) / r.width) * 2 - 1;
+    const ndy = -((e.clientY - r.top) / r.height) * 2 + 1;
+    this.raycaster.setFromCamera(new THREE.Vector2(ndx, ndy), this.camera);
+    const hits = this.raycaster.intersectObjects(
+      this.panels.map((p) => p.mesh),
+      false,
+    );
+    const target =
+      hits.length > 0
+        ? (this.panels.find((p) => p.mesh === hits[0].object) ?? this.hovered)
+        : this.hovered;
+
+    console.log('[PitchRoom] click — target:', target?.work.category ?? 'none');
+    if (target) this.flyInto(target);
+  };
+
+  private onTouchStart = (e: TouchEvent): void => {
+    if (e.touches.length === 0 || this.locked) return;
+    const t = e.touches[0];
+    const r = this.introRoot.nativeElement.getBoundingClientRect();
+    this.mouseTarget.x = ((t.clientX - r.left) / r.width) * 2 - 1;
+    this.mouseTarget.y = -((t.clientY - r.top) / r.height) * 2 + 1;
+    this.mouseSmooth.copy(this.mouseTarget);
+    // Pre-hover so touchEnd can fire
+    this.raycaster.setFromCamera(this.mouseTarget, this.camera);
+    const hits = this.raycaster.intersectObjects(
+      this.panels.map((p) => p.mesh),
+      false,
+    );
+    this.hovered =
+      hits.length > 0 ? (this.panels.find((p) => p.mesh === hits[0].object) ?? null) : null;
+  };
+
+  private onTouchEnd = (_e: TouchEvent): void => {
+    if (this.locked || !this.hovered) return;
+    this.flyInto(this.hovered);
+  };
+
+  private onResize = (): void => {
+    const stage = this.introRoot.nativeElement;
+    const w = stage.clientWidth || window.innerWidth;
+    const h = stage.clientHeight || window.innerHeight;
+    this.camera.aspect = w / h;
+    this.camera.updateProjectionMatrix();
+    this.renderer.setSize(w, h);
+  };
+
+  // ─────────────────────────────────────────────────────────
+  //  HOVER STATE
+  // ─────────────────────────────────────────────────────────
+
+  private setHovered(next: Panel | null): void {
+    if (this.hovered && this.hovered !== next) {
+      gsap.to(this.hovered.mesh.scale, { x: 1, y: 1, duration: 0.4 });
+      gsap.to(this.hovered.glowMat, { opacity: 0, duration: 0.4 });
     }
 
-    // Center bullseye flash
-    gsap.to(this.centerDot.material as THREE.MeshStandardMaterial, {
-      emissiveIntensity: 5,
-      duration: 0.15,
-      yoyo: true,
-      repeat: 5,
-    });
-
-    // Show hit feedback
-    gsap.to(this.hitFeedback.nativeElement, {
-      opacity: 1,
-      scale: 1,
-      duration: 0.4,
-      ease: 'back.out(2)',
-    });
-
-    // All rings light up
-    this.rings.forEach((ring, i) => {
-      gsap.to(ring.material as THREE.MeshStandardMaterial, {
-        emissiveIntensity: 2,
-        duration: 0.3,
-        delay: i * 0.08,
-      });
-    });
-
-    // Camera shake
-    gsap.to(this.camera.position, {
-      x: 0.15,
-      duration: 0.05,
-      yoyo: true,
-      repeat: 5,
-      onComplete: () => {
-        this.camera.position.x = 0;
-      },
-    });
-
-    // After 1.5s - portal transition
-    setTimeout(() => this.portalTransition(), 1500);
-  }
-
-  portalTransition() {
-    // Hide feedback
-    gsap.to(this.hitFeedback.nativeElement, { opacity: 0, duration: 0.3 });
-
-    const tl = gsap.timeline({
-      onComplete: () => {
-        this.router.navigate(['/']);
-      },
-    });
-
-    // Target spins and scales up
-    tl.to(
-      this.targetGroup.rotation,
-      {
-        z: Math.PI * 4,
-        duration: 1.5,
-        ease: 'power2.in',
-      },
-      0,
-    )
-
-      // Camera flies INTO the center dot
-      .to(
-        this.camera.position,
-        {
-          z: -2,
-          duration: 1.8,
-          ease: 'power3.in',
-        },
-        0,
-      )
-
-      // Target scales up to fill screen
-      .to(
-        this.targetGroup.scale,
-        {
-          x: 15,
-          y: 15,
-          z: 15,
-          duration: 1.8,
-          ease: 'power3.in',
-        },
-        0.2,
-      )
-
-      // Fade to black
-      .to(
-        this.canvasRef.nativeElement,
-        {
-          opacity: 0,
-          duration: 0.4,
-          ease: 'power2.in',
-        },
-        1.5,
+    if (!next) {
+      this.panels.forEach((p) => gsap.to(p.mat, { opacity: 0.92, duration: 0.4 }));
+      gsap.to(this.hudCategory.nativeElement, { opacity: 0, duration: 0.3 });
+      gsap.to(this.hudClient.nativeElement, { opacity: 0, duration: 0.3 });
+    } else {
+      this.panels.forEach((p) =>
+        gsap.to(p.mat, { opacity: p === next ? 1.0 : 0.45, duration: 0.4 }),
       );
+      gsap.to(next.mesh.scale, { x: 1.08, y: 1.08, duration: 0.5, ease: 'power3.out' });
+      gsap.to(next.glowMat, { opacity: 0.55, duration: 0.5 });
+
+      const cat = this.hudCategory.nativeElement;
+      const cli = this.hudClient.nativeElement;
+      cat.textContent = next.work.category;
+      cli.textContent = next.work.client;
+      cat.style.color = next.work.color;
+      gsap.fromTo(
+        cat,
+        { y: 8, opacity: 0 },
+        { y: 0, opacity: 1, duration: 0.4, ease: 'power2.out' },
+      );
+      gsap.fromTo(
+        cli,
+        { y: 8, opacity: 0 },
+        { y: 0, opacity: 1, duration: 0.4, ease: 'power2.out', delay: 0.05 },
+      );
+    }
+
+    this.hovered = next;
   }
 
-  // ══════════════════════════════
-  // RENDER LOOP
-  // ══════════════════════════════
-  animate() {
-    this.animationId = requestAnimationFrame(() => this.animate());
-    const time = Date.now() * 0.001;
+  // ─────────────────────────────────────────────────────────
+  //  FLY INTO — identical logic to the working preview
+  // ─────────────────────────────────────────────────────────
 
-    if (!this.arrowFired) {
-      // Target gentle float + rotation
-      this.targetGroup.position.y = Math.sin(time * 0.8) * 0.08;
-      this.rings.forEach((ring, i) => {
-        ring.rotation.z += i % 2 === 0 ? 0.004 : -0.003;
-        ring.rotation.x = Math.sin(time * 0.4 + i) * 0.05;
+  // ── Animation state for manual fly-in ──
+  private flyTarget: Panel | null = null;
+  private flyProgress = 0;
+  private flyDuration = 1.5;
+  private flyStart: Record<string, number> = {};
+  private lastTime = 0;
+
+  private flyInto(target: Panel): void {
+    if (this.locked) return;
+    this.locked = true;
+    console.log('[PitchRoom] flyInto →', target.work.category);
+
+    gsap.to(this.hudHint.nativeElement, { opacity: 0, duration: 0.3 });
+
+    // Snapshot starting positions for lerp
+    this.flyStart = {
+      tx: target.mesh.position.x,
+      ty: target.mesh.position.y,
+      tz: target.mesh.position.z,
+      try_: target.mesh.rotation.y,
+      gx: target.glow.position.x,
+      gy: target.glow.position.y,
+      gz: target.glow.position.z,
+      camZ: this.camera.position.z,
+    };
+
+    this.flyTarget = target;
+    this.flyProgress = 0;
+
+    // Fade other panels out immediately via opacity (CSS material prop — safe)
+    this.panels
+      .filter((p) => p !== target)
+      .forEach((p) => {
+        gsap.to(p.mat, { opacity: 0, duration: 0.6 });
+        gsap.to(p.glowMat, { opacity: 0, duration: 0.6 });
       });
+  }
 
-      // Camera follows mouse slightly
-      this.camera.position.x += (this.mouse.x * 0.3 - this.camera.position.x) * 0.05;
-      this.camera.position.y += (this.mouse.y * 0.2 - this.camera.position.y) * 0.05;
+  private easeInOut(t: number): number {
+    return t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t;
+  }
+
+  private lerp(a: number, b: number, t: number): number {
+    return a + (b - a) * t;
+  }
+
+  private tickFlyAnimation(dt: number): void {
+    if (!this.flyTarget) return;
+
+    this.flyProgress = Math.min(this.flyProgress + dt / this.flyDuration, 1);
+    if (Math.round(this.flyProgress * 10) % 3 === 0) {
+      console.log(
+        '[fly] progress:',
+        this.flyProgress.toFixed(2),
+        'dt:',
+        dt.toFixed(4),
+        'camZ:',
+        this.camera.position.z.toFixed(2),
+        'meshZ:',
+        this.flyTarget.mesh.position.z.toFixed(2),
+        'scale:',
+        this.flyTarget.mesh.scale.x.toFixed(2),
+      );
+    }
+    const t = this.easeInOut(this.flyProgress);
+    const t2 = this.easeInOut(Math.max(0, (this.flyProgress - 0.3) / 0.7)); // delayed scale
+
+    const s = this.flyStart;
+    const tgt = this.flyTarget;
+
+    // Move panel to center
+    tgt.mesh.position.x = this.lerp(s['tx'], 0, t);
+    tgt.mesh.position.y = this.lerp(s['ty'], 0, t);
+    tgt.mesh.position.z = this.lerp(s['tz'], 5, t);
+    tgt.mesh.rotation.y = this.lerp(s['try_'], 0, t);
+
+    // Glow follows
+    tgt.glow.position.x = this.lerp(s['gx'], 0, t);
+    tgt.glow.position.y = this.lerp(s['gy'], 0, t);
+    tgt.glow.position.z = this.lerp(s['gz'], 4.95, t);
+    tgt.glow.rotation.y = tgt.mesh.rotation.y;
+
+    // Scale up
+    const scale = this.lerp(1, 12, t2);
+    tgt.mesh.scale.set(scale, scale, 1);
+    tgt.glow.scale.set(scale, scale, 1);
+
+    // Glow opacity
+    tgt.glowMat.opacity = this.lerp(0, 1, t);
+
+    // Camera flies forward
+    this.camera.position.z = this.lerp(s['camZ'], 5.1, t);
+    this.camera.lookAt(0, 0, 0);
+
+    // Haze color shift
+    const hazeCol = this.hazeUniforms['uColorAccent'].value as THREE.Color;
+    const targetCol = new THREE.Color(tgt.work.color);
+    hazeCol.r = this.lerp(hazeCol.r, targetCol.r, dt * 1.5);
+    hazeCol.g = this.lerp(hazeCol.g, targetCol.g, dt * 1.5);
+    hazeCol.b = this.lerp(hazeCol.b, targetCol.b, dt * 1.5);
+
+    // Done
+    if (this.flyProgress >= 1) {
+      console.log('[PitchRoom] → emitting completed');
+      this.flyTarget = null;
+      // Select AFTER animation so the Home component doesn't
+      // destroy the Intro mid-flight
+      this.selSvc.select(tgt.work);
+      this.completed.emit(tgt.work);
+    }
+  }
+
+  // ─────────────────────────────────────────────────────────
+  //  RENDER LOOP
+  // ─────────────────────────────────────────────────────────
+
+  private loop = (): void => {
+    this.rafId = requestAnimationFrame(this.loop);
+    const now = performance.now() / 1000;
+    const dt = this.lastTime === 0 ? 0 : Math.min(now - this.lastTime, 0.05);
+    this.lastTime = now;
+    const t = now;
+
+    this.hazeUniforms['uTime'].value = t;
+
+    this.mouseSmooth.x += (this.mouseTarget.x - this.mouseSmooth.x) * 0.06;
+    this.mouseSmooth.y += (this.mouseTarget.y - this.mouseSmooth.y) * 0.06;
+
+    if (!this.locked) {
+      // Camera drift
+      this.camera.position.x += (this.mouseSmooth.x * 4 - this.camera.position.x) * 0.05;
+      this.camera.position.y += (this.mouseSmooth.y * 2.5 - this.camera.position.y) * 0.05;
       this.camera.lookAt(0, 0, 0);
 
-      // Arrow follows mouse when not aiming
-      if (!this.isAiming) {
-        gsap.to(this.arrowGroup.position, {
-          x: this.mouse.x * 2.5,
-          y: this.mouse.y * 2 - 1.5,
-          z: 3,
-          duration: 0.3,
-        });
-        this.arrowGroup.lookAt(0, 0, 0);
-      }
-    } else {
-      // After firing - rings keep spinning faster
-      this.rings.forEach((ring, i) => {
-        ring.rotation.z += i % 2 === 0 ? 0.02 : -0.015;
+      // Hover via raycaster
+      this.raycaster.setFromCamera(this.mouseTarget, this.camera);
+      const hits = this.raycaster.intersectObjects(
+        this.panels.map((p) => p.mesh),
+        false,
+      );
+      const next =
+        hits.length > 0 ? (this.panels.find((p) => p.mesh === hits[0].object) ?? null) : null;
+      if (next !== this.hovered) this.setHovered(next);
+
+      // Idle float — ONLY when unlocked so GSAP owns transforms during flyInto
+      this.panels.forEach((p) => {
+        const by = p.mesh.userData['baseY'];
+        const ty = by + Math.sin(t * 0.6 + p.mesh.userData['phase']) * 0.18;
+        p.mesh.position.y += (ty - p.mesh.position.y) * 0.05;
+        p.glow.position.y = p.mesh.position.y;
       });
+    }
+
+    // Manual fly animation — bypasses GSAP zone issues
+    if (this.flyTarget) {
+      this.tickFlyAnimation(dt);
     }
 
     this.renderer.render(this.scene, this.camera);
-  }
+  };
+}
 
-  ngOnDestroy() {
-    cancelAnimationFrame(this.animationId);
-    this.renderer.dispose();
-    window.removeEventListener('mousemove', this.mouseMoveHandler);
-    window.removeEventListener('mousedown', this.mouseDownHandler);
-    window.removeEventListener('mouseup', this.mouseUpHandler);
-    window.removeEventListener('touchstart', this.touchStartHandler);
-    window.removeEventListener('touchmove', this.touchMoveHandler);
-    window.removeEventListener('touchend', this.touchEndHandler);
-  }
+// ── Types ──
+interface Panel {
+  work: Work;
+  mesh: THREE.Mesh;
+  geo: THREE.PlaneGeometry;
+  mat: THREE.MeshBasicMaterial;
+  tex: THREE.CanvasTexture;
+  glow: THREE.Mesh;
+  glowGeo: THREE.PlaneGeometry;
+  glowMat: THREE.MeshBasicMaterial;
 }

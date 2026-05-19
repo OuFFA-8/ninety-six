@@ -1,0 +1,185 @@
+.ld-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 100000;
+  background: #060010;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 3.5rem;
+  overflow: hidden;
+  will-change: opacity;
+}
+
+// ── Dartboard container ────────────────────────────────────
+.ld-board {
+  position: relative;
+  width:  68vmin;
+  height: 68vmin;
+  max-width:  560px;
+  max-height: 560px;
+  flex-shrink: 0;
+}
+
+// ── Concentric sector rings ────────────────────────────────
+.ld-sector {
+  position: absolute;
+  top:  50%;
+  left: 50%;
+  border-radius: 50%;
+  transform: translate(-50%, -50%) scale(0);
+  will-change: transform, opacity;
+}
+
+.ld-sector--5 {
+  width: 100%; height: 100%;
+  background: #090118;
+  border: 1.5px solid rgba(70, 25, 140, 0.55);
+}
+.ld-sector--4 {
+  width: 80%; height: 80%;
+  background: #0f0328;
+  border: 1.5px solid rgba(90, 40, 165, 0.6);
+}
+.ld-sector--3 {
+  width: 60%; height: 60%;
+  background: #16063c;
+  border: 1.5px solid rgba(120, 65, 200, 0.7);
+}
+.ld-sector--2 {
+  width: 40%; height: 40%;
+  background: #200a50;
+  border: 2px solid rgba(155, 95, 230, 0.8);
+  box-shadow: 0 0 12px 3px rgba(120, 60, 200, 0.2);
+}
+.ld-sector--1 {
+  width: 22%; height: 22%;
+  background: #2c1262;
+  border: 2px solid rgba(185, 135, 255, 0.9);
+  box-shadow:
+    0 0 18px 5px rgba(138, 79, 255, 0.35),
+    inset 0 0 10px 2px rgba(138, 79, 255, 0.15);
+}
+
+// ── Targeting reticle crosshairs ───────────────────────────
+.ld-cross {
+  position: absolute;
+  top:  50%;
+  left: 50%;
+  background: rgba(138, 79, 255, 0.13);
+  pointer-events: none;
+}
+.ld-cross--h  { width: 100%;  height: 1px;  transform: translate(-50%, -50%); }
+.ld-cross--v  { width: 1px;   height: 100%; transform: translate(-50%, -50%); }
+.ld-cross--d1 { width: 142%;  height: 1px;  transform: translate(-50%, -50%) rotate(45deg); }
+.ld-cross--d2 { width: 142%;  height: 1px;  transform: translate(-50%, -50%) rotate(-45deg); }
+
+// ── Bullseye ───────────────────────────────────────────────
+.ld-bullseye {
+  position: absolute;
+  top:  50%;
+  left: 50%;
+  width:  9%;
+  height: 9%;
+  min-width:  14px;
+  min-height: 14px;
+  border-radius: 50%;
+  transform: translate(-50%, -50%) scale(0);
+  background: radial-gradient(circle, #fff 0%, #d4b3ff 40%, #8a4fff 100%);
+  box-shadow:
+    0 0 0 2px  rgba(220, 185, 255, 0.6),
+    0 0 14px 6px  rgba(138, 79, 255, 0.9),
+    0 0 40px 14px rgba(100, 50, 200, 0.55),
+    0 0 80px 28px rgba(80, 20, 180, 0.25);
+  will-change: transform, opacity, filter;
+  z-index: 5;
+}
+
+// ── Dart ───────────────────────────────────────────────────
+// Tip (bottom of element) sits at board centre; shaft extends upper-right.
+// CSS sets transform-origin at the tip. GSAP controls everything else.
+.ld-dart {
+  position: absolute;
+  top:  50%;
+  left: 50%;
+  width: 4px;
+  height: 58px;
+  transform-origin: 50% 100%; // pivot = tip
+  opacity: 0;
+  z-index: 10;
+}
+
+.ld-dart__barrel {
+  position: absolute;
+  inset: 0;
+  border-radius: 2px 2px 0 0;
+  background: linear-gradient(
+    to bottom,
+    rgba(230, 210, 255, 0.95) 0%,
+    rgba(170, 110, 255, 0.95) 45%,
+    rgba(110, 65, 210, 0.9)   100%
+  );
+}
+
+.ld-dart__tip {
+  position: absolute;
+  bottom: -11px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 0;
+  height: 0;
+  border-left:  2.5px solid transparent;
+  border-right: 2.5px solid transparent;
+  border-top:   13px solid rgba(210, 180, 255, 0.95);
+}
+
+// Flights at top of shaft
+.ld-dart__flight-v {
+  position: absolute;
+  top: -20px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 3px;
+  height: 22px;
+  background: rgba(138, 79, 255, 0.95);
+}
+.ld-dart__flight-h {
+  position: absolute;
+  top: -11px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 22px;
+  height: 3px;
+  background: rgba(138, 79, 255, 0.75);
+}
+
+// ── Brand labels ───────────────────────────────────────────
+.ld-labels {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.3rem;
+}
+
+.ld-name {
+  margin: 0;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.52em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.72);
+  margin-right: -0.52em;
+  opacity: 0;
+}
+
+.ld-studio {
+  margin: 0;
+  font-size: 0.58rem;
+  font-weight: 600;
+  letter-spacing: 0.62em;
+  text-transform: uppercase;
+  color: rgba(138, 79, 255, 0.65);
+  margin-right: -0.62em;
+  opacity: 0;
+}

@@ -1,32 +1,32 @@
-<div class="intro">
-  <canvas #canvas class="intro__canvas"></canvas>
+<div #introRoot class="pitch">
+  <canvas #canvas class="pitch__canvas"></canvas>
 
-  <!-- Crosshair -->
-  <div class="crosshair">
-    <div class="crosshair__line crosshair__line--h"></div>
-    <div class="crosshair__line crosshair__line--v"></div>
-    <div class="crosshair__dot"></div>
+  <!-- Top brand bar -->
+  <div class="pitch__brand">
+    <span class="pitch__brand-name">NINETY SIX</span>
+    <span class="pitch__brand-sub">SELECTED WORKS · 2025</span>
   </div>
 
-  <!-- Instruction -->
-  <div #instruction class="intro__instruction">
-    <div class="intro__instruction-inner">
-      <span class="intro__key">HOLD</span>
-      <p>Hold & Release to fire</p>
-      <div class="intro__arrow-hint">↓</div>
+  <!-- Center HUD — populated when a panel is hovered -->
+  <div class="pitch__hud">
+    <div class="pitch__hud-line">
+      <div #hudCategory class="pitch__hud-category"></div>
+      <div #hudClient class="pitch__hud-client"></div>
     </div>
   </div>
 
-  <!-- Hit Feedback -->
-  <div #hitFeedback class="intro__hit">
-    <div class="intro__hit-ring"></div>
-    <span>BULLSEYE!</span>
-    <p>Entering the target...</p>
+  <!-- Bottom hint -->
+  <div #hudHint class="pitch__hint">
+    <div class="pitch__hint-inner">
+      <span class="pitch__hint-icon">+</span>
+      <span class="pitch__hint-text">Move to explore · Click to enter</span>
+      <span class="pitch__hint-icon">+</span>
+    </div>
   </div>
 
-  <!-- Brand -->
-  <div class="intro__brand">
-    <span>NINETY SIX</span>
-    <span class="intro__brand-sub">MARKETING</span>
+  <!-- Tiny progress strip top-right -->
+  <div #progress class="pitch__progress">
+    <span>SIX WORKS</span>
+    <div class="pitch__progress-bar"><div class="pitch__progress-bar-fill"></div></div>
   </div>
 </div>

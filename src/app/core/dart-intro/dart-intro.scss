@@ -1,0 +1,294 @@
+// ViewEncapsulation.None — all classes prefixed di-
+
+.di-container {
+  position: fixed;
+  inset: 0;
+  z-index: 50000;
+  background: #080808;
+  cursor: none;
+  overflow: hidden;
+}
+
+.di-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+// ── Crosshair ─────────────────────────────────────────────
+.di-crosshair {
+  position: fixed;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+  z-index: 100;
+
+  &__line {
+    position: absolute;
+    background: rgba(138, 79, 255, 0.75);
+    transition: background 0.12s ease;
+
+    &--h {
+      width:  26px;
+      height: 1px;
+      top:    0;
+      left:  -13px;
+    }
+    &--v {
+      width:  1px;
+      height: 26px;
+      left:   0;
+      top:   -13px;
+    }
+  }
+
+  &__outer {
+    position: absolute;
+    width:  36px;
+    height: 36px;
+    border-radius: 50%;
+    border: 1px solid rgba(138, 79, 255, 0.4);
+    top:  -18px;
+    left: -18px;
+    animation: diPulse 1.8s ease-in-out infinite;
+    transition: border-color 0.12s ease, box-shadow 0.12s ease;
+  }
+
+  &__dot {
+    position: absolute;
+    width:  5px;
+    height: 5px;
+    border-radius: 50%;
+    background: #c49bff;
+    top:  -2.5px;
+    left: -2.5px;
+    box-shadow: 0 0 8px #8a4fff;
+    transition: background 0.12s ease;
+  }
+
+  // "Locked on" — crosshair near bullseye
+  &--locked {
+    .di-crosshair__line     { background: rgba(80, 255, 130, 0.9); }
+    .di-crosshair__outer    {
+      border-color: rgba(80, 255, 130, 0.7);
+      box-shadow: 0 0 14px rgba(60, 220, 100, 0.5);
+      animation: none;
+    }
+    .di-crosshair__dot      { background: rgb(80, 255, 130); box-shadow: 0 0 10px rgba(60,220,100,0.8); }
+  }
+}
+
+@keyframes diPulse {
+  0%, 100% { transform: scale(1); opacity: 0.7; }
+  50%       { transform: scale(1.4); opacity: 0.25; }
+}
+
+// ── Brand ─────────────────────────────────────────────────
+.di-brand {
+  position: absolute;
+  top: 2rem;
+  left: 50%;
+  transform: translateX(-50%);
+  text-align: center;
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.2rem;
+  pointer-events: none;
+
+  &__name {
+    font-size: 1rem;
+    font-weight: 800;
+    letter-spacing: 0.42em;
+    color: rgba(255, 255, 255, 0.85);
+  }
+
+  &__sub {
+    font-size: 0.58rem;
+    font-weight: 400;
+    letter-spacing: 0.52em;
+    color: rgba(138, 79, 255, 0.75);
+  }
+}
+
+// ── Lives ─────────────────────────────────────────────────
+.di-lives {
+  position: absolute;
+  top: 2rem;
+  right: 2.5rem;
+  display: flex;
+  gap: 0.6rem;
+  z-index: 10;
+}
+
+.di-life {
+  font-size: 1.1rem;
+  color: rgba(138, 79, 255, 0.9);
+  text-shadow: 0 0 10px rgba(138, 79, 255, 0.6);
+  transition: color 0.35s ease, text-shadow 0.35s ease;
+
+  &--lost {
+    color: rgba(255, 255, 255, 0.1);
+    text-shadow: none;
+  }
+}
+
+// ── Instruction ───────────────────────────────────────────
+.di-instruction {
+  position: absolute;
+  bottom: 3rem;
+  left: 50%;
+  transform: translateX(-50%);
+  text-align: center;
+  opacity: 0;
+  z-index: 10;
+  pointer-events: none;
+
+  &__inner {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  p {
+    color: rgba(255, 255, 255, 0.45);
+    font-size: 0.78rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    margin: 0;
+  }
+}
+
+.di-key {
+  display: inline-block;
+  padding: 0.28rem 0.9rem;
+  border: 1px solid rgba(138, 79, 255, 0.55);
+  border-radius: 50px;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  color: #8a4fff;
+  animation: diKeyPulse 2s ease-in-out infinite;
+}
+
+.di-bounce {
+  color: rgba(138, 79, 255, 0.55);
+  font-size: 1.1rem;
+  animation: diBounce 1.6s ease-in-out infinite;
+}
+
+@keyframes diKeyPulse {
+  0%, 100% { opacity: 1; box-shadow: 0 0 0 0 rgba(138, 79, 255, 0.4); }
+  50%       { opacity: 0.65; box-shadow: 0 0 0 9px rgba(138, 79, 255, 0); }
+}
+
+@keyframes diBounce {
+  0%, 100% { transform: translateY(0); }
+  50%       { transform: translateY(7px); }
+}
+
+// ── Miss feedback ─────────────────────────────────────────
+.di-miss {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 2.2rem;
+  font-weight: 900;
+  letter-spacing: 0.18em;
+  color: rgba(255, 60, 60, 0.85);
+  text-shadow: 0 0 30px rgba(255, 40, 40, 0.5);
+  opacity: 0;
+  pointer-events: none;
+  z-index: 20;
+}
+
+// ── Hit feedback ──────────────────────────────────────────
+.di-hit {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  opacity: 0;
+  pointer-events: none;
+  z-index: 20;
+
+  &__ring {
+    width:  130px;
+    height: 130px;
+    border: 2px solid #8a4fff;
+    border-radius: 50%;
+    margin: 0 auto 1rem;
+    animation: diExpandRing 0.9s ease-out infinite;
+  }
+
+  &__text {
+    display: block;
+    font-size: 3.2rem;
+    font-weight: 900;
+    background: linear-gradient(135deg, #8a4fff, #c49bff);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    letter-spacing: 0.12em;
+  }
+
+  &__sub {
+    color: rgba(255, 255, 255, 0.45);
+    font-size: 0.82rem;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    margin-top: 0.5rem;
+  }
+}
+
+@keyframes diExpandRing {
+  0%   { transform: scale(1);   opacity: 1; }
+  100% { transform: scale(2.2); opacity: 0; }
+}
+
+// ── Game Over ─────────────────────────────────────────────
+.di-gameover {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1.25rem;
+  z-index: 30;
+  background: rgba(8, 8, 8, 0.55);
+
+  &__label {
+    margin: 0;
+    font-size: 1.8rem;
+    font-weight: 900;
+    letter-spacing: 0.35em;
+    color: rgba(255, 60, 60, 0.75);
+  }
+
+  &__btn {
+    background: transparent;
+    border: 1px solid rgba(138, 79, 255, 0.55);
+    color: rgba(138, 79, 255, 0.9);
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.38em;
+    text-transform: uppercase;
+    padding: 0.6rem 1.6rem;
+    border-radius: 2px;
+    cursor: none;
+    transition: border-color 0.2s, color 0.2s, background 0.2s;
+
+    &:hover {
+      border-color: rgba(138, 79, 255, 0.9);
+      color: #fff;
+      background: rgba(138, 79, 255, 0.14);
+    }
+  }
+}

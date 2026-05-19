@@ -1,0 +1,51 @@
+<div #container class="di-container">
+  <canvas #canvas class="di-canvas"></canvas>
+
+  <!-- Crosshair — follows wobbled aim position -->
+  <div #crosshair class="di-crosshair">
+    <div class="di-crosshair__line di-crosshair__line--h"></div>
+    <div class="di-crosshair__line di-crosshair__line--v"></div>
+    <div class="di-crosshair__outer"></div>
+    <div class="di-crosshair__dot"></div>
+  </div>
+
+  <!-- Brand -->
+  <div class="di-brand">
+    <span class="di-brand__name">NINETY SIX</span>
+    <span class="di-brand__sub">MARKETING</span>
+  </div>
+
+  <!-- Lives -->
+  <div class="di-lives">
+    @for (i of [0, 1, 2]; track i) {
+      <span class="di-life" [class.di-life--lost]="i >= attemptsLeft">◎</span>
+    }
+  </div>
+
+  <!-- Instruction -->
+  <div #instruction class="di-instruction">
+    <div class="di-instruction__inner">
+      <span class="di-key">CLICK</span>
+      <p>Aim at the bullseye · Click to fire</p>
+      <div class="di-bounce">↓</div>
+    </div>
+  </div>
+
+  <!-- Miss feedback -->
+  <div #missFeedback class="di-miss">MISSED!</div>
+
+  <!-- Hit feedback -->
+  <div #hitFeedback class="di-hit">
+    <div class="di-hit__ring"></div>
+    <span class="di-hit__text">BULLSEYE!</span>
+    <p class="di-hit__sub">Entering the target…</p>
+  </div>
+
+  <!-- Game Over -->
+  @if (gameOver) {
+    <div class="di-gameover">
+      <p class="di-gameover__label">GAME OVER</p>
+      <button class="di-gameover__btn" (click)="retry()">TRY AGAIN →</button>
+    </div>
+  }
+</div>

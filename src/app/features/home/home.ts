@@ -1,39 +1,155 @@
-import { Component, AfterViewInit, ElementRef, ViewChild, OnDestroy } from '@angular/core';
+import {
+  Component,
+  AfterViewInit,
+  ElementRef,
+  ViewChild,
+  OnDestroy,
+  inject,
+  PLATFORM_ID,
+  NgZone,
+} from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import * as THREE from 'three';
 import { Draggable } from 'gsap/Draggable';
-gsap.registerPlugin(Draggable);
+import { Hero } from '../hero/hero';
+import { DartIntro } from '../../core/dart-intro/dart-intro';
 
-gsap.registerPlugin(ScrollTrigger);
+gsap.registerPlugin(ScrollTrigger, Draggable);
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [RouterLink],
+  imports: [RouterLink, Hero, DartIntro],
   templateUrl: './home.html',
   styleUrl: './home.scss',
 })
 export class Home implements AfterViewInit, OnDestroy {
-  @ViewChild('threeCanvas') threeCanvas!: ElementRef<HTMLCanvasElement>;
-  @ViewChild('heroContent') heroContent!: ElementRef;
   @ViewChild('cursor') cursor!: ElementRef;
   @ViewChild('cursorDot') cursorDot!: ElementRef;
-  // @ViewChild('portalFlash') portalFlash!: ElementRef;
-  @ViewChild('dotOverlay') dotOverlay!: ElementRef;
   @ViewChild('testiTrack') testiTrack!: ElementRef;
+  @ViewChild('transitionVeil', { static: true }) transitionVeil!: ElementRef<HTMLElement>;
+  @ViewChild('veilStars', { static: true }) veilStars!: ElementRef<HTMLCanvasElement>;
+  @ViewChild('pageBg',   { static: true }) pageBg!:   ElementRef<HTMLCanvasElement>;
+  @ViewChild('heroArcs', { static: true }) heroArcs!: ElementRef<HTMLElement>;
+  @ViewChild(Hero) private heroComp!: Hero;
 
-  private renderer!: THREE.WebGLRenderer;
-  private scene!: THREE.Scene;
-  private camera!: THREE.PerspectiveCamera;
-  private animationId!: number;
-  private targetGroup!: THREE.Group;
-  private rings: THREE.Mesh[] = [];
-  private particles!: THREE.Points;
-  private tunnelRings: THREE.Mesh[] = [];
-  private mouse = { x: 0, y: 0 };
-  private mouseMoveHandler!: (e: MouseEvent) => void;
+  private platformId = inject(PLATFORM_ID);
+  private ngZone = inject(NgZone);
+
+  showLoading = false;
+  showDartIntro = true;
+
+  onLoadingDone(): void {
+    this.showLoading = false;
+  }
+
+  onDartIntroTransitioning(): void {
+    // Snap veil visible immediately — black + stars bridges the exit
+    gsap.set(this.transitionVeil.nativeElement, { opacity: 1 });
+    this.startVeilStars();
+  }
+
+  onDartIntroDone(): void {
+    this.showDartIntro = false;
+    // Hero entrance begins after a short beat (veil still covers)
+    setTimeout(() => this.heroComp.playEntrance(), 380);
+    // Veil fades out, revealing the hero mid-entrance
+    gsap.to(this.transitionVeil.nativeElement, {
+      opacity: 0,
+      duration: 1.4,
+      delay: 0.2,
+      ease: 'power2.inOut',
+      onComplete: () => {
+        cancelAnimationFrame(this._veilRaf);
+        this._veilRaf = 0;
+      },
+    });
+  }
+
+  private _veilRaf = 0;
+  private _pageStarRaf = 0;
+
+  // ── Global page star field ─────────────────────────────
+
+  private initPageStars(): void {
+    const canvas = this.pageBg.nativeElement;
+    const ctx = canvas.getContext('2d')!;
+
+    const resize = () => {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    };
+    resize();
+    window.addEventListener('resize', resize, { passive: true });
+
+    interface PS {
+      x: number;
+      y: number;
+      r: number;
+      baseAlpha: number;
+      hue: number;
+      phase: number;
+      spd: number;
+      drift: number;
+      driftAmp: number;
+      driftSpd: number;
+      parallax: number;
+      ox: number;
+      oy: number;
+    }
+    const stars: PS[] = Array.from({ length: 600 }, () => ({
+      x: Math.random() * canvas.width,
+      y: Math.random() * canvas.height,
+      r: Math.random() * 0.9 + 0.3,
+      baseAlpha: Math.random() * 0.45 + 0.15,
+      hue: Math.random() * 40 + 255,
+      phase: Math.random() * Math.PI * 2,
+      spd: Math.random() * 0.6 + 0.3,
+      drift: Math.random() * Math.PI * 2,
+      driftAmp: Math.random() * 0.4 + 0.1,
+      driftSpd: Math.random() * 0.4 + 0.2,
+      parallax: Math.random() * 0.8 + 0.2,
+      ox: 0,
+      oy: 0,
+    }));
+
+    // Mouse parallax — stars + arcs move together
+    const arcsEl = this.heroArcs.nativeElement;
+    const onMove = (e: MouseEvent) => {
+      const nx = (e.clientX / window.innerWidth  - 0.5) * 2;
+      const ny = (e.clientY / window.innerHeight - 0.5) * 2;
+      for (const s of stars) { s.ox = nx * 32 * s.parallax; }
+      gsap.to(arcsEl, { x: nx * 22, y: ny * 16, duration: 2.2, ease: 'power3.out', overwrite: 'auto' });
+    };
+    window.addEventListener('mousemove', onMove, { passive: true });
+
+    const W = () => canvas.width;
+    const H = () => canvas.height;
+
+    let t = 0;
+    const draw = () => {
+      this._pageStarRaf = requestAnimationFrame(draw);
+      t += 0.016;
+
+      // Full black background — same vibe as the old hero
+      ctx.fillStyle = '#000';
+      ctx.fillRect(0, 0, W(), H());
+
+      for (const s of stars) {
+        s.oy += (Math.sin(t * s.driftSpd + s.drift) * s.driftAmp - s.oy) * 0.05;
+        const alpha = s.baseAlpha * (0.6 + 0.4 * Math.sin(t * s.spd + s.phase));
+        const wx = (((s.x + s.ox) % W()) + W()) % W();
+        const wy = (((s.y + s.oy) % H()) + H()) % H();
+        ctx.beginPath();
+        ctx.arc(wx, wy, s.r, 0, Math.PI * 2);
+        ctx.fillStyle = `hsla(${s.hue}, 80%, 75%, ${alpha})`;
+        ctx.fill();
+      }
+    };
+    draw();
+  }
 
   services = [
     {
@@ -202,493 +318,88 @@ export class Home implements AfterViewInit, OnDestroy {
   ];
 
   ngAfterViewInit() {
-    this.initThree();
+    if (!isPlatformBrowser(this.platformId)) return;
+    this.ngZone.runOutsideAngular(() => this.initPageStars());
     this.initCursor();
-    this.initHeroScroll();
     this.initServiceCards();
     this.initStats();
     this.initWorks();
     this.initCTA();
-    this.initPartners();
-    this.initFooter();
     this.initGallery();
     this.initTestimonials();
+    this.initPartners();
+    this.initFooter();
   }
 
-  initGallery() {
-    gsap.from('.gallery-section__header', {
-      scrollTrigger: {
-        trigger: '.gallery-section',
-        start: 'top 80%',
-      },
-      y: 60,
-      opacity: 0,
-      duration: 0.9,
-      ease: 'power3.out',
-    });
-
-    gsap.from('.gallery__item', {
-      scrollTrigger: {
-        trigger: '.gallery',
-        start: 'top 90%',
-      },
-      opacity: 0,
-      scale: 0.92,
-      duration: 0.7,
-      stagger: { amount: 0.8, from: 'random' },
-      ease: 'power2.out',
-    });
-
-    // عمود 1 و 3 → لفوق | عمود 2 و 4 → لتحت
-    const directions = [-150, 150, -100, 120];
-
-    document.querySelectorAll<HTMLElement>('.gallery__col').forEach((col, i) => {
-      gsap.fromTo(
-        col,
-        { y: directions[i] > 0 ? -directions[i] / 2 : -directions[i] / 2 },
-        {
-          y: directions[i],
-          ease: 'none',
-          scrollTrigger: {
-            trigger: '.gallery',
-            start: 'top bottom',
-            end: 'bottom top',
-            scrub: 2,
-          },
-        },
-      );
-    });
+  ngOnDestroy() {
+    ScrollTrigger.getAll().forEach((t) => t.kill());
+    if (this._veilRaf) cancelAnimationFrame(this._veilRaf);
+    if (this._pageStarRaf) cancelAnimationFrame(this._pageStarRaf);
   }
 
-  initTestimonials() {
-    // Register Draggable
-    gsap.registerPlugin(Draggable);
+  // ── Transition veil stars ──────────────────────────────
 
-    const track = this.testiTrack.nativeElement as HTMLElement;
-    const cards = track.querySelectorAll<HTMLElement>('.testi-card');
-    const cardWidth = 480 + 24; // width + gap
-    let current = 0;
-    const total = this.testimonials.length;
+  private startVeilStars(): void {
+    const canvas = this.veilStars.nativeElement;
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+    const ctx = canvas.getContext('2d')!;
 
-    const updateCounter = () => {
-      const el = document.getElementById('testiCurrent');
-      if (el) el.textContent = String(current + 1);
-    };
-
-    const goTo = (index: number) => {
-      current = Math.max(0, Math.min(index, total - 1));
-      gsap.to(track, {
-        x: -current * cardWidth,
-        duration: 0.7,
-        ease: 'power3.out',
-      });
-      updateCounter();
-    };
-
-    // Draggable
-    Draggable.create(track, {
-      type: 'x',
-      edgeResistance: 0.85,
-      bounds: {
-        minX: -(total - 1) * cardWidth,
-        maxX: 0,
-      },
-      inertia: true,
-      onDragEnd: function (this: Draggable.Vars) {
-        const snapped = Math.round(-this['x'] / cardWidth);
-        current = Math.max(0, Math.min(snapped, total - 1));
-        gsap.to(track, {
-          x: -current * cardWidth,
-          duration: 0.5,
-          ease: 'power3.out',
-        });
-        updateCounter();
-      },
-    });
-
-    // Buttons
-    document.getElementById('testiNext')?.addEventListener('click', () => goTo(current + 1));
-    document.getElementById('testiPrev')?.addEventListener('click', () => goTo(current - 1));
-
-    // Entrance animation
-    gsap.from('.testimonials__left', {
-      scrollTrigger: { trigger: '.testimonials', start: 'top 80%' },
-      x: -80,
-      opacity: 0,
-      duration: 1,
-      ease: 'power3.out',
-    });
-
-    gsap.from('.testi-card', {
-      scrollTrigger: { trigger: '.testimonials', start: 'top 75%' },
-      x: 100,
-      opacity: 0,
-      duration: 0.8,
-      stagger: 0.1,
-      ease: 'power3.out',
-    });
-  }
-
-  initPartners() {
-    // Title entrance
-    gsap.from('.partners__title', {
-      scrollTrigger: {
-        trigger: '.partners',
-        start: 'top 80%',
-      },
-      x: -80,
-      opacity: 0,
-      duration: 1,
-      ease: 'power3.out',
-    });
-
-    // Grid logos stagger
-    gsap.from('.partner-logo', {
-      scrollTrigger: {
-        trigger: '.partners__grid',
-        start: 'top 85%',
-      },
-      opacity: 0,
-      y: 30,
-      duration: 0.6,
-      stagger: {
-        amount: 1.2,
-        from: 'start',
-      },
-      ease: 'power2.out',
-    });
-  }
-
-  initFooter() {
-    gsap.from('.footer__brand', {
-      scrollTrigger: {
-        trigger: '.footer-wrapper',
-        start: 'top 90%',
-      },
-      x: -50,
-      opacity: 0,
-      duration: 0.9,
-      ease: 'power3.out',
-    });
-
-    gsap.from('.footer__col', {
-      scrollTrigger: {
-        trigger: '.footer-wrapper',
-        start: 'top 90%',
-      },
-      y: 40,
-      opacity: 0,
-      duration: 0.7,
-      stagger: 0.12,
-      ease: 'power2.out',
-    });
-
-    gsap.from('.footer__big-text span', {
-      scrollTrigger: {
-        trigger: '.footer-wrapper',
-        start: 'top 80%',
-      },
-      y: 60,
-      opacity: 0,
-      duration: 1,
-      stagger: 0.15,
-      ease: 'power3.out',
-    });
-  }
-
-  // ══════════════════════════════
-  // THREE.JS
-  // ══════════════════════════════
-  initThree() {
-    const canvas = this.threeCanvas.nativeElement;
-    const w = window.innerWidth;
-    const h = window.innerHeight;
-
-    this.renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
-    this.renderer.setSize(w, h);
-    this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-    this.renderer.setClearColor(0x000000, 0);
-
-    this.scene = new THREE.Scene();
-    this.camera = new THREE.PerspectiveCamera(60, w / h, 0.1, 1000);
-    this.camera.position.z = 5;
-
-    this.createTargetRings();
-    this.createTunnelRings();
-    this.createParticles();
-    this.createLights();
-
-    this.mouseMoveHandler = (e: MouseEvent) => {
-      this.mouse.x = (e.clientX / window.innerWidth - 0.5) * 2;
-      this.mouse.y = -(e.clientY / window.innerHeight - 0.5) * 2;
-    };
-    window.addEventListener('mousemove', this.mouseMoveHandler);
-
-    window.addEventListener('resize', () => {
-      const w = window.innerWidth;
-      const h = window.innerHeight;
-      this.camera.aspect = w / h;
-      this.camera.updateProjectionMatrix();
-      this.renderer.setSize(w, h);
-    });
-
-    this.animate();
-    this.entranceAnimation();
-  }
-
-  createTargetRings() {
-    this.targetGroup = new THREE.Group();
-
-    const ringData = [
-      { r: 2.2, tube: 0.025, color: 0x1a0a3a, emissive: 0x1a0a3a },
-      { r: 1.7, tube: 0.03, color: 0x2d1260, emissive: 0x2d1260 },
-      { r: 1.2, tube: 0.035, color: 0x5c2ea8, emissive: 0x3d1a7a },
-      { r: 0.75, tube: 0.04, color: 0x8a4fff, emissive: 0x6a3bbf },
-      { r: 0.35, tube: 0.045, color: 0xc49bff, emissive: 0x8a4fff },
-    ];
-
-    ringData.forEach((data, i) => {
-      const geo = new THREE.TorusGeometry(data.r, data.tube, 16, 120);
-      const mat = new THREE.MeshStandardMaterial({
-        color: data.color,
-        emissive: data.emissive,
-        emissiveIntensity: 0.8,
-        metalness: 0.9,
-        roughness: 0.1,
-      });
-      const ring = new THREE.Mesh(geo, mat);
-      ring.userData['speed'] = i % 2 === 0 ? 0.003 : -0.002;
-      ring.scale.set(0, 0, 0);
-      this.rings.push(ring);
-      this.targetGroup.add(ring);
-    });
-
-    // Center dot - THE PORTAL
-    const dotGeo = new THREE.SphereGeometry(0.12, 32, 32);
-    const dotMat = new THREE.MeshStandardMaterial({
-      color: 0xffffff,
-      emissive: 0xc49bff,
-      emissiveIntensity: 3,
-      metalness: 1,
-      roughness: 0,
-    });
-    const dot = new THREE.Mesh(dotGeo, dotMat);
-    dot.userData['isPortal'] = true;
-    this.targetGroup.add(dot);
-
-    // Dot glow
-    const glowGeo = new THREE.SphereGeometry(0.22, 32, 32);
-    const glowMat = new THREE.MeshBasicMaterial({
-      color: 0x8a4fff,
-      transparent: true,
-      opacity: 0.2,
-    });
-    this.targetGroup.add(new THREE.Mesh(glowGeo, glowMat));
-
-    this.targetGroup.scale.set(0, 0, 0);
-    this.scene.add(this.targetGroup);
-  }
-
-  createTunnelRings() {
-    for (let i = 0; i < 30; i++) {
-      const geo = new THREE.TorusGeometry(0.12 + i * 0.08, 0.005, 8, 60);
-      const mat = new THREE.MeshBasicMaterial({
-        color: 0x8a4fff,
-        transparent: true,
-        opacity: 0.15 - i * 0.004,
-      });
-      const ring = new THREE.Mesh(geo, mat);
-      ring.position.z = -i * 0.8;
-      ring.visible = false;
-      this.tunnelRings.push(ring);
-      this.scene.add(ring);
+    interface VS {
+      x: number;
+      y: number;
+      r: number;
+      alpha: number;
+      hue: number;
+      phase: number;
+      spd: number;
+      drift: number;
+      driftAmp: number;
+      driftSpd: number;
     }
+    const stars: VS[] = Array.from({ length: 160 }, () => ({
+      x: Math.random() * canvas.width,
+      y: Math.random() * canvas.height,
+      r: Math.random() * 0.9 + 0.2,
+      alpha: Math.random() * 0.5 + 0.12,
+      hue: Math.random() * 40 + 255,
+      phase: Math.random() * Math.PI * 2,
+      spd: Math.random() * 0.5 + 0.3,
+      drift: Math.random() * Math.PI * 2,
+      driftAmp: Math.random() * 0.35 + 0.1,
+      driftSpd: Math.random() * 0.3 + 0.15,
+    }));
+
+    let t = 0;
+    const draw = () => {
+      this._veilRaf = requestAnimationFrame(draw);
+      t += 0.016;
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      for (const s of stars) {
+        const a = s.alpha * (0.6 + 0.4 * Math.sin(t * s.spd + s.phase));
+        const dy = Math.sin(t * s.driftSpd + s.drift) * s.driftAmp;
+        ctx.beginPath();
+        ctx.arc(s.x, s.y + dy, s.r, 0, Math.PI * 2);
+        ctx.fillStyle = `hsla(${s.hue}, 80%, 75%, ${a})`;
+        ctx.fill();
+      }
+    };
+    this.ngZone.runOutsideAngular(draw);
   }
 
-  createParticles() {
-    const count = 3000;
-    const positions = new Float32Array(count * 3);
-    const colors = new Float32Array(count * 3);
-    const c1 = new THREE.Color(0x8a4fff);
-    const c2 = new THREE.Color(0xc49bff);
+  // ── Section animations ──
 
-    for (let i = 0; i < count; i++) {
-      const i3 = i * 3;
-      positions[i3] = (Math.random() - 0.5) * 25;
-      positions[i3 + 1] = (Math.random() - 0.5) * 25;
-      positions[i3 + 2] = (Math.random() - 0.5) * 25;
-      const c = c1.clone().lerp(c2, Math.random());
-      colors[i3] = c.r;
-      colors[i3 + 1] = c.g;
-      colors[i3 + 2] = c.b;
-    }
-
-    const geo = new THREE.BufferGeometry();
-    geo.setAttribute('position', new THREE.BufferAttribute(positions, 3));
-    geo.setAttribute('color', new THREE.BufferAttribute(colors, 3));
-
-    this.particles = new THREE.Points(
-      geo,
-      new THREE.PointsMaterial({
-        size: 0.025,
-        vertexColors: true,
-        transparent: true,
-        opacity: 0.5,
-      }),
-    );
-    this.scene.add(this.particles);
-  }
-
-  createLights() {
-    this.scene.add(new THREE.AmbientLight(0x8a4fff, 0.5));
-    const p1 = new THREE.PointLight(0xc49bff, 3, 20);
-    p1.position.set(0, 3, 4);
-    this.scene.add(p1);
-    const p2 = new THREE.PointLight(0x8a4fff, 2, 15);
-    p2.position.set(-3, -2, 2);
-    this.scene.add(p2);
-  }
-
-  entranceAnimation() {
-    const tl = gsap.timeline({ delay: 0.3 });
-
-    tl.to(this.targetGroup.scale, {
-      x: 1,
-      y: 1,
-      z: 1,
-      duration: 1.8,
-      ease: 'elastic.out(1, 0.5)',
-    });
-
-    this.rings.forEach((ring, i) => {
-      gsap.to(ring.scale, {
-        x: 1,
-        y: 1,
-        z: 1,
-        duration: 1,
-        delay: 0.4 + i * 0.12,
-        ease: 'back.out(2)',
-      });
-    });
-
-    gsap.from(this.heroContent.nativeElement.children, {
-      y: 60,
-      opacity: 0,
-      duration: 1,
-      stagger: 0.15,
-      delay: 0.8,
-      ease: 'power3.out',
-    });
-
-    gsap.to(this.camera.position, {
-      z: 5,
-      duration: 2,
-      ease: 'power3.out',
-      delay: 0.2,
-    });
-
-    // Rings rotation on entrance
-    gsap.to('.hero-ring', {
-      rotation: 360,
-      duration: 20,
-      ease: 'none',
-      repeat: -1,
-    });
-  }
-
-  // ══════════════════════════════
-  // SCROLL → PORTAL
-  // ══════════════════════════════
-
-  initHeroScroll() {
-    gsap
-      .timeline({
-        scrollTrigger: {
-          trigger: '.wrapper',
-          start: 'top top',
-          end: '+=150%',
-          pin: true,
-          scrub: true,
-        },
-      })
-      .to('.dot-overlay', {
-        opacity: 1,
-        duration: 0.1,
-      })
-      .to('.dot-overlay', {
-        scale: 120,
-        z: 350,
-        transformOrigin: 'center center',
-        ease: 'power1.inOut',
-      })
-      .to(
-        this.heroContent.nativeElement,
-        {
-          scale: 1.05,
-          opacity: 0,
-          transformOrigin: 'center center',
-          ease: 'power1.inOut',
-        },
-        '<',
-      );
-
-    // Services cards
-    gsap.from('.service-card-new', {
-      scrollTrigger: {
-        trigger: '.services-portal',
-        start: 'top 85%',
-        toggleActions: 'play none none reverse',
-      },
-      y: 80,
-      opacity: 0,
-      duration: 0.7,
-      stagger: 0.1,
-      ease: 'power3.out',
-    });
-
-    // Stats
-    this.stats.forEach((stat, i) => {
-      const el = document.querySelectorAll('.stat__value')[i];
-      const obj = { val: 0 };
-      ScrollTrigger.create({
-        trigger: '.stats',
-        start: 'top 80%',
-        once: true,
-        onEnter: () => {
-          gsap.to(obj, {
-            val: stat.value,
-            duration: 2.5,
-            ease: 'power2.out',
-            onUpdate: () => {
-              el.textContent = Math.round(obj.val) + stat.suffix;
-            },
-          });
-        },
-      });
-    });
-  }
-
-  // ══════════════════════════════
-  // SERVICES CARDS
-  // ══════════════════════════════
   initServiceCards() {
     gsap.from('.services-portal__header', {
-      scrollTrigger: {
-        trigger: '.services-portal',
-        start: 'top 80%',
-      },
+      scrollTrigger: { trigger: '.services-portal', start: 'top 80%' },
       y: 60,
       opacity: 0,
       duration: 0.9,
       ease: 'power3.out',
     });
-
     gsap.utils.toArray<HTMLElement>('.deck-card').forEach((card, i) => {
       gsap.from(card, {
-        scrollTrigger: {
-          trigger: card,
-          start: 'top 90%',
-        },
+        scrollTrigger: { trigger: card, start: 'top 90%' },
         opacity: 0,
         y: 40,
         duration: 0.7,
@@ -698,12 +409,10 @@ export class Home implements AfterViewInit, OnDestroy {
     });
   }
 
-  // ══════════════════════════════
-  // STATS
-  // ══════════════════════════════
   initStats() {
     this.stats.forEach((stat, i) => {
       const el = document.querySelectorAll('.stat__value')[i];
+      if (!el) return;
       const obj = { val: 0 };
       ScrollTrigger.create({
         trigger: '.stats',
@@ -721,7 +430,6 @@ export class Home implements AfterViewInit, OnDestroy {
         },
       });
     });
-
     gsap.from('.stat-item', {
       scrollTrigger: { trigger: '.stats', start: 'top 80%' },
       y: 50,
@@ -732,9 +440,6 @@ export class Home implements AfterViewInit, OnDestroy {
     });
   }
 
-  // ══════════════════════════════
-  // WORKS
-  // ══════════════════════════════
   initWorks() {
     gsap.from('.works__header', {
       scrollTrigger: { trigger: '.works', start: 'top 75%' },
@@ -753,9 +458,6 @@ export class Home implements AfterViewInit, OnDestroy {
     });
   }
 
-  // ══════════════════════════════
-  // CTA
-  // ══════════════════════════════
   initCTA() {
     gsap.from('.cta__content > *', {
       scrollTrigger: { trigger: '.cta', start: 'top 75%' },
@@ -767,9 +469,131 @@ export class Home implements AfterViewInit, OnDestroy {
     });
   }
 
-  // ══════════════════════════════
-  // CURSOR
-  // ══════════════════════════════
+  initGallery() {
+    gsap.from('.gallery-section__header', {
+      scrollTrigger: { trigger: '.gallery-section', start: 'top 80%' },
+      y: 60,
+      opacity: 0,
+      duration: 0.9,
+      ease: 'power3.out',
+    });
+    gsap.from('.gallery__item', {
+      scrollTrigger: { trigger: '.gallery', start: 'top 90%' },
+      opacity: 0,
+      scale: 0.92,
+      duration: 0.7,
+      stagger: { amount: 0.8, from: 'random' },
+      ease: 'power2.out',
+    });
+    const directions = [-150, 150, -100, 120];
+    document.querySelectorAll<HTMLElement>('.gallery__col').forEach((col, i) => {
+      gsap.fromTo(
+        col,
+        { y: -Math.abs(directions[i]) / 2 },
+        {
+          y: directions[i],
+          ease: 'none',
+          scrollTrigger: { trigger: '.gallery', start: 'top bottom', end: 'bottom top', scrub: 2 },
+        },
+      );
+    });
+  }
+
+  initTestimonials() {
+    const track = this.testiTrack.nativeElement as HTMLElement;
+    const cardWidth = 480 + 24;
+    let current = 0;
+    const total = this.testimonials.length;
+
+    const updateCounter = () => {
+      const el = document.getElementById('testiCurrent');
+      if (el) el.textContent = String(current + 1);
+    };
+
+    const goTo = (index: number) => {
+      current = Math.max(0, Math.min(index, total - 1));
+      gsap.to(track, { x: -current * cardWidth, duration: 0.7, ease: 'power3.out' });
+      updateCounter();
+    };
+
+    Draggable.create(track, {
+      type: 'x',
+      edgeResistance: 0.85,
+      bounds: { minX: -(total - 1) * cardWidth, maxX: 0 },
+      inertia: true,
+      onDragEnd: function (this: Draggable.Vars) {
+        const snapped = Math.round(-this['x'] / cardWidth);
+        current = Math.max(0, Math.min(snapped, total - 1));
+        gsap.to(track, { x: -current * cardWidth, duration: 0.5, ease: 'power3.out' });
+        updateCounter();
+      },
+    });
+
+    document.getElementById('testiNext')?.addEventListener('click', () => goTo(current + 1));
+    document.getElementById('testiPrev')?.addEventListener('click', () => goTo(current - 1));
+
+    gsap.from('.testimonials__left', {
+      scrollTrigger: { trigger: '.testimonials', start: 'top 80%' },
+      x: -80,
+      opacity: 0,
+      duration: 1,
+      ease: 'power3.out',
+    });
+    gsap.from('.testi-card', {
+      scrollTrigger: { trigger: '.testimonials', start: 'top 75%' },
+      x: 100,
+      opacity: 0,
+      duration: 0.8,
+      stagger: 0.1,
+      ease: 'power3.out',
+    });
+  }
+
+  initPartners() {
+    gsap.from('.partners__title', {
+      scrollTrigger: { trigger: '.partners', start: 'top 80%' },
+      x: -80,
+      opacity: 0,
+      duration: 1,
+      ease: 'power3.out',
+    });
+    gsap.from('.partner-logo', {
+      scrollTrigger: { trigger: '.partners__grid', start: 'top 85%' },
+      opacity: 0,
+      y: 30,
+      duration: 0.6,
+      stagger: { amount: 1.2, from: 'start' },
+      ease: 'power2.out',
+    });
+  }
+
+  initFooter() {
+    gsap.from('.footer__brand', {
+      scrollTrigger: { trigger: '.footer-wrapper', start: 'top 90%' },
+      x: -50,
+      opacity: 0,
+      duration: 0.9,
+      ease: 'power3.out',
+    });
+    gsap.from('.footer__col', {
+      scrollTrigger: { trigger: '.footer-wrapper', start: 'top 90%' },
+      y: 40,
+      opacity: 0,
+      duration: 0.7,
+      stagger: 0.12,
+      ease: 'power2.out',
+    });
+    gsap.from('.footer__big-text span', {
+      scrollTrigger: { trigger: '.footer-wrapper', start: 'top 80%' },
+      y: 60,
+      opacity: 0,
+      duration: 1,
+      stagger: 0.15,
+      ease: 'power3.out',
+    });
+  }
+
+
   initCursor() {
     const cursor = this.cursor.nativeElement;
     const dot = this.cursorDot.nativeElement;
@@ -779,7 +603,7 @@ export class Home implements AfterViewInit, OnDestroy {
       gsap.to(dot, { x: e.clientX, y: e.clientY, duration: 0.1 });
     });
 
-    document.querySelectorAll('a, button, .service-card-new, .work-card').forEach((el) => {
+    document.querySelectorAll('a, button, .deck-card, .work-card').forEach((el) => {
       el.addEventListener('mouseenter', () =>
         gsap.to(cursor, { scale: 2.5, opacity: 0.3, duration: 0.3 }),
       );
@@ -787,34 +611,5 @@ export class Home implements AfterViewInit, OnDestroy {
         gsap.to(cursor, { scale: 1, opacity: 1, duration: 0.3 }),
       );
     });
-  }
-
-  // ══════════════════════════════
-  // RENDER LOOP
-  // ══════════════════════════════
-  animate() {
-    this.animationId = requestAnimationFrame(() => this.animate());
-    const time = Date.now() * 0.001;
-
-    this.rings.forEach((ring, i) => {
-      ring.rotation.z += ring.userData['speed'];
-      ring.rotation.x = Math.sin(time * 0.3 + i) * 0.08;
-    });
-
-    this.targetGroup.rotation.y = Math.sin(time * 0.2) * 0.1;
-
-    this.camera.position.x += (this.mouse.x * 0.3 - this.camera.position.x) * 0.03;
-    this.camera.position.y += (this.mouse.y * 0.2 - this.camera.position.y) * 0.03;
-
-    this.particles.rotation.y = time * 0.015;
-
-    this.renderer.render(this.scene, this.camera);
-  }
-
-  ngOnDestroy() {
-    cancelAnimationFrame(this.animationId);
-    this.renderer.dispose();
-    window.removeEventListener('mousemove', this.mouseMoveHandler);
-    ScrollTrigger.getAll().forEach((t) => t.kill());
   }
 }

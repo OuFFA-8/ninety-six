@@ -1,44 +1,40 @@
+<!-- Global star field — fixed behind every section -->
+<canvas #pageBg class="star-canvas"></canvas>
+
+<!-- Dartboard arcs — hero only -->
+<div #heroArcs class="hero-arcs" aria-hidden="true">
+  <div class="hero-arc hero-arc--1"></div>
+  <div class="hero-arc hero-arc--2"></div>
+  <div class="hero-arc hero-arc--3"></div>
+  <div class="hero-arc hero-arc--4"></div>
+  <div class="hero-arc hero-arc--5"></div>
+  <div class="hero-arc hero-arc--6"></div>
+</div>
+
+@if (showDartIntro) {
+  <app-dart-intro
+    (transitioning)="onDartIntroTransitioning()"
+    (completed)="onDartIntroDone()">
+  </app-dart-intro>
+}
+
+<!-- Star-veil: snaps visible at end of dart-intro, fades out over hero entrance -->
+<div #transitionVeil class="transition-veil">
+  <canvas #veilStars class="transition-veil__stars"></canvas>
+</div>
+
 <div #cursor class="cursor"></div>
 <div #cursorDot class="cursor-dot"></div>
 
-<div class="wrapper">
-  <!-- ═══ HERO CONTENT (في الخلف) ═══ -->
-  <div class="hero-bg">
-    <canvas #threeCanvas class="hero__canvas"></canvas>
-    <div class="hero__content">
-      <div #heroContent class="hero__content-inner">
-        <span class="hero__eyebrow">Ninety Six Marketing</span>
-        <h1 class="hero__title">
-          We Don't Just <span class="gradient-text">Create</span><br />
-          We <span class="gradient-text">Target</span> Results
-        </h1>
-        <p class="hero__subtitle">
-          A marketing agency that hits every goal — brand strategy, visual identity, motion & web
-          built for impact.
-        </p>
-        <div class="hero__cta">
-          <a routerLink="/categories" class="btn-primary">Explore Services</a>
-          <a routerLink="/products" class="btn-ghost">View Our Work</a>
-        </div>
-      </div>
-    </div>
-    <div class="hero__scroll">
-      <div class="scroll-line"></div>
-      <span>Scroll into the target</span>
-    </div>
-  </div>
+<!-- ═══ HERO (themed by selected work) ═══ -->
+<app-hero></app-hero>
 
-  <!-- ═══ DOT OVERLAY (فوق الهيرو) ═══ -->
-  <div class="dot-container">
-    <div #dotOverlay class="dot-overlay"></div>
-  </div>
-</div>
-
-<!-- ═══ SERVICES (بره الـ wrapper) ═══ -->
+<!-- ═══ SERVICES ═══ -->
 <section class="services-portal">
+
   <div class="services-portal__header">
     <span class="label">What We Do</span>
-    <h2>Services Built to <span class="gradient-text">Perform</span></h2>
+      <h2>Services Built to <span class="gradient-text">Perform</span></h2>
     <p>Every service engineered with one goal — your success.</p>
   </div>
 
@@ -75,6 +71,7 @@
 
 <!-- ═══ STATS ═══ -->
 <section class="stats">
+
   <div class="stats__container">
     @for (stat of stats; track stat.label) {
       <div class="stat-item">
@@ -87,6 +84,7 @@
 
 <!-- ═══ WORKS ═══ -->
 <section class="works">
+
   <div class="works__container">
     <div class="works__header">
       <span class="label">Our Portfolio</span>
@@ -108,6 +106,7 @@
 
 <!-- ═══ GALLERY ═══ -->
 <section class="gallery-section">
+
   <div class="gallery-section__header">
     <span class="label">Our Work</span>
     <h2>Built to <span class="gradient-text">Impress</span></h2>
@@ -131,6 +130,7 @@
 
 <!-- ═══ PARTNERS ═══ -->
 <section class="partners">
+
   <div class="partners__container">
     <div class="partners__header">
       <h2 class="partners__title">OUR<br /><span>PARTNERS</span></h2>
@@ -147,6 +147,7 @@
 
 <!-- ═══ TESTIMONIALS ═══ -->
 <section class="testimonials">
+
   <div class="testimonials__container">
     <div class="testimonials__left">
       <span class="label">Client Stories</span>
@@ -189,6 +190,7 @@
 
 <!-- ═══ CTA ═══ -->
 <section class="cta">
+
   <div class="cta__content">
     <span class="label">Ready?</span>
     <h2>Let's Hit Your <span class="gradient-text">Target</span></h2>
@@ -202,7 +204,6 @@
 <div class="footer-wrapper">
   <div class="footer-sticky">
     <footer class="footer">
-      <!-- TOP -->
       <div class="footer__top">
         <div class="footer__brand">
           <img src="logo.png" alt="Ninety Six" class="footer__logo" />
@@ -241,13 +242,11 @@
         </div>
       </div>
 
-      <!-- BIG TEXT -->
       <div class="footer__big-text">
         <span>NINETY</span>
         <span>SIX</span>
       </div>
 
-      <!-- BOTTOM -->
       <div class="footer__bottom">
         <p>© 2025 Ninety Six Marketing. All rights reserved.</p>
         <p>Built with precision. Designed to win.</p>
