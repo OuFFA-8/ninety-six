@@ -12,9 +12,7 @@
 </div>
 
 @if (showDartIntro) {
-  <app-dart-intro
-    (transitioning)="onDartIntroTransitioning()"
-    (completed)="onDartIntroDone()">
+  <app-dart-intro (transitioning)="onDartIntroTransitioning()" (completed)="onDartIntroDone()">
   </app-dart-intro>
 }
 
@@ -31,10 +29,9 @@
 
 <!-- ═══ SERVICES ═══ -->
 <section class="services-portal">
-
   <div class="services-portal__header">
-    <span class="label">What We Do</span>
-      <h2>Services Built to <span class="gradient-text">Perform</span></h2>
+    <!-- <span class="label">What We Do</span> -->
+    <h2>Services Built to <span class="gradient-text">Perform</span></h2>
     <p>Every service engineered with one goal — your success.</p>
   </div>
 
@@ -69,22 +66,50 @@
   </div>
 </section>
 
-<!-- ═══ STATS ═══ -->
-<section class="stats">
+<!-- ═══ IMPACT ═══ -->
+<section class="impact">
+  <div class="impact__watermark" aria-hidden="true">96</div>
 
-  <div class="stats__container">
-    @for (stat of stats; track stat.label) {
-      <div class="stat-item">
-        <h3 class="stat__value">0</h3>
-        <p class="stat__label">{{ stat.label }}</p>
+  <div class="impact__inner">
+    <div class="impact__head">
+      <div class="impact__label">By the numbers</div>
+      <h2 class="impact__title">Hits<br>that <em>landed</em>.</h2>
+      <p class="impact__sub">
+        Six years of refining how to make a brand <em>land</em>.
+        The numbers track impact — not output.
+      </p>
+    </div>
+
+    <div class="impact__stats">
+      @for (stat of impactStats; track stat.label) {
+        <div class="stat-block">
+          <div class="stat-block__index">{{ stat.index }}</div>
+          <div class="stat-block__num">
+            <span class="counter" [attr.data-target]="stat.value">0</span>
+            @if (stat.suffix) { <em>{{ stat.suffix }}</em> }
+          </div>
+          <div class="stat-block__label">{{ stat.label }}</div>
+          <p class="stat-block__desc" [innerHTML]="stat.desc"></p>
+        </div>
+      }
+    </div>
+
+    <div class="trust">
+      <div class="trust__label">
+        <span class="trust__label-top">— Trusted by</span>
+        <span class="trust__label-bot">Selected partners · 2020 – 2026</span>
       </div>
-    }
+      <div class="trust__logos">
+        @for (logo of trustLogos; track logo) {
+          <span class="trust__logo">{{ logo }}</span>
+        }
+      </div>
+    </div>
   </div>
 </section>
 
 <!-- ═══ WORKS ═══ -->
-<section class="works">
-
+<!-- <section class="works">
   <div class="works__container">
     <div class="works__header">
       <span class="label">Our Portfolio</span>
@@ -102,11 +127,10 @@
       }
     </div>
   </div>
-</section>
+</section> -->
 
 <!-- ═══ GALLERY ═══ -->
 <section class="gallery-section">
-
   <div class="gallery-section__header">
     <span class="label">Our Work</span>
     <h2>Built to <span class="gradient-text">Impress</span></h2>
@@ -129,8 +153,7 @@
 </section>
 
 <!-- ═══ PARTNERS ═══ -->
-<section class="partners">
-
+<!-- <section class="partners">
   <div class="partners__container">
     <div class="partners__header">
       <h2 class="partners__title">OUR<br /><span>PARTNERS</span></h2>
@@ -143,11 +166,10 @@
       }
     </div>
   </div>
-</section>
+</section> -->
 
 <!-- ═══ TESTIMONIALS ═══ -->
 <section class="testimonials">
-
   <div class="testimonials__container">
     <div class="testimonials__left">
       <span class="label">Client Stories</span>
@@ -190,7 +212,6 @@
 
 <!-- ═══ CTA ═══ -->
 <section class="cta">
-
   <div class="cta__content">
     <span class="label">Ready?</span>
     <h2>Let's Hit Your <span class="gradient-text">Target</span></h2>

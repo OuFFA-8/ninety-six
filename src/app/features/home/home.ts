@@ -8,7 +8,7 @@ import {
   PLATFORM_ID,
   NgZone,
 } from '@angular/core';
-import { isPlatformBrowser } from '@angular/common';
+import { isPlatformBrowser, CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
@@ -21,7 +21,7 @@ gsap.registerPlugin(ScrollTrigger, Draggable);
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [RouterLink, Hero, DartIntro],
+  imports: [CommonModule, RouterLink, Hero, DartIntro],
   templateUrl: './home.html',
   styleUrl: './home.scss',
 })
@@ -227,6 +227,32 @@ export class Home implements AfterViewInit, OnDestroy {
     { value: 3, suffix: '+', label: 'Years Experience' },
   ];
 
+  impactStats = [
+    {
+      index: '01 — Output',
+      value: 124,
+      suffix: '+',
+      label: 'Projects Landed',
+      desc: 'Campaigns, identities and launches shipped across the region since <em>2020</em>. Every one engineered to hit.',
+    },
+    {
+      index: '02 — Reach',
+      value: 48,
+      suffix: '',
+      label: 'Brands Built',
+      desc: 'Identity systems engineered to <em>scale</em> beyond their first quarter. Built to hold up at every angle.',
+    },
+    {
+      index: '03 — Tenure',
+      value: 6,
+      suffix: 'yr',
+      label: 'In Motion',
+      desc: 'Six years of refining how to take a <em>vague brief</em> and turn it into a brand that moves.',
+    },
+  ];
+
+  trustLogos = ['Zamil & Kharrashi', 'Arabsat', 'Solidere', 'Mobily', 'Saudia'];
+
   works = [
     { title: 'Brand Identity', category: 'Visual Identity', color: '#8a4fff' },
     { title: 'Social Campaign', category: 'Digital Marketing', color: '#6a3bbf' },
@@ -410,33 +436,38 @@ export class Home implements AfterViewInit, OnDestroy {
   }
 
   initStats() {
-    this.stats.forEach((stat, i) => {
-      const el = document.querySelectorAll('.stat__value')[i];
+    gsap.from('.impact__head > *', {
+      scrollTrigger: { trigger: '.impact__head', start: 'top 82%', once: true },
+      y: 50, opacity: 0, duration: 0.8, stagger: 0.12, ease: 'power3.out',
+    });
+    gsap.from('.stat-block', {
+      scrollTrigger: { trigger: '.impact__stats', start: 'top 82%', once: true },
+      y: 40, opacity: 0, duration: 0.7, stagger: 0.12, ease: 'power3.out',
+    });
+    gsap.from('.trust', {
+      scrollTrigger: { trigger: '.trust', start: 'top 88%', once: true },
+      y: 30, opacity: 0, duration: 0.7, ease: 'power2.out',
+    });
+
+    // Counter animation
+    this.impactStats.forEach((stat, i) => {
+      const el = document.querySelectorAll('.counter')[i] as HTMLElement | undefined;
       if (!el) return;
       const obj = { val: 0 };
       ScrollTrigger.create({
-        trigger: '.stats',
+        trigger: '.impact__stats',
         start: 'top 80%',
         once: true,
         onEnter: () => {
           gsap.to(obj, {
             val: stat.value,
             duration: 2.5,
+            delay: i * 0.15,
             ease: 'power2.out',
-            onUpdate: () => {
-              el.textContent = Math.round(obj.val) + stat.suffix;
-            },
+            onUpdate: () => { el.textContent = String(Math.round(obj.val)); },
           });
         },
       });
-    });
-    gsap.from('.stat-item', {
-      scrollTrigger: { trigger: '.stats', start: 'top 80%' },
-      y: 50,
-      opacity: 0,
-      stagger: 0.15,
-      duration: 0.8,
-      ease: 'power3.out',
     });
   }
 
