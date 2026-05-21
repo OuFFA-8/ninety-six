@@ -30,8 +30,7 @@
 <!-- ═══ SERVICES ═══ -->
 <section class="services-portal">
   <div class="section-head section-head--center">
-    <div class="section-head__label" data-num="01">What We Do</div>
-    <h2 class="section-head__title">Services Built<br>to <em>Perform</em>.</h2>
+    <h2 class="section-head__title">Services Built<br />to <em>Perform</em>.</h2>
     <p class="section-head__sub">Every service engineered with one goal — your success.</p>
   </div>
 
@@ -52,7 +51,7 @@
                 <div class="deck-card__media-bg"></div>
                 <div class="deck-card__play">
                   <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-                    <path d="M6 4L16 10L6 16V4Z" fill="currentColor"/>
+                    <path d="M6 4L16 10L6 16V4Z" fill="currentColor" />
                   </svg>
                 </div>
                 <div class="deck-card__media-label">{{ service.title }}</div>
@@ -71,11 +70,10 @@
 
   <div class="impact__inner">
     <div class="impact__head">
-      <div class="impact__label">By the numbers</div>
-      <h2 class="impact__title">Hits<br>that <em>landed</em>.</h2>
+      <h2 class="impact__title">Hits<br />that <em>landed</em>.</h2>
       <p class="impact__sub">
-        Six years of refining how to make a brand <em>land</em>.
-        The numbers track impact — not output.
+        Six years of refining how to make a brand <em>land</em>. The numbers track impact — not
+        output.
       </p>
     </div>
 
@@ -85,7 +83,9 @@
           <div class="stat-block__index">{{ stat.index }}</div>
           <div class="stat-block__num">
             <span class="counter" [attr.data-target]="stat.value">0</span>
-            @if (stat.suffix) { <em>{{ stat.suffix }}</em> }
+            @if (stat.suffix) {
+              <em>{{ stat.suffix }}</em>
+            }
           </div>
           <div class="stat-block__label">{{ stat.label }}</div>
           <p class="stat-block__desc" [innerHTML]="stat.desc"></p>
@@ -131,8 +131,7 @@
 <!-- ═══ GALLERY ═══ -->
 <section class="gallery-section">
   <div class="section-head section-head--center">
-    <div class="section-head__label" data-num="03">Portfolio</div>
-    <h2 class="section-head__title">Built to<br><em>Impress</em>.</h2>
+    <h2 class="section-head__title">Built to<br /><em>Impress</em>.</h2>
     <p class="section-head__sub">A selection of work spanning six disciplines.</p>
   </div>
   <div class="gallery">
@@ -172,10 +171,7 @@
 <section class="testimonials">
   <div class="testimonials__container">
     <div class="testimonials__left">
-      <div class="section-head__label" data-num="04">Client Stories</div>
-      <h2 class="testimonials__title">
-        What our<br>clients <em>say</em>.
-      </h2>
+      <h2 class="testimonials__title">What our<br />clients <em>say</em>.</h2>
       <div class="testimonials__nav">
         <button class="testi-nav-btn" id="testiPrev">←</button>
         <span class="testi-nav-count">
@@ -214,7 +210,7 @@
 <section class="cta">
   <div class="cta__inner">
     <div class="section-head__label" data-num="—">Ready?</div>
-    <h2 class="cta__title">Let's Hit<br>Your <em>Target</em>.</h2>
+    <h2 class="cta__title">Let's Hit<br />Your <em>Target</em>.</h2>
     <p class="cta__sub">Tell us about your project and let's build something remarkable.</p>
     <a routerLink="/cart" class="btn-primary">Start a Project</a>
   </div>
