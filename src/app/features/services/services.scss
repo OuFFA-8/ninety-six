@@ -34,7 +34,7 @@
 
 .svc-grad {
   font-style: italic;
-  font-family: 'Instrument Serif', 'Playfair Display', serif;
+  font-family: 'Fraunces', serif;
   font-weight: 400;
   background: linear-gradient(135deg, #8a4fff, #c49bff);
   -webkit-background-clip: text;
@@ -54,7 +54,7 @@
   &__inner { max-width: 860px; }
 
   &__title {
-    font-family: 'Playfair Display', Georgia, serif;
+    font-family: 'Space Grotesk', sans-serif;
     font-size: clamp(3rem, 6.5vw, 8rem);
     font-weight: 900;
     line-height: 1.06;
@@ -64,7 +64,7 @@
 
     em {
       font-style: italic;
-      font-family: 'Instrument Serif', 'Playfair Display', serif;
+      font-family: 'Fraunces', serif;
       font-weight: 400;
     }
   }
@@ -334,7 +334,7 @@
   &__inner { max-width: 720px; }
 
   &__title {
-    font-family: 'Playfair Display', Georgia, serif;
+    font-family: 'Space Grotesk', sans-serif;
     font-size: clamp(2.5rem, 5.5vw, 6rem);
     font-weight: 900;
     line-height: 1.06;

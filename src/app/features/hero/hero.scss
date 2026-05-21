@@ -64,9 +64,9 @@
 
 // ── Headline ─────────────────────────────────────────────
 .hero__headline {
-  font-family: 'Playfair Display', Georgia, serif;
+  font-family: 'Space Grotesk', sans-serif;
   font-size: clamp(3.5rem, 7vw, 9.5rem);
-  font-weight: 900;
+  font-weight: 700;
   line-height: 1.06;
   letter-spacing: -0.02em;
   color: #ffffff;
@@ -74,8 +74,8 @@
 
   em {
     font-style: italic;
-    font-family: 'Instrument Serif', 'Playfair Display', serif;
-    font-weight: 400;
+    font-family: 'Fraunces', serif;
+    font-weight: 300;
     background: linear-gradient(135deg, var(--accent) 0%, var(--accent-soft) 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
