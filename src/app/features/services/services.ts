@@ -7,184 +7,108 @@ import {
   NgZone,
   inject,
   PLATFORM_ID,
-  effect,
 } from '@angular/core';
 import { isPlatformBrowser, CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { Flip } from 'gsap/Flip';
+import { CustomEase } from 'gsap/CustomEase';
 
-import { Intro } from '../../core/intro/intro';
-import { SelectionService, Work } from '../../core/service/selection-service';
-
-gsap.registerPlugin(ScrollTrigger);
+gsap.registerPlugin(ScrollTrigger, Flip, CustomEase);
 
 @Component({
   selector: 'app-services-page',
   standalone: true,
-  imports: [CommonModule, RouterLink, Intro],
+  imports: [CommonModule, RouterLink],
   templateUrl: './services.html',
   styleUrl: './services.scss',
 })
 export class ServicesPage implements AfterViewInit, OnDestroy {
-  @ViewChild('introWrap',  { static: true }) introWrap!:  ElementRef<HTMLElement>;
   @ViewChild('starCanvas', { static: true }) starCanvas!: ElementRef<HTMLCanvasElement>;
+  @ViewChild('cursor')    cursorEl!: ElementRef<HTMLElement>;
+  @ViewChild('cursorDot') cursorDotEl!: ElementRef<HTMLElement>;
 
   private platformId = inject(PLATFORM_ID);
   private ngZone     = inject(NgZone);
-  protected selection = inject(SelectionService);
 
-  protected introCompleted = false;
-  protected activeIdx: number | null = null;
+  private _starRaf = 0;
 
-  private _starRaf   = 0;
-  private _targetBgR = 0;
-  private _targetBgG = 0;
-  private _targetBgB = 0;
-  // Selection color — restored when a row is closed
-  private _selBgR    = 0;
-  private _selBgG    = 0;
-  private _selBgB    = 0;
+  activeFilter = 'all';
+  filterCount  = '07';
+  scNum        = '01';
+  scProgress   = 0;
+  caseCurrent  = '01';
+  caseLabel    = 'Logo Construction';
 
-  constructor() {
-    effect(() => {
-      const work = this.selection.selected();
-      if (work) {
-        const [r, g, b] = this.hexToRgb(work.color);
-        this._selBgR = this._targetBgR = r * 0.32 | 0;
-        this._selBgG = this._targetBgG = g * 0.32 | 0;
-        this._selBgB = this._targetBgB = b * 0.32 | 0;
-      }
-    });
-  }
+  readonly caseLabels = [
+    'Logo Construction', 'Colour Palette', 'Typography',
+    'Stationery', 'Digital / App', 'Brand World',
+  ];
 
-  services = [
-    {
-      tag: '01', icon: '🎯',
-      title: 'Brand Strategy',
-      desc: 'Powerful brand identities that resonate with your audience and dominate the market.',
-      works: [
-        { title: 'Repositioning Noon',  color: '#8a4fff' },
-        { title: 'Nike MENA Launch',    color: '#6a3bbf' },
-        { title: 'Adidas Gulf 2024',    color: '#9d6fff' },
-      ],
-    },
-    {
-      tag: '02', icon: '✦',
-      title: 'Visual Identity',
-      desc: 'Logos, color systems, typography — cohesive visual languages that tell your story.',
-      works: [
-        { title: 'Careem Rebrand',  color: '#00d4a8' },
-        { title: 'Noon Identity',   color: '#00b891' },
-        { title: 'Talabat VI',      color: '#5fe3c3' },
-      ],
-    },
-    {
-      tag: '03', icon: '▶',
-      title: 'Motion & Video',
-      desc: 'Cinematic video production and motion graphics that captivate and convert.',
-      works: [
-        { title: 'Pepsi Ramadan',  color: '#ff4757' },
-        { title: 'Product Reel',   color: '#ff6b76' },
-        { title: 'Brand Film',     color: '#c73342' },
-      ],
-    },
-    {
-      tag: '04', icon: '◈',
-      title: 'Web Design',
-      desc: 'Pixel-perfect websites with immersive experiences that drive real results.',
-      works: [
-        { title: 'Talabat E-commerce', color: '#ff8c42' },
-        { title: 'SaaS Landing',       color: '#ffaa70' },
-        { title: 'Portfolio Site',     color: '#cc6a28' },
-      ],
-    },
-    {
-      tag: '05', icon: '◎',
-      title: 'Print Design',
-      desc: 'From magazines to OOH — bold print work that commands attention everywhere.',
-      works: [
-        { title: 'Adidas Magazine',  color: '#4a9eff' },
-        { title: 'OOH Campaign',     color: '#78b8ff' },
-        { title: 'Annual Report',    color: '#2a7bcc' },
-      ],
-    },
-    {
-      tag: '06', icon: '⬡',
-      title: 'Digital Marketing',
-      desc: 'Data-driven campaigns that grow your reach and maximize your ROI.',
-      works: [
-        { title: 'Samsung Launch', color: '#e8b923' },
-        { title: 'Meta Ads',       color: '#f0d271' },
-        { title: 'SEO Campaign',   color: '#b8901a' },
-      ],
-    },
+  readonly stripItems = [
+    'Brand Identity', 'Campaigns', 'Motion', 'Web Design',
+    'Social', 'Art Direction', 'Strategy', '3D & Render',
   ];
 
   ngAfterViewInit(): void {
     if (!isPlatformBrowser(this.platformId)) return;
-    document.body.style.overflow = 'hidden';
-    document.documentElement.style.overflow = 'hidden';
+
+    CustomEase.create('crisp',  '0.16, 1, 0.3, 1');
+    CustomEase.create('smooth', '0.7, 0, 0.2, 1');
+
     this.ngZone.runOutsideAngular(() => this.initStars());
+    this.initCursor();
+    this.buildStrip();
+
+    setTimeout(() => {
+      this.initIntro();
+      this.initWorkGrid();
+      this.initShowcase();
+      this.initCase();
+      this.initCTA();
+      ScrollTrigger.refresh();
+    }, 80);
   }
 
   ngOnDestroy(): void {
     ScrollTrigger.getAll().forEach(t => t.kill());
     if (this._starRaf) cancelAnimationFrame(this._starRaf);
-    this.unlockScroll();
   }
 
-  protected toggle(i: number): void {
-    if (this.activeIdx === i) {
-      this.activeIdx = null;
-      this._targetBgR = this._selBgR;
-      this._targetBgG = this._selBgG;
-      this._targetBgB = this._selBgB;
-    } else {
-      this.activeIdx = i;
-      const color = this.services[i].works[0].color;
-      const [r, g, b] = this.hexToRgb(color);
-      this._targetBgR = r * 0.32 | 0;
-      this._targetBgG = g * 0.32 | 0;
-      this._targetBgB = b * 0.32 | 0;
-    }
-  }
+  // ── Filter ──────────────────────────────────────────────
 
-  onIntroCompleted(_work: Work): void {
-    this.ngZone.run(() => { this.introCompleted = true; });
+  setFilter(cat: string): void {
+    const items = Array.from(document.querySelectorAll<HTMLElement>('.work-item'));
+    const state = Flip.getState(items);
+
+    this.activeFilter = cat;
+
+    const visible = cat === 'all'
+      ? items.length
+      : items.filter(el => el.dataset['cat'] === cat).length;
+    this.filterCount = String(visible).padStart(2, '0');
 
     setTimeout(() => {
-      gsap.set('.svc-hero__inner', { autoAlpha: 0, y: 40 });
-      gsap.set('.svc-row',         { autoAlpha: 0, y: 20 });
-      gsap.set('.svc-cta__inner',  { autoAlpha: 0, y: 40 });
-
-      const wrap = this.introWrap.nativeElement;
-      gsap.to(wrap, {
-        autoAlpha: 0,
-        duration: 1.0,
-        ease: 'power2.inOut',
-        onComplete: () => {
-          this.unlockScroll();
-          window.scrollTo({ top: 0, behavior: 'auto' });
-          ScrollTrigger.refresh();
-          this.initAnimations();
-        },
+      items.forEach(el => {
+        el.style.display = (cat === 'all' || el.dataset['cat'] === cat) ? '' : 'none';
       });
+
+      Flip.from(state, {
+        duration: 0.6,
+        ease: 'smooth',
+        scale: true,
+        absolute: true,
+        onEnter: (els: Element[]) =>
+          gsap.fromTo(els, { opacity: 0, scale: 0.85 }, { opacity: 1, scale: 1, duration: 0.4, delay: 0.08 }),
+        onLeave: (els: Element[]) =>
+          gsap.to(els, { opacity: 0, scale: 0.85, duration: 0.28 }),
+      });
+      ScrollTrigger.refresh();
     });
   }
 
-  private unlockScroll(): void {
-    document.body.style.overflow = '';
-    document.documentElement.style.overflow = '';
-  }
-
-  private hexToRgb(hex: string): [number, number, number] {
-    return [
-      parseInt(hex.slice(1, 3), 16),
-      parseInt(hex.slice(3, 5), 16),
-      parseInt(hex.slice(5, 7), 16),
-    ];
-  }
+  // ── Stars ───────────────────────────────────────────────
 
   private initStars(): void {
     const canvas = this.starCanvas.nativeElement;
@@ -197,60 +121,232 @@ export class ServicesPage implements AfterViewInit, OnDestroy {
     resize();
     window.addEventListener('resize', resize, { passive: true });
 
-    interface S { x: number; y: number; r: number; baseAlpha: number; phase: number; spd: number; }
-
-    const stars: S[] = Array.from({ length: 420 }, () => ({
+    const stars = Array.from({ length: 80 }, () => ({
       x:         Math.random() * window.innerWidth,
       y:         Math.random() * window.innerHeight,
-      r:         Math.random() * 0.85 + 0.25,
-      baseAlpha: Math.random() * 0.45 + 0.1,
+      r:         Math.random() * 1.1 + 0.3,
+      baseAlpha: Math.random() * 0.4 + 0.08,
       phase:     Math.random() * Math.PI * 2,
-      spd:       Math.random() * 0.6 + 0.3,
+      spd:       Math.random() * 0.5 + 0.2,
     }));
 
-    // Start canvas at the already-selected color (if any)
-    let bgR = this._targetBgR;
-    let bgG = this._targetBgG;
-    let bgB = this._targetBgB;
     let t = 0;
-
     const draw = () => {
       this._starRaf = requestAnimationFrame(draw);
       t += 0.016;
-
-      bgR += (this._targetBgR - bgR) * 0.025;
-      bgG += (this._targetBgG - bgG) * 0.025;
-      bgB += (this._targetBgB - bgB) * 0.025;
-
-      ctx.fillStyle = `rgb(${bgR | 0},${bgG | 0},${bgB | 0})`;
+      ctx.fillStyle = '#06030c';
       ctx.fillRect(0, 0, canvas.width, canvas.height);
-
       for (const s of stars) {
-        const alpha = s.baseAlpha * (0.55 + 0.45 * Math.sin(t * s.spd + s.phase));
+        const a = s.baseAlpha * (0.5 + 0.5 * Math.sin(t * s.spd + s.phase));
         ctx.beginPath();
         ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(255,255,255,${alpha})`;
+        ctx.fillStyle = `rgba(196,155,255,${a})`;
         ctx.fill();
       }
     };
     draw();
   }
 
-  private initAnimations(): void {
-    gsap.to('.svc-hero__inner', {
-      autoAlpha: 1, y: 0, duration: 0.9, ease: 'power3.out',
+  // ── Cursor ──────────────────────────────────────────────
+
+  private initCursor(): void {
+    const cursor = this.cursorEl?.nativeElement;
+    const dot    = this.cursorDotEl?.nativeElement;
+    if (!cursor) return;
+
+    const m = { x: innerWidth / 2, y: innerHeight / 2 };
+    const p = { x: m.x, y: m.y };
+    const d = { x: m.x, y: m.y };
+    const lerp = (a: number, b: number, n: number) => a + (b - a) * n;
+
+    window.addEventListener('mousemove', e => { m.x = e.clientX; m.y = e.clientY; });
+
+    gsap.ticker.add(() => {
+      p.x = lerp(p.x, m.x, 0.15); p.y = lerp(p.y, m.y, 0.15);
+      d.x = lerp(d.x, m.x, 0.55); d.y = lerp(d.y, m.y, 0.55);
+      gsap.set(cursor, { x: p.x, y: p.y });
+      if (dot) gsap.set(dot, { x: d.x, y: d.y });
     });
 
-    gsap.utils.toArray<HTMLElement>('.svc-row').forEach((row, i) => {
-      gsap.to(row, {
-        scrollTrigger: { trigger: row, start: 'top 88%', once: true },
-        autoAlpha: 1, y: 0, duration: 0.6, delay: i * 0.04, ease: 'power2.out',
+    document.querySelectorAll<HTMLElement>('a,button,.work-item,.showcase__card').forEach(el => {
+      el.addEventListener('mouseenter', () => {
+        gsap.to(cursor, { scale: 1.6, borderColor: '#fff', duration: 0.3 });
+        if (dot) gsap.to(dot, { scale: 0, duration: 0.2 });
+      });
+      el.addEventListener('mouseleave', () => {
+        gsap.to(cursor, { scale: 1, borderColor: '#c49bff', duration: 0.3 });
+        if (dot) gsap.to(dot, { scale: 1, duration: 0.2 });
+      });
+    });
+  }
+
+  // ── Intro entrance ──────────────────────────────────────
+
+  private initIntro(): void {
+    const tl = gsap.timeline({ defaults: { ease: 'expo.out' } });
+    tl.from('.intro__arc',        { scale: 1.4, opacity: 0, duration: 2, stagger: 0.1 }, 0);
+    tl.from('.intro__eyebrow',    { opacity: 0, y: 20, duration: 0.8 }, 0.3);
+    tl.from('.intro__title-inner',{ yPercent: 110, duration: 1.2, stagger: 0.14 }, 0.4);
+    tl.from('.intro__meta',       { opacity: 0, y: 30, duration: 0.9 }, 1.0);
+    tl.from('.intro__scroll',     { opacity: 0, duration: 0.8 }, 1.2);
+
+    gsap.fromTo('.scroll-dot',
+      { y: -8 },
+      { y: 42, duration: 1.6, repeat: -1, ease: 'power1.inOut', repeatDelay: 0.2 }
+    );
+
+    gsap.to('.intro__title', {
+      yPercent: -15, opacity: 0.35, ease: 'none',
+      scrollTrigger: { trigger: '.svc-intro', start: 'top top', end: 'bottom top', scrub: 1 },
+    });
+  }
+
+  // ── Work grid ───────────────────────────────────────────
+
+  private initWorkGrid(): void {
+    gsap.set('.work-item', { opacity: 0, y: 80 });
+
+    ScrollTrigger.batch('.work-item', {
+      start: 'top 88%',
+      onEnter: (batch) => gsap.to(batch, {
+        opacity: 1, y: 0, duration: 1, stagger: 0.1, ease: 'expo.out', overwrite: true,
+      }),
+      once: true,
+    });
+
+    document.querySelectorAll<HTMLElement>('.work-item').forEach(item => {
+      const deco = item.querySelector<HTMLElement>('[data-deco]');
+      if (!deco) return;
+      gsap.to(deco, {
+        yPercent: -18, ease: 'none',
+        scrollTrigger: { trigger: item, start: 'top bottom', end: 'bottom top', scrub: 1.2 },
+      });
+    });
+  }
+
+  // ── Horizontal showcase ─────────────────────────────────
+
+  private initShowcase(): void {
+    if (window.innerWidth < 1100) return;
+
+    const track = document.getElementById('showcaseTrack');
+    if (!track) return;
+
+    const getAmount = () => track.scrollWidth - window.innerWidth;
+
+    const scrollTween = gsap.to(track, {
+      x: () => -(getAmount() + 80),
+      ease: 'none',
+      scrollTrigger: {
+        trigger: '.showcase',
+        start: 'top top',
+        end: () => `+=${getAmount() + 200}`,
+        pin: true,
+        scrub: 1,
+        invalidateOnRefresh: true,
+        onUpdate: (self) => {
+          this.scProgress = self.progress * 100;
+          this.scNum = String(Math.min(5, Math.floor(self.progress * 5) + 1)).padStart(2, '0');
+        },
+      },
+    });
+
+    document.querySelectorAll<HTMLElement>('.showcase__card').forEach(card => {
+      const deco = card.querySelector<HTMLElement>('[data-sc-deco]');
+      if (deco) {
+        gsap.fromTo(deco, { xPercent: -12 }, {
+          xPercent: 12, ease: 'none',
+          scrollTrigger: { trigger: card, containerAnimation: scrollTween, start: 'left right', end: 'right left', scrub: true },
+        });
+      }
+      gsap.fromTo(card, { scale: 0.92 }, {
+        scale: 1, ease: 'none',
+        scrollTrigger: { trigger: card, containerAnimation: scrollTween, start: 'left center', end: 'center center', scrub: true },
+      });
+    });
+  }
+
+  // ── Case study ──────────────────────────────────────────
+
+  private initCase(): void {
+    const slides = Array.from(document.querySelectorAll<HTMLElement>('.case__slide'));
+    const total  = slides.length;
+    if (!total) return;
+
+    slides.forEach((s, i) => {
+      gsap.set(s, {
+        yPercent:  i === 0 ? 0 : 12 * i,
+        scale:     i === 0 ? 1 : 1 - i * 0.05,
+        opacity:   i === 0 ? 1 : 0,
+        zIndex:    total - i,
+        rotationX: i === 0 ? 0 : -8,
       });
     });
 
-    gsap.to('.svc-cta__inner', {
-      scrollTrigger: { trigger: '.svc-cta', start: 'top 80%' },
-      autoAlpha: 1, y: 0, duration: 0.8, ease: 'power3.out',
+    const tl = gsap.timeline({
+      scrollTrigger: {
+        trigger: '.case',
+        start: 'top top',
+        end: `+=${total * 60}%`,
+        pin: '.case__pin',
+        scrub: 1,
+        invalidateOnRefresh: true,
+        onUpdate: (self) => {
+          this.ngZone.run(() => {
+            const idx = Math.min(total - 1, Math.floor(self.progress * total));
+            this.caseCurrent = String(idx + 1).padStart(2, '0');
+            this.caseLabel   = this.caseLabels[idx];
+          });
+        },
+      },
+    });
+
+    slides.forEach((s, i) => {
+      if (i === 0) return;
+      tl.to(slides[i],     { yPercent: 0, scale: 1, opacity: 1, rotationX: 0,  duration: 1, ease: 'power2.inOut' }, i - 1);
+      tl.to(slides[i - 1], { yPercent: -12, scale: 0.92, opacity: 0, rotationX: 8, duration: 1, ease: 'power2.inOut' }, i - 1);
+    });
+
+    gsap.to('.case__left', {
+      yPercent: -8, ease: 'none',
+      scrollTrigger: { trigger: '.case', start: 'top top', end: 'bottom top', scrub: 1 },
+    });
+  }
+
+  // ── Strip marquee ────────────────────────────────────────
+
+  private buildStrip(): void {
+    const track = document.getElementById('stripTrack');
+    if (!track) return;
+
+    const html = [...this.stripItems, ...this.stripItems]
+      .map(t => `<div class="strip__item"><span class="strip__star">✦</span> <em>${t}</em></div>`)
+      .join('');
+    track.innerHTML = html;
+
+    setTimeout(() => {
+      const half  = track.scrollWidth / 2;
+      const tween = gsap.to(track, { x: -half, duration: 24, ease: 'none', repeat: -1 });
+
+      ScrollTrigger.create({
+        trigger: '.strip', start: 'top bottom', end: 'bottom top',
+        onUpdate: (self) => {
+          const v    = self.getVelocity();
+          const skew = gsap.utils.clamp(-30, 30, v / -60);
+          gsap.to('.strip__item', { skewX: skew * 0.3, duration: 0.3, overwrite: 'auto' });
+          tween.timeScale(1 + Math.abs(v) / 3000);
+          gsap.to(tween, { timeScale: 1, duration: 0.6, overwrite: 'auto', delay: 0.1 });
+        },
+      });
+    }, 50);
+  }
+
+  // ── CTA ─────────────────────────────────────────────────
+
+  private initCTA(): void {
+    gsap.from('.svc-cta__inner > *', {
+      opacity: 0, y: 40, duration: 0.9, stagger: 0.12, ease: 'expo.out',
+      scrollTrigger: { trigger: '.svc-cta', start: 'top 78%' },
     });
   }
 }

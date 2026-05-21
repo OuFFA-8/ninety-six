@@ -1,96 +1,558 @@
-<!-- Color-reactive star background -->
+<!-- Stars -->
 <canvas #starCanvas class="svc-stars"></canvas>
 
-<!-- Pitch Room intro overlay -->
-<div #introWrap class="intro-wrap">
-  <app-intro (completed)="onIntroCompleted($event)"></app-intro>
+<!-- Cursor -->
+<div #cursor class="svc-cursor"></div>
+<div #cursorDot class="svc-cursor-dot"></div>
+
+<!-- ══════════════════════════════════════════
+     01  INTRO
+══════════════════════════════════════════ -->
+<section class="svc-intro">
+  <div class="svc-intro__glow"></div>
+
+  <div class="svc-intro__arcs" aria-hidden="true">
+    <div class="intro__arc"></div>
+    <div class="intro__arc"></div>
+    <div class="intro__arc"></div>
+    <div class="intro__arc"></div>
+  </div>
+
+  <div class="svc-intro__inner">
+    <div class="intro__eyebrow">
+      <span class="intro__eyebrow-dot"></span>
+      Portfolio · Case Studies
+      <span class="intro__eyebrow-line"></span>
+    </div>
+
+    <h1 class="intro__title">
+      <span class="intro__title-line"><span class="intro__title-inner">Selected</span></span>
+      <span class="intro__title-line"><span class="intro__title-inner"><em>work</em>.</span></span>
+    </h1>
+
+    <div class="intro__meta">
+      <p class="intro__desc">
+        Every project is a <em>shot taken</em>. Brands, campaigns and identities
+        engineered to land — explore what we aimed at, and where it hit.
+      </p>
+      <div class="intro__count">
+        <span class="intro__count-num">07</span>
+        <span class="intro__count-label">Projects · Selected</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="intro__scroll">
+    <span class="intro__scroll-text">Scroll to explore</span>
+    <div class="intro__scroll-line">
+      <div class="scroll-dot"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════
+     02  FILTER BAR
+══════════════════════════════════════════ -->
+<div class="filter-bar">
+  <div class="filter-bar__group">
+    <button class="filter-btn" [class.is-active]="activeFilter === 'all'"       (click)="setFilter('all')">All</button>
+    <button class="filter-btn" [class.is-active]="activeFilter === 'brand'"     (click)="setFilter('brand')">Brand</button>
+    <button class="filter-btn" [class.is-active]="activeFilter === 'campaign'"  (click)="setFilter('campaign')">Campaigns</button>
+    <button class="filter-btn" [class.is-active]="activeFilter === 'motion'"    (click)="setFilter('motion')">Motion</button>
+    <button class="filter-btn" [class.is-active]="activeFilter === 'web'"       (click)="setFilter('web')">Web</button>
+  </div>
+  <div class="filter-bar__count"><strong>{{ filterCount }}</strong> projects</div>
 </div>
 
-@if (introCompleted) {
-  <main class="svc-main">
+<!-- ══════════════════════════════════════════
+     03  WORK GRID
+══════════════════════════════════════════ -->
+<section class="work-grid-sec">
+  <div class="work-grid" id="workGrid">
 
-    <!-- ── Hero ──────────────────────────────────────────── -->
-    <section class="svc-hero">
-      <div class="svc-hero__inner">
-        <span class="svc-eyebrow">What We Do</span>
-
-        @if (selection.selected(); as work) {
-          <h1 class="svc-hero__title">
-            You chose<br>
-            <em [style.color]="work.color">{{ work.category }}.</em>
-          </h1>
-          <p class="svc-hero__sub">
-            That's one of six disciplines we've mastered. Here's the full picture.
-          </p>
-        } @else {
-          <h1 class="svc-hero__title">
-            Six Disciplines.<br>
-            <em class="svc-grad">One Vision.</em>
-          </h1>
-          <p class="svc-hero__sub">
-            Every service engineered with one goal — your success.
-          </p>
-        }
+    <!-- 01 Zamil & Kharrashi — LG -->
+    <article class="work-item work-item--lg" data-cat="brand" style="--w-color:#3d1a7a">
+      <div class="work-item__media">
+        <div class="work-item__deco" data-deco>
+          <svg viewBox="0 0 400 400" fill="none">
+            <circle cx="200" cy="200" r="180" stroke="rgba(255,255,255,.16)"/>
+            <circle cx="200" cy="200" r="135" stroke="rgba(255,255,255,.22)"/>
+            <circle cx="200" cy="200" r="90"  stroke="rgba(255,255,255,.32)"/>
+            <circle cx="200" cy="200" r="45"  stroke="rgba(255,255,255,.5)"/>
+            <circle cx="200" cy="200" r="14"  fill="rgba(255,255,255,.85)"/>
+          </svg>
+        </div>
       </div>
-    </section>
-
-    <!-- ── Services accordion ──────────────────────────── -->
-    <section class="svc-list">
-      @for (service of services; track service.title; let i = $index) {
-        <article
-          class="svc-row"
-          [class.is-open]="activeIdx === i"
-          [style.--accent]="service.works[0].color"
-          (click)="toggle(i)">
-
-          <div class="svc-row__head">
-            <span class="svc-row__num">{{ service.tag }}</span>
-            <h2 class="svc-row__title">{{ service.title }}</h2>
-            <span class="svc-row__icon" aria-hidden="true">{{ service.icon }}</span>
-            <div class="svc-row__plus"><span></span><span></span></div>
-          </div>
-
-          <div class="svc-row__body">
-            <div class="svc-row__body-inner">
-
-              <!-- Description + tags -->
-              <div class="svc-row__left">
-                <p class="svc-row__desc">{{ service.desc }}</p>
-                <div class="svc-row__tags">
-                  @for (work of service.works; track work.title) {
-                    <span class="svc-tag" [style.color]="work.color">{{ work.title }}</span>
-                  }
-                </div>
-              </div>
-
-              <!-- Work preview cards -->
-              <div class="svc-row__previews">
-                @for (work of service.works; track work.title; let j = $index) {
-                  <div class="work-prev" [style.--c]="work.color">
-                    <span class="work-prev__num">{{ service.tag }}.0{{ j + 1 }}</span>
-                    <span class="work-prev__label">Case Study</span>
-                    <span class="work-prev__title">{{ work.title }}</span>
-                  </div>
-                }
-              </div>
-
-            </div>
-          </div>
-        </article>
-      }
-    </section>
-
-    <!-- ── CTA ───────────────────────────────────────────── -->
-    <section class="svc-cta">
-      <div class="svc-cta__inner">
-        <span class="svc-eyebrow">Ready?</span>
-        <h2 class="svc-cta__title">
-          Let's Build<br>
-          <em class="svc-grad">Something Real.</em>
-        </h2>
-        <a routerLink="/cart" class="svc-cta__btn">Start a Project →</a>
+      <div class="work-item__shade"></div>
+      <div class="work-item__view">
+        <svg viewBox="0 0 18 18" fill="none"><path d="M3 15L15 3M15 3H6M15 3V12" stroke="currentColor" stroke-width="1.5"/></svg>
       </div>
-    </section>
+      <div class="work-item__content">
+        <div class="work-item__top">
+          <span class="work-item__tag">Brand Identity</span>
+          <span class="work-item__index">01</span>
+        </div>
+        <div class="work-item__bottom">
+          <div class="work-item__client">— Zamil &amp; Kharrashi</div>
+          <h3 class="work-item__title">A legal practice, <em>refreshed</em></h3>
+          <p class="work-item__desc">Complete identity system, digital platform and visual language for one of KSA's leading legal firms.</p>
+          <div class="work-item__meta">
+            <span class="work-item__meta-item"><strong>Year</strong> 2025</span>
+            <span class="work-item__meta-item"><strong>Scope</strong> Brand · Web</span>
+          </div>
+        </div>
+      </div>
+    </article>
 
-  </main>
-}
+    <!-- 02 Arabsat — MD -->
+    <article class="work-item work-item--md" data-cat="campaign" style="--w-color:#5c2ea8">
+      <div class="work-item__media">
+        <div class="work-item__deco" data-deco>
+          <svg viewBox="0 0 400 400" fill="none">
+            <circle cx="240" cy="200" r="120" stroke="rgba(255,255,255,.2)"/>
+            <circle cx="240" cy="200" r="80"  stroke="rgba(255,255,255,.3)"/>
+            <circle cx="240" cy="200" r="40"  stroke="rgba(255,255,255,.5)"/>
+            <circle cx="240" cy="200" r="12"  fill="rgba(255,255,255,.85)"/>
+            <line x1="40" y1="80" x2="228" y2="190" stroke="rgba(255,255,255,.7)" stroke-width="3"/>
+            <path d="M218 178 L232 196 L210 200 Z" fill="rgba(255,255,255,.85)"/>
+          </svg>
+        </div>
+      </div>
+      <div class="work-item__shade"></div>
+      <div class="work-item__view">
+        <svg viewBox="0 0 18 18" fill="none"><path d="M3 15L15 3M15 3H6M15 3V12" stroke="currentColor" stroke-width="1.5"/></svg>
+      </div>
+      <div class="work-item__content">
+        <div class="work-item__top">
+          <span class="work-item__tag">Campaign</span>
+          <span class="work-item__index">02</span>
+        </div>
+        <div class="work-item__bottom">
+          <div class="work-item__client">— Arabsat</div>
+          <h3 class="work-item__title">Signal <em>uplift</em></h3>
+          <p class="work-item__desc">Regional awareness campaign across broadcast, OOH and social.</p>
+          <div class="work-item__meta">
+            <span class="work-item__meta-item"><strong>Year</strong> 2025</span>
+            <span class="work-item__meta-item"><strong>Reach</strong> 12M+</span>
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <!-- 03 Mobily — SM -->
+    <article class="work-item work-item--sm" data-cat="motion" style="--w-color:#6a3bbf">
+      <div class="work-item__media">
+        <div class="work-item__deco" data-deco>
+          <svg viewBox="0 0 400 400" fill="none">
+            <path d="M40 320 Q150 180 280 100 T380 60" stroke="rgba(255,255,255,.4)" stroke-width="2" stroke-dasharray="6 6" fill="none"/>
+            <path d="M300 70 L380 80 L340 110 L360 140 Z" fill="rgba(255,255,255,.7)"/>
+          </svg>
+        </div>
+      </div>
+      <div class="work-item__shade"></div>
+      <div class="work-item__view">
+        <svg viewBox="0 0 18 18" fill="none"><path d="M3 15L15 3M15 3H6M15 3V12" stroke="currentColor" stroke-width="1.5"/></svg>
+      </div>
+      <div class="work-item__content">
+        <div class="work-item__top">
+          <span class="work-item__tag">Motion</span>
+          <span class="work-item__index">03</span>
+        </div>
+        <div class="work-item__bottom">
+          <div class="work-item__client">— Mobily</div>
+          <h3 class="work-item__title">Ramadan <em>film</em></h3>
+          <p class="work-item__desc">60-second hero film + cutdowns.</p>
+          <div class="work-item__meta">
+            <span class="work-item__meta-item"><strong>Year</strong> 2024</span>
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <!-- 04 Saudia — SM -->
+    <article class="work-item work-item--sm" data-cat="web" style="--w-color:#4a1c8a">
+      <div class="work-item__media">
+        <div class="work-item__deco" data-deco>
+          <svg viewBox="0 0 400 400" fill="none">
+            <rect x="80" y="100" width="240" height="180" rx="12" stroke="rgba(255,255,255,.3)" stroke-width="2"/>
+            <line x1="80" y1="140" x2="320" y2="140" stroke="rgba(255,255,255,.2)" stroke-width="2"/>
+            <circle cx="100" cy="120" r="4" fill="rgba(255,255,255,.5)"/>
+            <rect x="100" y="160" width="100" height="60" rx="6" fill="rgba(255,255,255,.12)"/>
+          </svg>
+        </div>
+      </div>
+      <div class="work-item__shade"></div>
+      <div class="work-item__view">
+        <svg viewBox="0 0 18 18" fill="none"><path d="M3 15L15 3M15 3H6M15 3V12" stroke="currentColor" stroke-width="1.5"/></svg>
+      </div>
+      <div class="work-item__content">
+        <div class="work-item__top">
+          <span class="work-item__tag">Web</span>
+          <span class="work-item__index">04</span>
+        </div>
+        <div class="work-item__bottom">
+          <div class="work-item__client">— Saudia</div>
+          <h3 class="work-item__title">Booking <em>flow</em></h3>
+          <p class="work-item__desc">End-to-end UX redesign of the booking experience.</p>
+          <div class="work-item__meta">
+            <span class="work-item__meta-item"><strong>Year</strong> 2024</span>
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <!-- 05 Solidere — SM -->
+    <article class="work-item work-item--sm" data-cat="brand" style="--w-color:#7a3edb">
+      <div class="work-item__media">
+        <div class="work-item__deco" data-deco>
+          <svg viewBox="0 0 400 400" fill="none">
+            <circle cx="200" cy="200" r="120" stroke="rgba(255,255,255,.25)"/>
+            <circle cx="200" cy="200" r="75"  stroke="rgba(255,255,255,.4)"/>
+            <circle cx="200" cy="200" r="30"  fill="rgba(255,255,255,.6)"/>
+          </svg>
+        </div>
+      </div>
+      <div class="work-item__shade"></div>
+      <div class="work-item__view">
+        <svg viewBox="0 0 18 18" fill="none"><path d="M3 15L15 3M15 3H6M15 3V12" stroke="currentColor" stroke-width="1.5"/></svg>
+      </div>
+      <div class="work-item__content">
+        <div class="work-item__top">
+          <span class="work-item__tag">Identity</span>
+          <span class="work-item__index">05</span>
+        </div>
+        <div class="work-item__bottom">
+          <div class="work-item__client">— Solidere</div>
+          <h3 class="work-item__title">Quarter <em>rebrand</em></h3>
+          <p class="work-item__desc">Placemaking identity for a mixed-use district.</p>
+          <div class="work-item__meta">
+            <span class="work-item__meta-item"><strong>Year</strong> 2024</span>
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <!-- 06 stc Pay — MD -->
+    <article class="work-item work-item--md" data-cat="campaign" style="--w-color:#8a4fff">
+      <div class="work-item__media">
+        <div class="work-item__deco" data-deco>
+          <svg viewBox="0 0 400 400" fill="none">
+            <circle cx="200" cy="200" r="150" stroke="rgba(255,255,255,.18)"/>
+            <circle cx="200" cy="200" r="100" stroke="rgba(255,255,255,.28)"/>
+            <circle cx="200" cy="200" r="50"  stroke="rgba(255,255,255,.45)"/>
+            <circle cx="200" cy="200" r="16"  fill="rgba(255,255,255,.85)"/>
+          </svg>
+        </div>
+      </div>
+      <div class="work-item__shade"></div>
+      <div class="work-item__view">
+        <svg viewBox="0 0 18 18" fill="none"><path d="M3 15L15 3M15 3H6M15 3V12" stroke="currentColor" stroke-width="1.5"/></svg>
+      </div>
+      <div class="work-item__content">
+        <div class="work-item__top">
+          <span class="work-item__tag">Campaign</span>
+          <span class="work-item__index">06</span>
+        </div>
+        <div class="work-item__bottom">
+          <div class="work-item__client">— stc Pay</div>
+          <h3 class="work-item__title">Series <em>launch</em></h3>
+          <p class="work-item__desc">Multi-phase product launch campaign with motion-led social content.</p>
+          <div class="work-item__meta">
+            <span class="work-item__meta-item"><strong>Year</strong> 2024</span>
+            <span class="work-item__meta-item"><strong>Engagement</strong> +5x</span>
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <!-- 07 Studio — WIDE -->
+    <article class="work-item work-item--wide" data-cat="motion" style="--w-color:#2d0d5e">
+      <div class="work-item__media">
+        <div class="work-item__deco" data-deco style="width:40%;height:200%">
+          <svg viewBox="0 0 400 400" fill="none">
+            <circle cx="200" cy="200" r="160" stroke="rgba(255,255,255,.12)"/>
+            <circle cx="200" cy="200" r="100" stroke="rgba(255,255,255,.2)"/>
+            <circle cx="200" cy="200" r="45"  stroke="rgba(255,255,255,.35)"/>
+            <circle cx="200" cy="200" r="14"  fill="rgba(255,255,255,.7)"/>
+          </svg>
+        </div>
+      </div>
+      <div class="work-item__shade"></div>
+      <div class="work-item__view">
+        <svg viewBox="0 0 18 18" fill="none"><path d="M3 15L15 3M15 3H6M15 3V12" stroke="currentColor" stroke-width="1.5"/></svg>
+      </div>
+      <div class="work-item__content">
+        <div class="work-item__top">
+          <span class="work-item__tag">Brand · Motion · Web</span>
+          <span class="work-item__index">07</span>
+        </div>
+        <div class="work-item__bottom">
+          <div class="work-item__client">— Studio commission</div>
+          <h3 class="work-item__title">A 6-year retrospective, <em>building toward 100</em></h3>
+          <p class="work-item__desc">Looking back at what landed, what missed, and what shaped how we work.</p>
+          <div class="work-item__meta">
+            <span class="work-item__meta-item"><strong>Status</strong> In progress</span>
+            <span class="work-item__meta-item"><strong>Release</strong> Q4 2026</span>
+          </div>
+        </div>
+      </div>
+    </article>
+
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════
+     04  HORIZONTAL SHOWCASE
+══════════════════════════════════════════ -->
+<section class="showcase">
+  <div class="showcase__pin">
+    <div class="showcase__intro">
+      <div class="showcase__label">Featured · Scroll sideways</div>
+      <h2 class="showcase__heading">The ones we're<br><em>proud of</em>.</h2>
+    </div>
+
+    <div class="showcase__track" id="showcaseTrack">
+
+      <div class="showcase__card" style="--sc-color:#3d1a7a">
+        <div class="showcase__card-media"></div>
+        <div class="showcase__card-deco" data-sc-deco>
+          <svg viewBox="0 0 400 400" fill="none">
+            <circle cx="200" cy="200" r="170" stroke="rgba(255,255,255,.16)"/>
+            <circle cx="200" cy="200" r="120" stroke="rgba(255,255,255,.24)"/>
+            <circle cx="200" cy="200" r="70"  stroke="rgba(255,255,255,.38)"/>
+            <circle cx="200" cy="200" r="24"  fill="rgba(255,255,255,.8)"/>
+          </svg>
+        </div>
+        <div class="showcase__card-shade"></div>
+        <div class="showcase__card-content">
+          <span class="showcase__card-num">01</span>
+          <div class="showcase__card-info">
+            <div class="showcase__card-cat">Brand Identity · 2025</div>
+            <h3 class="showcase__card-title">Zamil &amp; <em>Kharrashi</em></h3>
+          </div>
+        </div>
+      </div>
+
+      <div class="showcase__card" style="--sc-color:#5c2ea8">
+        <div class="showcase__card-media"></div>
+        <div class="showcase__card-deco" data-sc-deco>
+          <svg viewBox="0 0 400 400" fill="none">
+            <circle cx="250" cy="180" r="110" stroke="rgba(255,255,255,.22)"/>
+            <circle cx="250" cy="180" r="65"  stroke="rgba(255,255,255,.35)"/>
+            <circle cx="250" cy="180" r="20"  fill="rgba(255,255,255,.8)"/>
+            <line x1="40" y1="60" x2="238" y2="172" stroke="rgba(255,255,255,.6)" stroke-width="3"/>
+          </svg>
+        </div>
+        <div class="showcase__card-shade"></div>
+        <div class="showcase__card-content">
+          <span class="showcase__card-num">02</span>
+          <div class="showcase__card-info">
+            <div class="showcase__card-cat">Campaign · 2025</div>
+            <h3 class="showcase__card-title">Arabsat <em>uplift</em></h3>
+          </div>
+        </div>
+      </div>
+
+      <div class="showcase__card" style="--sc-color:#6a3bbf">
+        <div class="showcase__card-media"></div>
+        <div class="showcase__card-deco" data-sc-deco>
+          <svg viewBox="0 0 400 400" fill="none">
+            <path d="M40 340 Q160 180 300 90 T390 50" stroke="rgba(255,255,255,.4)" stroke-width="2.5" stroke-dasharray="7 7" fill="none"/>
+            <path d="M310 60 L390 70 L350 100 L370 130 Z" fill="rgba(255,255,255,.7)"/>
+          </svg>
+        </div>
+        <div class="showcase__card-shade"></div>
+        <div class="showcase__card-content">
+          <span class="showcase__card-num">03</span>
+          <div class="showcase__card-info">
+            <div class="showcase__card-cat">Motion · 2024</div>
+            <h3 class="showcase__card-title">Mobily <em>Ramadan</em></h3>
+          </div>
+        </div>
+      </div>
+
+      <div class="showcase__card" style="--sc-color:#4a1c8a">
+        <div class="showcase__card-media"></div>
+        <div class="showcase__card-deco" data-sc-deco>
+          <svg viewBox="0 0 400 400" fill="none">
+            <circle cx="200" cy="200" r="140" stroke="rgba(255,255,255,.2)"/>
+            <circle cx="200" cy="200" r="85"  stroke="rgba(255,255,255,.35)"/>
+            <circle cx="200" cy="200" r="35"  fill="rgba(255,255,255,.6)"/>
+          </svg>
+        </div>
+        <div class="showcase__card-shade"></div>
+        <div class="showcase__card-content">
+          <span class="showcase__card-num">04</span>
+          <div class="showcase__card-info">
+            <div class="showcase__card-cat">Identity · 2024</div>
+            <h3 class="showcase__card-title">Solidere <em>district</em></h3>
+          </div>
+        </div>
+      </div>
+
+      <div class="showcase__card" style="--sc-color:#8a4fff">
+        <div class="showcase__card-media"></div>
+        <div class="showcase__card-deco" data-sc-deco>
+          <svg viewBox="0 0 400 400" fill="none">
+            <circle cx="200" cy="200" r="160" stroke="rgba(255,255,255,.16)"/>
+            <circle cx="200" cy="200" r="100" stroke="rgba(255,255,255,.28)"/>
+            <circle cx="200" cy="200" r="50"  stroke="rgba(255,255,255,.45)"/>
+            <circle cx="200" cy="200" r="16"  fill="rgba(255,255,255,.85)"/>
+          </svg>
+        </div>
+        <div class="showcase__card-shade"></div>
+        <div class="showcase__card-content">
+          <span class="showcase__card-num">05</span>
+          <div class="showcase__card-info">
+            <div class="showcase__card-cat">Campaign · 2024</div>
+            <h3 class="showcase__card-title">stc Pay <em>launch</em></h3>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="showcase__progress">
+      <span class="showcase__progress-label"><strong>{{ scNum }}</strong> / 05</span>
+      <div class="showcase__progress-track">
+        <div class="showcase__progress-fill" [style.width.%]="scProgress"></div>
+      </div>
+      <span class="showcase__progress-label">Scroll to move</span>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════
+     05  CASE STUDY
+══════════════════════════════════════════ -->
+<section class="case">
+  <div class="case__pin">
+    <div class="case__left">
+      <div class="case__label">Case Study · 01</div>
+      <div class="case__client">— Zamil &amp; Kharrashi</div>
+      <h2 class="case__title">Inside a <em>visual identity</em>.</h2>
+      <p class="case__desc">
+        Six deliverables, one system. Scroll through the logo construction, palette,
+        typography, applications and the final brand world.
+      </p>
+      <div class="case__tags">
+        <span class="case__tag">Logo</span>
+        <span class="case__tag">Palette</span>
+        <span class="case__tag">Type</span>
+        <span class="case__tag">Stationery</span>
+        <span class="case__tag">Digital</span>
+      </div>
+      <div class="case__counter">
+        <span class="case__counter-current">{{ caseCurrent }}</span>
+        <span class="case__counter-total">/ 06</span>
+        <span class="case__counter-label">{{ caseLabel }}</span>
+      </div>
+    </div>
+
+    <div class="case__right">
+      <div class="case__stack">
+
+        <div class="case__slide" style="--slide-color:#3d1a7a">
+          <div class="case__slide-media"></div>
+          <div class="case__slide-deco">
+            <svg viewBox="0 0 400 400" fill="none">
+              <circle cx="200" cy="200" r="150" stroke="rgba(255,255,255,.2)"/>
+              <circle cx="200" cy="200" r="100" stroke="rgba(255,255,255,.3)"/>
+              <circle cx="200" cy="200" r="50"  stroke="rgba(255,255,255,.5)"/>
+              <circle cx="200" cy="200" r="16"  fill="#fff"/>
+              <line x1="200" y1="20" x2="200" y2="380" stroke="rgba(255,255,255,.15)" stroke-dasharray="4 4"/>
+              <line x1="20" y1="200" x2="380" y2="200" stroke="rgba(255,255,255,.15)" stroke-dasharray="4 4"/>
+            </svg>
+          </div>
+          <span class="case__slide-label">01 · Logo Construction</span>
+        </div>
+
+        <div class="case__slide" style="--slide-color:#4a1c8a">
+          <div class="case__slide-media"></div>
+          <div class="case__slide-deco">
+            <svg viewBox="0 0 400 400" fill="none">
+              <rect x="60"  y="120" width="60" height="160" rx="6" fill="rgba(255,255,255,.7)"/>
+              <rect x="130" y="120" width="60" height="160" rx="6" fill="rgba(196,155,255,.6)"/>
+              <rect x="200" y="120" width="60" height="160" rx="6" fill="rgba(138,79,255,.6)"/>
+              <rect x="270" y="120" width="60" height="160" rx="6" fill="rgba(92,46,168,.6)"/>
+            </svg>
+          </div>
+          <span class="case__slide-label">02 · Colour Palette</span>
+        </div>
+
+        <div class="case__slide" style="--slide-color:#5c2ea8">
+          <div class="case__slide-media"></div>
+          <div class="case__slide-deco">
+            <svg viewBox="0 0 400 400" fill="none">
+              <text x="200" y="220" font-family="serif" font-size="160" font-style="italic"
+                    fill="rgba(255,255,255,.85)" text-anchor="middle">Aa</text>
+            </svg>
+          </div>
+          <span class="case__slide-label">03 · Typography</span>
+        </div>
+
+        <div class="case__slide" style="--slide-color:#6a3bbf">
+          <div class="case__slide-media"></div>
+          <div class="case__slide-deco">
+            <svg viewBox="0 0 400 400" fill="none">
+              <rect x="90" y="80"  width="220" height="150" rx="10" stroke="rgba(255,255,255,.4)" stroke-width="2"/>
+              <rect x="120" y="190" width="160" height="120" rx="10" fill="rgba(255,255,255,.15)" stroke="rgba(255,255,255,.4)" stroke-width="2"/>
+              <circle cx="200" cy="140" r="22" fill="rgba(255,255,255,.6)"/>
+            </svg>
+          </div>
+          <span class="case__slide-label">04 · Stationery</span>
+        </div>
+
+        <div class="case__slide" style="--slide-color:#7a3edb">
+          <div class="case__slide-media"></div>
+          <div class="case__slide-deco">
+            <svg viewBox="0 0 400 400" fill="none">
+              <rect x="140" y="60" width="120" height="240" rx="20" stroke="rgba(255,255,255,.4)" stroke-width="2"/>
+              <circle cx="200" cy="160" r="40" stroke="rgba(255,255,255,.5)" stroke-width="2"/>
+              <circle cx="200" cy="160" r="14" fill="rgba(255,255,255,.7)"/>
+            </svg>
+          </div>
+          <span class="case__slide-label">05 · Digital / App</span>
+        </div>
+
+        <div class="case__slide" style="--slide-color:#8a4fff">
+          <div class="case__slide-media"></div>
+          <div class="case__slide-deco">
+            <svg viewBox="0 0 400 400" fill="none">
+              <circle cx="200" cy="200" r="160" stroke="rgba(255,255,255,.18)"/>
+              <circle cx="200" cy="200" r="110" stroke="rgba(255,255,255,.28)"/>
+              <circle cx="200" cy="200" r="60"  stroke="rgba(255,255,255,.45)"/>
+              <circle cx="200" cy="200" r="20"  fill="#fff"/>
+            </svg>
+          </div>
+          <span class="case__slide-label">06 · Brand World</span>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════
+     06  STRIP
+══════════════════════════════════════════ -->
+<div class="strip">
+  <div class="strip__track" id="stripTrack"></div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     07  CTA
+══════════════════════════════════════════ -->
+<section class="svc-cta">
+  <div class="svc-cta__glow"></div>
+  <div class="svc-cta__inner">
+    <h2 class="svc-cta__title">Got a target<br>in <em>mind</em>?</h2>
+    <p class="svc-cta__desc">Let's add your project to the next reel. Tell us what you're aiming at.</p>
+    <a routerLink="/cart" class="svc-cta__btn">
+      <span>Start a Project</span>
+      <svg viewBox="0 0 24 24" fill="none">
+        <path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </a>
+  </div>
+</section>
