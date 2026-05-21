@@ -7,8 +7,7 @@
   pointer-events: none; // let arcs beneath receive nothing, navbar itself still clickable via children
 
   &__inner {
-    max-width: 1280px;
-    margin: 0 auto;
+    width: 100%;
     padding: 1.6rem 3rem;
     display: flex;
     align-items: center;
@@ -21,7 +20,7 @@
     align-items: center;
     text-decoration: none;
     img {
-      height: 44px;
+      height: 64px;
       width: auto;
       object-fit: contain;
     }

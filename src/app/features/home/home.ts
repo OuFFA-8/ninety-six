@@ -39,7 +39,7 @@ export class Home implements AfterViewInit, OnDestroy {
   private ngZone = inject(NgZone);
 
   showLoading = false;
-  showDartIntro = true;
+  showDartIntro = !sessionStorage.getItem('dartIntroPlayed');
 
   onLoadingDone(): void {
     this.showLoading = false;
@@ -53,6 +53,7 @@ export class Home implements AfterViewInit, OnDestroy {
 
   onDartIntroDone(): void {
     this.showDartIntro = false;
+    sessionStorage.setItem('dartIntroPlayed', '1');
     // Hero entrance begins after a short beat (veil still covers)
     setTimeout(() => this.heroComp.playEntrance(), 380);
     // Veil fades out, revealing the hero mid-entrance
@@ -355,6 +356,11 @@ export class Home implements AfterViewInit, OnDestroy {
     this.initTestimonials();
     this.initPartners();
     this.initFooter();
+
+    // Skip dart intro on return visit — play hero entrance directly
+    if (!this.showDartIntro) {
+      setTimeout(() => this.heroComp?.playEntrance(), 100);
+    }
   }
 
   ngOnDestroy() {

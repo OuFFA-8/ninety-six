@@ -29,7 +29,7 @@
 
 <!-- ═══ SERVICES ═══ -->
 <section class="services-portal">
-  <div class="section-head">
+  <div class="section-head section-head--center">
     <div class="section-head__label" data-num="01">What We Do</div>
     <h2 class="section-head__title">Services Built<br>to <em>Perform</em>.</h2>
     <p class="section-head__sub">Every service engineered with one goal — your success.</p>
@@ -42,21 +42,20 @@
           <div class="deck-card__inner">
             <div class="deck-card__left">
               <span class="deck-card__tag">{{ service.tag }}</span>
-              <span class="deck-card__icon">{{ service.icon }}</span>
               <h3 class="deck-card__title">{{ service.title }}</h3>
               <p>{{ service.desc }}</p>
               <span class="deck-card__cta">Explore Work →</span>
             </div>
 
             <div class="deck-card__right">
-              <div class="deck-card__works">
-                @for (work of service.works; track work.title; let wi = $index) {
-                  <div class="deck-work-item" [style.--wi]="wi" [style.--accent]="work.color">
-                    <span class="deck-work-item__num">{{ '0' + (wi + 1) }}</span>
-                    <span class="deck-work-item__title">{{ work.title }}</span>
-                    <span class="deck-work-item__arrow">→</span>
-                  </div>
-                }
+              <div class="deck-card__media" [style.--c]="service.works[0].color">
+                <div class="deck-card__media-bg"></div>
+                <div class="deck-card__play">
+                  <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                    <path d="M6 4L16 10L6 16V4Z" fill="currentColor"/>
+                  </svg>
+                </div>
+                <div class="deck-card__media-label">{{ service.title }}</div>
               </div>
             </div>
           </div>
@@ -131,7 +130,7 @@
 
 <!-- ═══ GALLERY ═══ -->
 <section class="gallery-section">
-  <div class="section-head">
+  <div class="section-head section-head--center">
     <div class="section-head__label" data-num="03">Portfolio</div>
     <h2 class="section-head__title">Built to<br><em>Impress</em>.</h2>
     <p class="section-head__sub">A selection of work spanning six disciplines.</p>

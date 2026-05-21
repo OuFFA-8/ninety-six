@@ -189,6 +189,13 @@ app-hero,
 
     @media (max-width: 900px) { max-width: 100%; }
   }
+
+  // ── Centered variant ──────────────────────────────────────
+  &--center {
+    grid-template-columns: 1fr;
+    text-align: center;
+    justify-items: center;
+  }
 }
 
 .btn-primary {
@@ -528,15 +535,15 @@ app-hero,
     background: linear-gradient(135deg, #0c0420 0%, #150830 100%);
     border: 1px solid rgba(138, 79, 255, 0.2);
     border-radius: 28px;
-    padding: 4rem 5rem;
+    padding: 4.5rem 5rem;
     box-shadow:
       0 30px 80px rgba(0, 0, 0, 0.5),
       inset 0 1px 0 rgba(138, 79, 255, 0.08);
     display: grid;
-    grid-template-columns: 1.2fr 1fr;
+    grid-template-columns: 1fr 1.2fr;
     align-items: center;
-    gap: 5rem;
-    min-height: 420px;
+    gap: 4rem;
+    min-height: 540px;
     position: relative;
     overflow: hidden;
 
@@ -647,69 +654,65 @@ app-hero,
   }
 }
 
-// ── Work Items ──
-.deck-work-item {
+// ── Card media placeholder ──
+.deck-card__media {
+  width: 100%;
+  height: 100%;
+  min-height: 380px;
+  border-radius: 18px;
+  overflow: hidden;
+  position: relative;
+  background: #080214;
+  border: 1px solid rgba(255, 255, 255, 0.06);
   display: flex;
   align-items: center;
-  gap: 1.2rem;
-  padding: 1.2rem 0;
-  border-bottom: 1px solid rgba(138, 79, 255, 0.08);
+  justify-content: center;
   cursor: pointer;
-  transition: all 0.3s;
-  position: relative;
 
-  &:first-child {
-    border-top: 1px solid rgba(138, 79, 255, 0.08);
-  }
-
-  &::before {
-    content: '';
+  &-bg {
     position: absolute;
-    left: -1rem;
-    width: 3px;
-    height: 0%;
-    background: var(--accent, #8a4fff);
-    border-radius: 2px;
-    transition: height 0.3s;
+    inset: 0;
+    background:
+      radial-gradient(ellipse at 70% 30%, color-mix(in srgb, var(--c, #8a4fff) 28%, transparent), transparent 65%),
+      radial-gradient(ellipse at 20% 80%, color-mix(in srgb, var(--c, #8a4fff) 12%, transparent), transparent 55%);
+    transition: opacity 0.4s;
   }
 
-  &:hover {
-    padding-left: 0.5rem;
-    &::before {
-      height: 100%;
-    }
+  &:hover &-bg { opacity: 1.3; }
 
-    .deck-work-item__title {
-      color: #fff;
-    }
-    .deck-work-item__arrow {
-      opacity: 1;
-      transform: translateX(4px);
-    }
-  }
-
-  &__num {
-    font-size: 0.68rem;
-    font-weight: 700;
-    letter-spacing: 0.15em;
-    color: var(--accent, #8a4fff);
-    opacity: 0.7;
-    min-width: 24px;
-  }
-
-  &__title {
-    flex: 1;
-    font-size: 1.05rem;
-    font-weight: 600;
-    color: rgba(255, 255, 255, 0.65);
-    transition: color 0.3s;
-  }
-
-  &__arrow {
+  &-label {
+    position: absolute;
+    bottom: 1.4rem;
+    left: 1.6rem;
+    font-family: 'Playfair Display', Georgia, serif;
+    font-style: italic;
+    font-weight: 300;
     font-size: 1rem;
-    color: var(--accent, #8a4fff);
-    opacity: 0;
-    transition: all 0.3s;
+    color: rgba(255, 255, 255, 0.35);
+    letter-spacing: 0.02em;
+    pointer-events: none;
+  }
+}
+
+.deck-card__play {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: rgba(255, 255, 255, 0.6);
+  position: relative;
+  z-index: 1;
+  backdrop-filter: blur(8px);
+  background: rgba(255, 255, 255, 0.05);
+  transition: border-color 0.3s, color 0.3s, transform 0.3s;
+
+  .deck-card__media:hover & {
+    border-color: var(--c, #8a4fff);
+    color: #fff;
+    transform: scale(1.1);
   }
 }
 // ══════════════════════════════
@@ -750,17 +753,13 @@ app-hero,
 
   &__head {
     display: grid;
-    grid-template-columns: auto 1fr auto;
-    align-items: end;
-    gap: 3rem;
+    grid-template-columns: 1fr;
+    text-align: center;
+    justify-items: center;
+    gap: 1.5rem;
     margin-bottom: 6rem;
     border-bottom: 1px solid rgba(255, 255, 255, 0.07);
     padding-bottom: 2.5rem;
-
-    @media (max-width: 900px) {
-      grid-template-columns: 1fr;
-      gap: 1.5rem;
-    }
   }
 
   &__label {
