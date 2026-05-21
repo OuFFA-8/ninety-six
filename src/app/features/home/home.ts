@@ -54,6 +54,7 @@ export class Home implements AfterViewInit, OnDestroy {
   onDartIntroDone(): void {
     this.showDartIntro = false;
     sessionStorage.setItem('dartIntroPlayed', '1');
+    this.unlockScroll();
     // Hero entrance begins after a short beat (veil still covers)
     setTimeout(() => this.heroComp.playEntrance(), 380);
     // Veil fades out, revealing the hero mid-entrance
@@ -357,8 +358,10 @@ export class Home implements AfterViewInit, OnDestroy {
     this.initPartners();
     this.initFooter();
 
-    // Skip dart intro on return visit — play hero entrance directly
-    if (!this.showDartIntro) {
+    if (this.showDartIntro) {
+      document.body.style.overflow = 'hidden';
+      document.documentElement.style.overflow = 'hidden';
+    } else {
       setTimeout(() => this.heroComp?.playEntrance(), 100);
     }
   }
@@ -367,6 +370,12 @@ export class Home implements AfterViewInit, OnDestroy {
     ScrollTrigger.getAll().forEach((t) => t.kill());
     if (this._veilRaf) cancelAnimationFrame(this._veilRaf);
     if (this._pageStarRaf) cancelAnimationFrame(this._pageStarRaf);
+    this.unlockScroll();
+  }
+
+  private unlockScroll(): void {
+    document.body.style.overflow = '';
+    document.documentElement.style.overflow = '';
   }
 
   // ── Transition veil stars ──────────────────────────────
