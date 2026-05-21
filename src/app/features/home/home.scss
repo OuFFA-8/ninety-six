@@ -73,6 +73,7 @@
 
 // All direct content sits above the global star canvas
 app-hero,
+.manifesto,
 .services-portal,
 .impact,
 .works,
@@ -190,6 +191,17 @@ app-hero,
     line-height: 1.65;
     font-weight: 300;
 
+    em {
+      font-family: 'Fraunces', serif;
+      font-style: italic;
+      font-weight: 300;
+      background: linear-gradient(135deg, #c49bff, #8a4fff);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      padding-right: 0.08em;
+    }
+
     @media (max-width: 900px) { max-width: 100%; }
   }
 
@@ -198,6 +210,11 @@ app-hero,
     grid-template-columns: 1fr;
     text-align: center;
     justify-items: center;
+
+    .section-head__sub {
+      max-width: 480px;
+      text-align: center;
+    }
   }
 }
 
@@ -501,6 +518,113 @@ app-hero,
 }
 
 // ══════════════════════════════
+// MANIFESTO
+// ══════════════════════════════
+.manifesto {
+  padding: 7rem 5rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.07);
+  position: relative;
+  z-index: 2;
+
+  @media (max-width: 768px) { padding: 5rem 1.5rem; }
+
+  &__inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr 1.4fr;
+    gap: 6rem;
+    align-items: start;
+
+    @media (max-width: 900px) {
+      grid-template-columns: 1fr;
+      gap: 3rem;
+    }
+  }
+
+  &__label {
+    font-size: 0.6rem;
+    font-weight: 700;
+    letter-spacing: 0.35em;
+    text-transform: uppercase;
+    color: rgba(138, 79, 255, 0.6);
+    margin-bottom: 2.2rem;
+  }
+
+  &__chaos {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 1.05rem;
+    font-weight: 600;
+    color: rgba(255, 255, 255, 0.55);
+    margin-bottom: 1.2rem;
+
+    em {
+      font-family: 'Fraunces', serif;
+      font-style: italic;
+      font-weight: 300;
+      background: linear-gradient(135deg, #c49bff, #8a4fff);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      padding-right: 0.06em;
+    }
+  }
+
+  &__words {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    border-left: 1px solid rgba(138, 79, 255, 0.2);
+    padding-left: 1.6rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.1rem;
+
+    li {
+      font-family: 'Fraunces', serif;
+      font-style: italic;
+      font-weight: 300;
+      font-size: clamp(1.4rem, 2.2vw, 2rem);
+      line-height: 1.3;
+      background: linear-gradient(135deg, #c49bff 30%, #8a4fff);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      opacity: 0.75;
+      transition: opacity 0.3s;
+
+      &:hover { opacity: 1; }
+    }
+  }
+
+  &__right {
+    padding-top: 2.6rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.8rem;
+
+    @media (max-width: 900px) { padding-top: 0; }
+  }
+
+  &__statement {
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 700;
+    font-size: clamp(1.2rem, 2vw, 1.55rem);
+    line-height: 1.4;
+    letter-spacing: -0.02em;
+    color: #fff;
+  }
+
+  &__body {
+    font-size: 1rem;
+    line-height: 1.85;
+    color: rgba(255, 255, 255, 0.42);
+    font-weight: 300;
+    max-width: 520px;
+  }
+}
+
+// ══════════════════════════════
 // SERVICES PORTAL
 // ══════════════════════════════
 .services-portal {
@@ -575,11 +699,6 @@ app-hero,
     text-transform: uppercase;
   }
 
-  &__icon {
-    font-size: 2.2rem;
-    line-height: 1;
-  }
-
   &__title {
     font-family: 'Space Grotesk', sans-serif;
     font-size: clamp(2.2rem, 4vw, 3.5rem);
@@ -620,12 +739,6 @@ app-hero,
   &__right {
     position: relative;
     z-index: 1;
-  }
-
-  &__works {
-    display: flex;
-    flex-direction: column;
-    gap: 0;
   }
 
   // per card color

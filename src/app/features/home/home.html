@@ -27,11 +27,34 @@
 <!-- ═══ HERO (themed by selected work) ═══ -->
 <app-hero></app-hero>
 
+<!-- ═══ MANIFESTO ═══ -->
+<section class="manifesto">
+  <div class="manifesto__inner">
+    <div class="manifesto__left">
+      <div class="manifesto__label">96% Strategy</div>
+      <div class="manifesto__chaos">4% <em>Chaos</em></div>
+      <ul class="manifesto__words" aria-hidden="true">
+        <li><em>Vision</em></li>
+        <li><em>Attention</em></li>
+        <li><em>Emotion</em></li>
+        <li><em>Memory</em></li>
+        <li><em>Culture</em></li>
+        <li><em>Courage</em></li>
+        <li><em>Momentum</em></li>
+      </ul>
+    </div>
+    <div class="manifesto__right">
+      <p class="manifesto__statement">96 is for brands that are done blending in.</p>
+      <p class="manifesto__body">We create strategy, identity, content, and campaigns that turn your brand into work people notice, feel, remember, and act on.</p>
+    </div>
+  </div>
+</section>
+
 <!-- ═══ SERVICES ═══ -->
 <section class="services-portal">
   <div class="section-head section-head--center">
     <h2 class="section-head__title">Services Built<br />to <em>Perform</em>.</h2>
-    <p class="section-head__sub">Every service engineered with one goal — your success.</p>
+    <p class="section-head__sub">Every service engineered with one goal — <em>Attract.</em></p>
   </div>
 
   <div class="cards-deck-wrapper">
@@ -43,7 +66,7 @@
               <span class="deck-card__tag">{{ service.tag }}</span>
               <h3 class="deck-card__title">{{ service.title }}</h3>
               <p>{{ service.desc }}</p>
-              <span class="deck-card__cta">Explore Work →</span>
+              <span class="deck-card__cta">{{ service.cta }} →</span>
             </div>
 
             <div class="deck-card__right">
@@ -70,6 +93,7 @@
 
   <div class="impact__inner">
     <div class="impact__head">
+      <div class="impact__label">By the numbers</div>
       <h2 class="impact__title">Hits<br />that <em>landed</em>.</h2>
       <p class="impact__sub">
         Six years of refining how to make a brand <em>land</em>. The numbers track impact — not

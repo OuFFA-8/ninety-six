@@ -156,68 +156,57 @@ export class Home implements AfterViewInit, OnDestroy {
   services = [
     {
       tag: '01',
-      icon: '🎯',
-      title: 'Brand Strategy',
-      desc: 'Powerful brand identities that resonate with your audience and dominate the market.',
+      title: 'Branding & Identity',
+      desc: 'We build the foundation before the noise starts. Positioning, messaging, visual direction, logos, colors, typography, and brand systems designed to make your brand clear, recognizable, and hard to ignore.',
+      cta: 'Explore Identity',
       works: [
-        { title: 'Nike MENA', color: '#8a4fff' },
-        { title: 'Adidas Gulf', color: '#6a3bbf' },
-        { title: 'Pepsi Egypt', color: '#9d6fff' },
+        { title: 'Brand Systems', color: '#8a4fff' },
+        { title: 'Visual Identity', color: '#6a3bbf' },
+        { title: 'Logos', color: '#9d6fff' },
       ],
     },
     {
       tag: '02',
-      icon: '✦',
-      title: 'Visual Identity',
-      desc: 'Logos, color systems, typography — cohesive visual languages that tell your story.',
+      title: 'Graphic Design',
+      desc: 'Every visual touchpoint is a chance to say something without explaining. We design social posts, campaigns, decks, ads, and brand assets that carry your identity with consistency, taste, and edge.',
+      cta: 'Explore Design',
       works: [
-        { title: 'Noon Brand', color: '#5c2ea8' },
-        { title: 'Careem ID', color: '#8a4fff' },
-        { title: 'Talabat VI', color: '#7b52d4' },
+        { title: 'Social Assets', color: '#5c2ea8' },
+        { title: 'Campaigns', color: '#8a4fff' },
+        { title: 'Print Design', color: '#7b52d4' },
       ],
     },
     {
       tag: '03',
-      icon: '▶',
       title: 'Motion & Video',
-      desc: 'Cinematic video production and motion graphics that captivate and convert.',
+      desc: 'Static gets skipped. We create campaign videos, reels, motion graphics, and brand films that turn attention into emotion — and emotion into memory.',
+      cta: 'Explore Motion',
       works: [
-        { title: 'Ramadan Campaign', color: '#9d6fff' },
-        { title: 'Product Reel', color: '#8a4fff' },
-        { title: 'Brand Film', color: '#6a3bbf' },
+        { title: 'Brand Film', color: '#9d6fff' },
+        { title: 'Motion Graphics', color: '#8a4fff' },
+        { title: 'Reels', color: '#6a3bbf' },
       ],
     },
     {
       tag: '04',
-      icon: '◈',
-      title: 'Web Design',
-      desc: 'Pixel-perfect websites with immersive experiences that drive real results.',
+      title: 'Web & Mobile App Development',
+      desc: 'Your web & app are not decoration. It is where trust is built, interest is shaped, and action begins. We design digital experiences that look sharp, feel intentional, and move people forward.',
+      cta: 'Explore Development',
       works: [
-        { title: 'E-Commerce', color: '#7b52d4' },
-        { title: 'SaaS Landing', color: '#8a4fff' },
-        { title: 'Portfolio Site', color: '#5c2ea8' },
+        { title: 'Web Design', color: '#7b52d4' },
+        { title: 'Mobile App', color: '#8a4fff' },
+        { title: 'UX / UI', color: '#5c2ea8' },
       ],
     },
     {
       tag: '05',
-      icon: '◎',
-      title: 'Graphic Design',
-      desc: 'From social media to print — creative designs that make your brand unforgettable.',
-      works: [
-        { title: 'Social Pack', color: '#8a4fff' },
-        { title: 'OOH Campaign', color: '#9d6fff' },
-        { title: 'Print Design', color: '#6a3bbf' },
-      ],
-    },
-    {
-      tag: '06',
-      icon: '⬡',
       title: 'Digital Marketing',
-      desc: 'Data-driven campaigns that grow your reach and maximize your ROI.',
+      desc: 'We do not chase noise. We build direction. From content strategy to paid campaigns, we create marketing systems designed to attract the right audience, shape demand, and convert attention into action.',
+      cta: 'Explore Growth',
       works: [
-        { title: 'Meta Ads', color: '#5c2ea8' },
-        { title: 'SEO Campaign', color: '#8a4fff' },
-        { title: 'Email Marketing', color: '#7b52d4' },
+        { title: 'Paid Ads', color: '#8a4fff' },
+        { title: 'Content Strategy', color: '#9d6fff' },
+        { title: 'Email', color: '#6a3bbf' },
       ],
     },
   ];
@@ -351,11 +340,9 @@ export class Home implements AfterViewInit, OnDestroy {
     this.initCursor();
     this.initServiceCards();
     this.initStats();
-    this.initWorks();
     this.initCTA();
     this.initGallery();
     this.initTestimonials();
-    this.initPartners();
     this.initFooter();
 
     if (this.showDartIntro) {

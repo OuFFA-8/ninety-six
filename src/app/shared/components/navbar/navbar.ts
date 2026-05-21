@@ -20,11 +20,21 @@ export class Navbar implements AfterViewInit {
   @ViewChild('dropdown') dropdown!: ElementRef<HTMLElement>;
 
   isMenuOpen = false;
+  isHidden   = false;
+  private _lastY = 0;
 
   ngAfterViewInit(): void {
     gsap.from(this.navbar.nativeElement, {
       y: -80, opacity: 0, duration: 1.1, ease: 'power4.out',
     });
+    this._lastY = window.scrollY;
+  }
+
+  @HostListener('window:scroll')
+  onWindowScroll(): void {
+    const y = window.scrollY;
+    this.isHidden = y > 120 && y > this._lastY;
+    this._lastY = y;
   }
 
   toggleMenu(): void {

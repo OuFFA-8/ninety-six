@@ -31,7 +31,7 @@ export class Hero implements AfterViewInit, OnDestroy {
   private cycleTimer:   ReturnType<typeof setInterval> | null = null;
   private wordIdx       = 0;
   private readonly WORDS = [
-    'Results.', 'Impact.', 'Brands.', 'Stories.',
+    'Impact.', 'Results.', 'Brands.', 'Stories.',
     'Growth.', 'Vision.', 'Campaigns.', 'Futures.',
   ];
 

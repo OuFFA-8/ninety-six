@@ -5,6 +5,11 @@
   width: 100%;
   z-index: 9000;
   pointer-events: none; // let arcs beneath receive nothing, navbar itself still clickable via children
+  transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+
+  &.is-hidden {
+    transform: translateY(-100%);
+  }
 
   &__inner {
     width: 100%;
