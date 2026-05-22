@@ -16,22 +16,10 @@ export const routes: Routes = [
           import('./features/services/services').then((m) => m.ServicesPage),
       },
       {
-        path: 'cart',
-        loadComponent: () => import('./features/cart/cart').then((m) => m.Cart),
-      },
-      {
         path: 'contact',
         loadComponent: () => import('./features/contact/contact').then((m) => m.ContactPage),
       },
     ],
-  },
-  {
-    path: 'login',
-    loadComponent: () => import('./core/auth/login/login').then((m) => m.Login),
-  },
-  {
-    path: 'register',
-    loadComponent: () => import('./core/auth/register/register').then((m) => m.Register),
   },
   {
     path: '**',
