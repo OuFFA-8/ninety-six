@@ -303,6 +303,5 @@ export class ContactPage implements AfterViewInit, OnDestroy {
       { opacity: 0, y: 25, duration: 0.7, stagger: 0.08 },
       0.7,
     );
-    tl.from('.form__submit', { opacity: 0, y: 15, duration: 0.5 }, 1.3);
   }
 }
