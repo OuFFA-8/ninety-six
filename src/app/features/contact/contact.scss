@@ -498,7 +498,8 @@ $line-strong:  rgba(196, 155, 255, 0.3);
 
 // ── Submit ────────────────────────────────────────────────
 .form__submit {
-  position: relative;
+  position: sticky;
+  bottom: 0;
   overflow: hidden;
   display: inline-flex;
   align-items: center;

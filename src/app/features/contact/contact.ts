@@ -9,7 +9,6 @@ import {
 } from '@angular/core';
 import { isPlatformBrowser, CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { RouterLink } from '@angular/router';
 import gsap from 'gsap';
 import { CustomEase } from 'gsap/CustomEase';
 
@@ -300,9 +299,10 @@ export class ContactPage implements AfterViewInit, OnDestroy {
     );
     tl.from('.form-card', { opacity: 0, y: 50, duration: 1 }, 0.4);
     tl.from(
-      '.ct-field, .form__submit, .form-card__head',
+      '.ct-field, .form-card__head',
       { opacity: 0, y: 25, duration: 0.7, stagger: 0.08 },
       0.7,
     );
+    tl.from('.form__submit', { opacity: 0, y: 15, duration: 0.5 }, 1.3);
   }
 }
