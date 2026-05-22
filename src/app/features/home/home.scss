@@ -137,7 +137,6 @@ app-hero,
   align-items: end;
   gap: 3rem;
   padding-bottom: 2.5rem;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.07);
   margin-bottom: 5rem;
 
   @media (max-width: 900px) {
@@ -631,7 +630,14 @@ app-hero,
   padding: 9rem 5rem 0;
   position: relative;
   z-index: 1;
-  border-top: 1px solid rgba(255, 255, 255, 0.07);
+
+  > .section-head {
+    position: sticky;
+    top: 100px;
+    z-index: 0;
+    border-bottom: none;
+    transform-origin: center center;
+  }
 
   @media (max-width: 768px) { padding: 7rem 1.5rem 0; }
 }
@@ -641,7 +647,7 @@ app-hero,
 // ══════════════════════════════
 .cards-deck-wrapper {
   position: relative;
-  max-width: 1100px;
+  max-width: 1280px;
   margin: 0 auto;
   padding-bottom: 20rem;
 }
@@ -657,6 +663,7 @@ app-hero,
   position: sticky;
   top: 100px;
   padding-top: calc(var(--i) * 12px);
+  z-index: calc(var(--i, 0) + 1);
 
   &__inner {
     background: linear-gradient(135deg, #0c0420 0%, #150830 100%);
@@ -837,7 +844,6 @@ app-hero,
 .impact {
   position: relative;
   padding: 9rem 5rem 8rem;
-  border-top: 1px solid rgba(255, 255, 255, 0.07);
   overflow: hidden;
 
   @media (max-width: 768px) { padding: 7rem 1.5rem 6rem; }
@@ -1204,7 +1210,6 @@ app-hero,
   overflow: hidden;
   position: relative;
   z-index: 1;
-  border-top: 1px solid rgba(255, 255, 255, 0.07);
 
   @media (max-width: 768px) { padding: 7rem 1.5rem 6rem; }
 }
@@ -1379,7 +1384,6 @@ app-hero,
   overflow: hidden;
   position: relative;
   z-index: 1;
-  border-top: 1px solid rgba(255, 255, 255, 0.07);
 
   &__container {
     display: grid;
@@ -1576,7 +1580,6 @@ app-hero,
   position: relative;
   overflow: hidden;
   z-index: 1;
-  border-top: 1px solid rgba(255, 255, 255, 0.07);
 
   @media (max-width: 768px) { padding: 8rem 1.5rem 8rem; }
 

@@ -418,13 +418,20 @@ export class Home implements AfterViewInit, OnDestroy {
   // ── Section animations ──
 
   initServiceCards() {
-    gsap.from('.services-portal .section-head', {
-      scrollTrigger: { trigger: '.services-portal', start: 'top 80%' },
-      y: 60,
+    // Sink + shrink + fade scrubbed to scroll as first card rises
+    gsap.to('.services-portal .section-head', {
       opacity: 0,
-      duration: 0.9,
-      ease: 'power3.out',
+      scale: 0.78,
+      y: 60,
+      ease: 'none',
+      scrollTrigger: {
+        trigger: '.deck-card',
+        start: 'top 50%',
+        end: 'top 100px',
+        scrub: 0.4,
+      },
     });
+
     gsap.utils.toArray<HTMLElement>('.deck-card').forEach((card, i) => {
       gsap.from(card, {
         scrollTrigger: { trigger: card, start: 'top 90%' },
