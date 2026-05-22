@@ -1,0 +1,612 @@
+// ── Design tokens (local, mirrors global vars) ────────────
+$bg:           #06030c;
+$accent:       #8a4fff;
+$accent-soft:  #c49bff;
+$accent-deep:  #5c2ea8;
+$accent-bright:#e0c4ff;
+$ink:          #f5f1ff;
+$ink-dim:      rgba(245, 241, 255, 0.55);
+$ink-mute:     rgba(245, 241, 255, 0.3);
+$line:         rgba(196, 155, 255, 0.14);
+$line-strong:  rgba(196, 155, 255, 0.3);
+
+// ── Host ──────────────────────────────────────────────────
+:host {
+  display: block;
+  position: relative;
+  background: $bg;
+  height: 100vh;
+  overflow: hidden;
+  cursor: none;
+
+  * { cursor: none; }
+}
+
+// ── Star canvas ───────────────────────────────────────────
+.ct-stars {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  pointer-events: none;
+  display: block;
+}
+
+// ── Custom cursor ─────────────────────────────────────────
+.ct-cursor {
+  position: fixed;
+  width: 40px;
+  height: 40px;
+  border: 1px solid $accent-soft;
+  border-radius: 50%;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+  z-index: 9999;
+  transform: translate(-50%, -50%);
+  mix-blend-mode: difference;
+}
+
+.ct-cursor-dot {
+  position: fixed;
+  width: 5px;
+  height: 5px;
+  background: $accent-bright;
+  border-radius: 50%;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+  z-index: 10000;
+  transform: translate(-50%, -50%);
+  box-shadow: 0 0 10px $accent;
+}
+
+.ct-cursor-label {
+  position: fixed;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+  z-index: 9998;
+  transform: translate(22px, 22px);
+  background: $accent;
+  color: #fff;
+  padding: 0.4rem 0.85rem;
+  border-radius: 100px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.58rem;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  opacity: 0;
+}
+
+// ── Arcs + glow ───────────────────────────────────────────
+.ct-arcs {
+  position: fixed;
+  top: 50%;
+  left: 78%;
+  transform: translate(-50%, -50%);
+  width: 90vh;
+  height: 90vh;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0.5;
+
+  @media (max-width: 1000px) { display: none; }
+}
+
+.ct-arc {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+
+  &:nth-child(1) { width: 22%; height: 22%; border: 1px solid rgba(196, 155, 255, 0.35); }
+  &:nth-child(2) { width: 45%; height: 45%; border: 1px solid rgba(168, 120, 255, 0.22); }
+  &:nth-child(3) { width: 70%; height: 70%; border: 1px solid rgba(140,  80, 230, 0.14); }
+  &:nth-child(4) { width: 100%; height: 100%; border: 1px solid rgba(120,  60, 210, 0.08); }
+}
+
+.ct-glow {
+  position: fixed;
+  top: 45%;
+  left: 75%;
+  transform: translate(-50%, -50%);
+  width: 80vh;
+  height: 80vh;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(138, 79, 255, 0.18), transparent 60%);
+  filter: blur(60px);
+  z-index: 0;
+  pointer-events: none;
+
+  @media (max-width: 1000px) { display: none; }
+}
+
+// ── Page layout ───────────────────────────────────────────
+.ct-contact {
+  position: relative;
+  z-index: 2;
+  height: 100vh;
+  display: grid;
+  grid-template-columns: 1fr 1.1fr;
+  gap: 3.5rem;
+  padding: 5.5rem 3rem 1.5rem;
+  max-width: 1500px;
+  margin: 0 auto;
+  align-items: center;
+  overflow: hidden;
+
+  @media (max-width: 1000px) {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+    padding: 5.5rem 1.5rem 1rem;
+    align-items: start;
+    overflow-y: auto;
+    height: auto;
+    min-height: 100vh;
+  }
+}
+
+// ── Left – info ───────────────────────────────────────────
+.ct-info {
+  display: flex;
+  flex-direction: column;
+  gap: 1.6rem;
+}
+
+.ct-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.62rem;
+  font-weight: 600;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: $accent-soft;
+}
+
+.ct-eyebrow-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: $accent;
+  box-shadow: 0 0 8px $accent;
+  flex-shrink: 0;
+}
+
+.ct-title {
+  font-family: 'Fraunces', serif;
+  font-weight: 300;
+  font-size: clamp(3rem, 6vw, 6.5rem);
+  line-height: 0.92;
+  letter-spacing: -0.04em;
+  color: $ink;
+
+  em {
+    font-style: italic;
+    background: linear-gradient(135deg, $accent-bright, $accent);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    padding-right: 0.06em;
+  }
+}
+
+.ct-desc {
+  font-size: 1.05rem;
+  line-height: 1.6;
+  color: $ink-dim;
+  font-weight: 300;
+  max-width: 380px;
+
+  em {
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    color: $accent-soft;
+    -webkit-text-fill-color: $accent-soft;
+  }
+}
+
+// ── Contact detail rows ───────────────────────────────────
+.ct-details {
+  display: flex;
+  flex-direction: column;
+  border-top: 1px solid $line;
+  max-width: 420px;
+}
+
+.ct-row {
+  display: flex;
+  align-items: center;
+  gap: 1.2rem;
+  padding: 0.9rem 0;
+  border-bottom: 1px solid $line;
+  text-decoration: none;
+  color: inherit;
+  transition: padding 0.4s cubic-bezier(0.7, 0, 0.3, 1);
+  position: relative;
+
+  &::before {
+    content: '';
+    position: absolute;
+    left: -1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 3px;
+    height: 0;
+    background: $accent;
+    border-radius: 2px;
+    transition: height 0.35s ease;
+    box-shadow: 0 0 8px $accent;
+  }
+
+  &:hover {
+    padding-left: 1rem;
+
+    &::before { height: 60%; }
+
+    .ct-row-val { color: #fff; }
+  }
+}
+
+.ct-row-icon {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  border: 1px solid $line-strong;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: $accent-soft;
+  flex-shrink: 0;
+
+  svg { width: 15px; height: 15px; }
+}
+
+.ct-row-text {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+
+.ct-row-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.55rem;
+  font-weight: 500;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: $ink-mute;
+}
+
+.ct-row-val {
+  font-size: 0.95rem;
+  color: $ink-dim;
+  transition: color 0.3s;
+}
+
+// ── Socials ───────────────────────────────────────────────
+.ct-socials {
+  display: flex;
+  gap: 0.6rem;
+}
+
+.ct-social {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  border: 1px solid $line-strong;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.6rem;
+  font-weight: 700;
+  color: $ink-dim;
+  text-decoration: none;
+  transition: all 0.3s;
+
+  &:hover {
+    border-color: $accent;
+    color: #fff;
+    background: rgba(138, 79, 255, 0.1);
+    transform: translateY(-3px);
+  }
+}
+
+// ── Form card ─────────────────────────────────────────────
+.form-card {
+  position: relative;
+  padding: 2rem 2.5rem;
+  border: 1px solid $line;
+  border-radius: 28px;
+  background: linear-gradient(180deg, rgba(138, 79, 255, 0.05), rgba(10, 5, 23, 0.6));
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  max-height: calc(100vh - 7rem);
+  overflow-y: auto;
+  overflow-x: hidden;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(138, 79, 255, 0.3) transparent;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: -30%;
+    right: -20%;
+    width: 60%;
+    height: 80%;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(138, 79, 255, 0.12), transparent 70%);
+    pointer-events: none;
+  }
+
+  @media (max-width: 1000px) { padding: 2rem; }
+
+  &__head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 2rem;
+    position: relative;
+    z-index: 1;
+  }
+
+  &__title {
+    font-family: 'Fraunces', serif;
+    font-weight: 400;
+    font-size: 1.6rem;
+    letter-spacing: -0.01em;
+
+    em {
+      font-style: italic;
+      color: $accent-soft;
+      -webkit-text-fill-color: $accent-soft;
+    }
+  }
+
+  &__step {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.62rem;
+    letter-spacing: 0.2em;
+    color: $ink-mute;
+
+    strong { color: $accent-soft; }
+  }
+}
+
+// ── Form ──────────────────────────────────────────────────
+.ct-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+  position: relative;
+  z-index: 1;
+}
+
+.ct-field {
+  position: relative;
+
+  &.is-error .ct-input,
+  &.is-error .ct-textarea,
+  &.is-error .ct-select { border-color: rgba(255, 107, 138, 0.6); }
+
+  &.is-error .ct-error { opacity: 1; max-height: 20px; }
+}
+
+.ct-label {
+  display: block;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.58rem;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: $ink-mute;
+  margin-bottom: 0.7rem;
+  transition: color 0.3s;
+
+  .ct-field:focus-within & { color: $accent-soft; }
+}
+
+.ct-input,
+.ct-textarea,
+.ct-select {
+  width: 100%;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid $line;
+  border-radius: 14px;
+  padding: 1rem 1.1rem;
+  color: $ink;
+  font-size: 0.95rem;
+  font-family: 'Elms Sans', sans-serif;
+  transition: all 0.35s ease;
+  outline: none;
+
+  &::placeholder { color: $ink-mute; }
+
+  &:focus {
+    border-color: $accent;
+    background: rgba(138, 79, 255, 0.06);
+    box-shadow: 0 0 0 4px rgba(138, 79, 255, 0.08);
+  }
+}
+
+.ct-textarea {
+  resize: none;
+  line-height: 1.6;
+  min-height: 80px;
+}
+
+.ct-select {
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg width='12' height='8' viewBox='0 0 12 8' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1.5L6 6.5L11 1.5' stroke='%23c49bff' stroke-width='1.5'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 1.1rem center;
+  background-color: transparent;
+
+  option { background: #0a0517; color: $ink; }
+}
+
+.ct-error {
+  display: block;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.55rem;
+  letter-spacing: 0.1em;
+  color: #ff6b8a;
+  margin-top: 0.5rem;
+  opacity: 0;
+  max-height: 0;
+  overflow: hidden;
+  transition: all 0.3s;
+}
+
+// ── Budget chips ──────────────────────────────────────────
+.chips {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.chip {
+  padding: 0.6rem 1.1rem;
+  border: 1px solid $line;
+  border-radius: 100px;
+  background: transparent;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.62rem;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  color: $ink-dim;
+  transition: all 0.3s;
+
+  &:hover {
+    border-color: $accent-soft;
+    color: #fff;
+  }
+
+  &.is-active {
+    background: rgba(138, 79, 255, 0.18);
+    border-color: $accent;
+    color: #fff;
+    box-shadow: inset 0 0 0 1px $line-strong;
+  }
+}
+
+// ── Submit ────────────────────────────────────────────────
+.form__submit {
+  position: relative;
+  overflow: hidden;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.7rem;
+  padding: 1.2rem 2rem;
+  border-radius: 14px;
+  border: none;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  background: $ink;
+  color: $bg;
+  transition: all 0.35s cubic-bezier(0.7, 0, 0.3, 1);
+  margin-top: 0.5rem;
+
+  svg {
+    width: 14px;
+    height: 14px;
+    transition: transform 0.35s;
+    position: relative;
+    z-index: 1;
+  }
+
+  span { position: relative; z-index: 1; }
+
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, $accent-bright, $accent);
+    transform: translateX(-100%);
+    transition: transform 0.45s cubic-bezier(0.7, 0, 0.3, 1);
+    z-index: 0;
+  }
+
+  &:hover {
+    color: #fff;
+
+    &::before { transform: translateX(0); }
+    svg { transform: translateX(4px); }
+  }
+}
+
+// ── Success overlay ───────────────────────────────────────
+.success {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(20, 10, 35, 0.97), rgba(10, 5, 23, 0.99));
+  backdrop-filter: blur(10px);
+  border-radius: 28px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1.5rem;
+  text-align: center;
+  padding: 3rem;
+  opacity: 0;
+  visibility: hidden;
+  z-index: 5;
+  transition: visibility 0s 0.4s;
+
+  &.is-shown {
+    visibility: visible;
+    transition: visibility 0s;
+  }
+
+  &__ring {
+    width: 90px;
+    height: 90px;
+
+    svg { width: 100%; height: 100%; }
+  }
+
+  &__title {
+    font-family: 'Fraunces', serif;
+    font-weight: 300;
+    font-size: 2.2rem;
+    letter-spacing: -0.02em;
+
+    em {
+      font-style: italic;
+      color: $accent-soft;
+      -webkit-text-fill-color: $accent-soft;
+    }
+  }
+
+  &__text {
+    font-size: 0.95rem;
+    color: $ink-dim;
+    line-height: 1.6;
+    max-width: 320px;
+  }
+
+  &__again {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.62rem;
+    font-weight: 600;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: $accent-soft;
+    background: none;
+    border: none;
+    text-decoration: underline;
+    text-underline-offset: 4px;
+    padding: 0;
+  }
+}

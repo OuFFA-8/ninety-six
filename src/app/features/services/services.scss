@@ -9,6 +9,9 @@
   color: #f5f1ff;
   font-family: 'Elms Sans', sans-serif;
   -webkit-font-smoothing: antialiased;
+  cursor: none;
+
+  * { cursor: none !important; }
 }
 
 // ── Star canvas ────────────────────────────────────────────
@@ -239,7 +242,7 @@
 // ══════════════════════════════════════════
 .filter-bar {
   position: sticky;
-  top: 0;
+  top: 116px;
   z-index: 800;
   display: flex;
   justify-content: center;
@@ -309,14 +312,15 @@
 // 03  WORK GRID
 // ══════════════════════════════════════════
 .work-grid-sec {
-  padding: 5rem 3rem 8rem;
+  padding: 5rem 0 8rem;
   background: transparent;
 
-  @media (max-width: 1100px) { padding: 3rem 1.5rem 5rem; }
+  @media (max-width: 1100px) { padding: 3rem 0 5rem; }
 }
 .work-grid {
   max-width: 1500px;
   margin: 0 auto;
+  padding: 3rem 3rem 0;
   display: grid;
   grid-template-columns: repeat(12, 1fr);
   gap: 1.5rem;
@@ -325,6 +329,7 @@
   @media (max-width: 1100px) {
     grid-template-columns: 1fr;
     gap: 1rem;
+    padding: 2rem 1.5rem 0;
   }
 }
 
@@ -609,7 +614,7 @@
   &__track {
     display: flex;
     gap: 3rem;
-    padding: 0 3rem;
+    padding: 0 6rem 0 38rem;
     align-items: center;
     will-change: transform;
 

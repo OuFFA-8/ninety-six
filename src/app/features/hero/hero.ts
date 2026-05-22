@@ -21,18 +21,18 @@ gsap.registerPlugin(ScrollTrigger);
   styleUrl: './hero.scss',
 })
 export class Hero implements AfterViewInit, OnDestroy {
-  @ViewChild('section',  { static: true }) section!:   ElementRef<HTMLElement>;
-  @ViewChild('headline', { static: true }) headline!:  ElementRef;
+  @ViewChild('section',   { static: true })  section!:   ElementRef<HTMLElement>;
+  @ViewChild('headline',  { static: true })  headline!:  ElementRef;
   @ViewChild('cycleWord', { static: false }) cycleWord!: ElementRef<HTMLElement>;
 
   private platformId = inject(PLATFORM_ID);
 
-  private sts:          ScrollTrigger[] = [];
-  private cycleTimer:   ReturnType<typeof setInterval> | null = null;
-  private wordIdx       = 0;
+  private sts: ScrollTrigger[] = [];
+  private cycleTimer: ReturnType<typeof setInterval> | null = null;
+  private wordIdx = 0;
   private readonly WORDS = [
-    'Impact.', 'Results.', 'Brands.', 'Stories.',
-    'Growth.', 'Vision.', 'Campaigns.', 'Futures.',
+    'Chaos', 'Vision', 'Attention', 'Emotion',
+    'Memory', 'Culture', 'Courage', 'Momentum',
   ];
 
   ngAfterViewInit(): void {
@@ -46,16 +46,14 @@ export class Hero implements AfterViewInit, OnDestroy {
   playEntrance(): void {
     if (!isPlatformBrowser(this.platformId)) return;
     this.entranceAnimation();
-    // Start cycling after entrance finishes (~2s)
     setTimeout(() => this.startWordCycle(), 2200);
   }
 
   ngOnDestroy(): void {
-    this.sts.forEach((t) => t.kill());
+    this.sts.forEach(t => t.kill());
     if (this.cycleTimer) clearInterval(this.cycleTimer);
   }
 
-  // ── Word cycle ───────────────────────────────────────────
   private startWordCycle(): void {
     const el = this.cycleWord?.nativeElement;
     if (!el) return;
@@ -66,24 +64,24 @@ export class Hero implements AfterViewInit, OnDestroy {
 
       const tl = gsap.timeline();
       tl.to(el, { yPercent: -120, opacity: 0, duration: 0.38, ease: 'power2.in' });
-      tl.call(() => {
-        el.textContent = next;
-        gsap.set(el, { yPercent: 120 });
-      });
+      tl.call(() => { el.textContent = next; gsap.set(el, { yPercent: 120 }); });
       tl.to(el, { yPercent: 0, opacity: 1, duration: 0.42, ease: 'power3.out' });
     }, 2600);
   }
 
-  // ── Intro setup ──────────────────────────────────────────
   private hideForIntro(): void {
     const lines = this.headline.nativeElement.querySelectorAll('.line');
     gsap.set(lines, { yPercent: 110 });
+    gsap.set(['.hero__quote-mark', '.hero__quote-text', '.hero__quote-body'], { opacity: 0, y: 24 });
   }
 
   private entranceAnimation(): void {
     const lines = this.headline.nativeElement.querySelectorAll('.line');
     const tl = gsap.timeline({ defaults: { ease: 'power3.out' } });
-    tl.to(lines, { yPercent: 0, duration: 1.0, stagger: 0.13 }, 0.15);
+    tl.to(lines,                { yPercent: 0, duration: 1.0, stagger: 0.14 }, 0.15);
+    tl.to('.hero__quote-mark',  { opacity: 1, y: 0, duration: 0.6 },           0.55);
+    tl.to('.hero__quote-text',  { opacity: 1, y: 0, duration: 0.85 },          0.7);
+    tl.to('.hero__quote-body',  { opacity: 1, y: 0, duration: 0.7 },           0.95);
   }
 
   private initScrollTrigger(): void {
@@ -95,12 +93,10 @@ export class Hero implements AfterViewInit, OnDestroy {
     });
     this.sts.push(st1);
 
-    const anim = gsap.to(
-      this.headline.nativeElement,
-      { opacity: 0, y: -40, ease: 'power2.in',
-        scrollTrigger: { trigger: section, start: 'top top', end: '+=25%', scrub: 0.6 } },
-    );
+    const anim = gsap.to(this.headline.nativeElement, {
+      opacity: 0, y: -40, ease: 'power2.in',
+      scrollTrigger: { trigger: section, start: 'top top', end: '+=25%', scrub: 0.6 },
+    });
     if (anim.scrollTrigger) this.sts.push(anim.scrollTrigger);
   }
-
 }

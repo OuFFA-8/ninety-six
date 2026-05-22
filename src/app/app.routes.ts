@@ -23,13 +23,17 @@ export const routes: Routes = [
         loadComponent: () => import('./features/details/details').then((m) => m.Details),
       },
       {
-        path: 'services',
+        path: 'portfolio',
         loadComponent: () =>
           import('./features/services/services').then((m) => m.ServicesPage),
       },
       {
         path: 'cart',
         loadComponent: () => import('./features/cart/cart').then((m) => m.Cart),
+      },
+      {
+        path: 'contact',
+        loadComponent: () => import('./features/contact/contact').then((m) => m.ContactPage),
       },
     ],
   },

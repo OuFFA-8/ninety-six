@@ -51,23 +51,21 @@
 </section>
 
 <!-- ══════════════════════════════════════════
-     02  FILTER BAR
-══════════════════════════════════════════ -->
-<div class="filter-bar">
-  <div class="filter-bar__group">
-    <button class="filter-btn" [class.is-active]="activeFilter === 'all'"       (click)="setFilter('all')">All</button>
-    <button class="filter-btn" [class.is-active]="activeFilter === 'brand'"     (click)="setFilter('brand')">Brand</button>
-    <button class="filter-btn" [class.is-active]="activeFilter === 'campaign'"  (click)="setFilter('campaign')">Campaigns</button>
-    <button class="filter-btn" [class.is-active]="activeFilter === 'motion'"    (click)="setFilter('motion')">Motion</button>
-    <button class="filter-btn" [class.is-active]="activeFilter === 'web'"       (click)="setFilter('web')">Web</button>
-  </div>
-  <div class="filter-bar__count"><strong>{{ filterCount }}</strong> projects</div>
-</div>
-
-<!-- ══════════════════════════════════════════
-     03  WORK GRID
+     02  WORK GRID + FILTER
 ══════════════════════════════════════════ -->
 <section class="work-grid-sec">
+
+  <div class="filter-bar">
+    <div class="filter-bar__group">
+      <button class="filter-btn" [class.is-active]="activeFilter === 'all'"       (click)="setFilter('all')">All</button>
+      <button class="filter-btn" [class.is-active]="activeFilter === 'brand'"     (click)="setFilter('brand')">Brand</button>
+      <button class="filter-btn" [class.is-active]="activeFilter === 'campaign'"  (click)="setFilter('campaign')">Campaigns</button>
+      <button class="filter-btn" [class.is-active]="activeFilter === 'motion'"    (click)="setFilter('motion')">Motion</button>
+      <button class="filter-btn" [class.is-active]="activeFilter === 'web'"       (click)="setFilter('web')">Web</button>
+    </div>
+    <div class="filter-bar__count"><strong>{{ filterCount }}</strong> projects</div>
+  </div>
+
   <div class="work-grid" id="workGrid">
 
     <!-- 01 Zamil & Kharrashi — LG -->
@@ -233,7 +231,7 @@
     </article>
 
     <!-- 06 stc Pay — MD -->
-    <article class="work-item work-item--md" data-cat="campaign" style="--w-color:#8a4fff">
+    <article class="work-item work-item--wide" data-cat="campaign" style="--w-color:#8a4fff">
       <div class="work-item__media">
         <div class="work-item__deco" data-deco>
           <svg viewBox="0 0 400 400" fill="none">
@@ -548,7 +546,7 @@
   <div class="svc-cta__inner">
     <h2 class="svc-cta__title">Got a target<br>in <em>mind</em>?</h2>
     <p class="svc-cta__desc">Let's add your project to the next reel. Tell us what you're aiming at.</p>
-    <a routerLink="/cart" class="svc-cta__btn">
+    <a routerLink="/contact" class="svc-cta__btn">
       <span>Start a Project</span>
       <svg viewBox="0 0 24 24" fill="none">
         <path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>

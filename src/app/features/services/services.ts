@@ -53,6 +53,7 @@ export class ServicesPage implements AfterViewInit, OnDestroy {
 
   ngAfterViewInit(): void {
     if (!isPlatformBrowser(this.platformId)) return;
+    document.body.style.cursor = 'none';
 
     CustomEase.create('crisp',  '0.16, 1, 0.3, 1');
     CustomEase.create('smooth', '0.7, 0, 0.2, 1');
@@ -72,6 +73,7 @@ export class ServicesPage implements AfterViewInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
+    document.body.style.cursor = '';
     ScrollTrigger.getAll().forEach(t => t.kill());
     if (this._starRaf) cancelAnimationFrame(this._starRaf);
   }
@@ -98,7 +100,6 @@ export class ServicesPage implements AfterViewInit, OnDestroy {
         duration: 0.6,
         ease: 'smooth',
         scale: true,
-        absolute: true,
         onEnter: (els: Element[]) =>
           gsap.fromTo(els, { opacity: 0, scale: 0.85 }, { opacity: 1, scale: 1, duration: 0.4, delay: 0.08 }),
         onLeave: (els: Element[]) =>
@@ -245,8 +246,10 @@ export class ServicesPage implements AfterViewInit, OnDestroy {
         scrub: 1,
         invalidateOnRefresh: true,
         onUpdate: (self) => {
-          this.scProgress = self.progress * 100;
-          this.scNum = String(Math.min(5, Math.floor(self.progress * 5) + 1)).padStart(2, '0');
+          this.ngZone.run(() => {
+            this.scProgress = self.progress * 100;
+            this.scNum = String(Math.min(5, Math.floor(self.progress * 5) + 1)).padStart(2, '0');
+          });
         },
       },
     });
