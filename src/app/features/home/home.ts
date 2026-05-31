@@ -418,29 +418,53 @@ export class Home implements AfterViewInit, OnDestroy {
   // ── Section animations ──
 
   initServiceCards() {
-    // Sink + shrink + fade scrubbed to scroll as first card rises
+    // Section head exit scrub — fades as deck-scene rises into view
     gsap.to('.services-portal .section-head', {
       opacity: 0,
-      scale: 0.78,
-      y: 60,
+      scale: 0.85,
+      y: 40,
       ease: 'none',
       scrollTrigger: {
-        trigger: '.deck-card',
-        start: 'top 50%',
-        end: 'top 100px',
+        trigger: '.deck-scroll-space',
+        start: 'top 80%',
+        end: 'top 20%',
         scrub: 0.4,
       },
     });
 
-    gsap.utils.toArray<HTMLElement>('.deck-card').forEach((card, i) => {
-      gsap.from(card, {
-        scrollTrigger: { trigger: card, start: 'top 90%' },
-        opacity: 0,
-        y: 40,
-        duration: 0.7,
-        delay: i * 0.05,
-        ease: 'power2.out',
+    const cards = Array.from(document.querySelectorAll<HTMLElement>('.deck-card'));
+    const total = cards.length;
+    if (!total) return;
+
+    // Give scroll-space enough height for all card transitions
+    const scrollSpace = document.querySelector<HTMLElement>('.deck-scroll-space');
+    if (scrollSpace) scrollSpace.style.height = `${total * 60 + 100}vh`;
+
+    // Initial stacked state
+    cards.forEach((card, i) => {
+      gsap.set(card, {
+        yPercent: i === 0 ? 0 : 8,
+        scale:    i === 0 ? 1 : 0.96,
+        opacity:  i === 0 ? 1 : 0,
+        zIndex:   total - i,
       });
+    });
+
+    // CSS sticky handles the pin — GSAP just scrubs the card swap
+    const tl = gsap.timeline({
+      scrollTrigger: {
+        trigger: '.deck-scroll-space',
+        start: 'top top',
+        end: 'bottom bottom',
+        scrub: 1,
+        invalidateOnRefresh: true,
+      },
+    });
+
+    cards.forEach((_card, i) => {
+      if (i === 0) return;
+      tl.to(cards[i],     { yPercent: 0, scale: 1, opacity: 1, duration: 1, ease: 'power2.inOut' }, i - 1);
+      tl.to(cards[i - 1], { yPercent: -8, scale: 0.96, opacity: 0, duration: 1, ease: 'power2.inOut' }, i - 1);
     });
   }
 

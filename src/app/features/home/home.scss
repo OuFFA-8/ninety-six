@@ -627,19 +627,33 @@ app-hero,
 // SERVICES PORTAL
 // ══════════════════════════════
 .services-portal {
-  padding: 9rem 5rem 0;
+  padding: 5rem 5rem 0;
   position: relative;
-  z-index: 1;
+  z-index: 2;
 
   > .section-head {
-    position: sticky;
-    top: 100px;
-    z-index: 0;
     border-bottom: none;
     transform-origin: center center;
   }
 
-  @media (max-width: 768px) { padding: 7rem 1.5rem 0; }
+  @media (max-width: 768px) { padding: 4rem 1.5rem 0; }
+}
+
+.deck-scroll-space {
+  position: relative;
+  z-index: 2;
+  // height set by JS: (total * 60 + 100)vh
+}
+
+.deck-scene {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  padding: 0 5rem;
+
+  @media (max-width: 768px) { padding: 0 1.5rem; }
 }
 
 // ══════════════════════════════
@@ -649,7 +663,7 @@ app-hero,
   position: relative;
   max-width: 1280px;
   margin: 0 auto;
-  padding-bottom: 20rem;
+  width: 100%;
 }
 
 .cards-deck {
@@ -657,13 +671,13 @@ app-hero,
   padding: 0;
   margin: 0;
   position: relative;
+  height: 600px;
 }
 
 .deck-card {
-  position: sticky;
-  top: 100px;
-  padding-top: calc(var(--i) * 12px);
-  z-index: calc(var(--i, 0) + 1);
+  position: absolute;
+  inset: 0;
+  will-change: transform, opacity;
 
   &__inner {
     background: linear-gradient(135deg, #0c0420 0%, #150830 100%);
