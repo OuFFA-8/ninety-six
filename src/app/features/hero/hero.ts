@@ -72,16 +72,15 @@ export class Hero implements AfterViewInit, OnDestroy {
   private hideForIntro(): void {
     const lines = this.headline.nativeElement.querySelectorAll('.line');
     gsap.set(lines, { yPercent: 110 });
-    gsap.set(['.hero__quote-mark', '.hero__quote-text', '.hero__quote-body'], { opacity: 0, y: 24 });
+    gsap.set(['.hero__desc', '.hero__strip'], { opacity: 0, y: 20 });
   }
 
   private entranceAnimation(): void {
     const lines = this.headline.nativeElement.querySelectorAll('.line');
     const tl = gsap.timeline({ defaults: { ease: 'power3.out' } });
-    tl.to(lines,                { yPercent: 0, duration: 1.0, stagger: 0.14 }, 0.15);
-    tl.to('.hero__quote-mark',  { opacity: 1, y: 0, duration: 0.6 },           0.55);
-    tl.to('.hero__quote-text',  { opacity: 1, y: 0, duration: 0.85 },          0.7);
-    tl.to('.hero__quote-body',  { opacity: 1, y: 0, duration: 0.7 },           0.95);
+    tl.to(lines,          { yPercent: 0, duration: 1.1, stagger: 0.14 }, 0.15);
+    tl.to('.hero__desc',  { opacity: 1, y: 0, duration: 0.8 },           0.85);
+    tl.to('.hero__strip', { opacity: 1, y: 0, duration: 0.6 },           1.05);
   }
 
   private initScrollTrigger(): void {

@@ -36,63 +36,31 @@
   white-space: nowrap;
 }
 
-// ── Two-column layout ──────────────────────────────────────
+// ── Giant headline ─────────────────────────────────────────
 .hero__content {
   position: relative;
   z-index: 2;
   width: 100%;
-  max-width: 1360px;
-  margin: 0 auto;
-  padding: 0 4rem;
-  display: grid;
-  grid-template-columns: 1fr 0.7fr;
-  gap: 5rem;
-  align-items: center;
-
-  &::before {
-    content: '';
-    position: absolute;
-    inset: -6rem -8rem;
-    background: radial-gradient(ellipse 80% 120% at 20% 50%, rgba(0,0,0,.5) 0%, transparent 65%);
-    pointer-events: none;
-    z-index: -1;
-  }
-
-  @media (max-width: 960px) {
-    grid-template-columns: 1fr;
-    gap: 4rem;
-    padding: 0 2rem;
-  }
+  padding: 0 4.5vw;
+  margin-top: -3vh;
 }
 
-// ── LEFT: headline ─────────────────────────────────────────
 .hero__headline {
   font-family: 'Space Grotesk', sans-serif;
-  font-size: clamp(3.5rem, 7vw, 9rem);
   font-weight: 700;
-  line-height: 1.04;
-  letter-spacing: -0.025em;
-  color: #ffffff;
+  text-transform: lowercase;
+  font-size: clamp(3rem, 9vw, 10.5rem);
+  line-height: 0.9;
+  letter-spacing: -0.04em;
+  color: #fff;
   margin: 0;
-
-  em {
-    font-family: 'Fraunces', serif;
-    font-style: italic;
-    font-weight: 300;
-    background: linear-gradient(135deg, var(--accent) 0%, var(--accent-soft) 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-    padding-right: 0.08em;
-  }
 }
 
 .line-wrap {
   display: block;
   overflow: hidden;
-  line-height: 1.08;
-  padding-bottom: 0.18em;
-  margin-bottom: -0.18em;
+  padding-bottom: 0.06em;
+  margin-bottom: -0.02em;
 }
 
 .line { display: block; }
@@ -100,49 +68,70 @@
 .cycle-wrap {
   display: inline-block;
   overflow: hidden;
-  vertical-align: bottom;
+  vertical-align: top;
   line-height: inherit;
+  padding-bottom: 0.06em;
 }
 
 .cycle-word {
   display: inline-block;
   will-change: transform, opacity;
-}
-
-// ── RIGHT: quote ───────────────────────────────────────────
-.hero__quote {
-  position: relative;
-  padding-left: 2rem;
-  border-left: 2px solid rgba(138, 79, 255, 0.35);
-}
-
-.hero__quote-mark {
-  display: block;
-  font-family: 'Fraunces', serif;
   font-style: italic;
-  font-size: 7rem;
-  line-height: 0.55;
-  color: rgba(138, 79, 255, 0.3);
-  margin-bottom: 1.2rem;
-  user-select: none;
-}
-
-.hero__quote-text {
   font-family: 'Fraunces', serif;
-  font-style: italic;
   font-weight: 300;
-  font-size: clamp(1.3rem, 2vw, 1.8rem);
-  line-height: 1.4;
-  letter-spacing: -0.01em;
-  color: rgba(245, 241, 255, 0.88);
-  margin: 0 0 1.4rem;
+  background: linear-gradient(135deg, var(--accent) 0%, var(--accent-soft) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
-.hero__quote-body {
-  font-family: 'Elms Sans', sans-serif;
-  font-size: clamp(0.88rem, 1.2vw, 0.98rem);
-  line-height: 1.75;
-  color: rgba(245, 241, 255, 0.42);
-  font-weight: 300;
-  margin: 0;
+// ── Bottom-right description ───────────────────────────────
+.hero__desc {
+  position: absolute;
+  right: 3vw;
+  bottom: 7vh;
+  z-index: 2;
+  max-width: 32ch;
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: clamp(0.9rem, 1.2vw, 1.1rem);
+  font-weight: 400;
+  line-height: 1.55;
+  color: rgba(245, 241, 255, 0.6);
+
+  strong {
+    color: #fff;
+    font-weight: 600;
+  }
+
+  @media (max-width: 768px) {
+    position: static;
+    margin-top: 2.5rem;
+    padding: 0 3vw;
+    max-width: none;
+  }
 }
+
+// ── Bottom-left strip ──────────────────────────────────────
+.hero__strip {
+  position: absolute;
+  left: 3vw;
+  bottom: 3vh;
+  z-index: 3;
+  display: flex;
+  align-items: center;
+  gap: 1.8rem;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.62rem;
+  font-weight: 500;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: rgba(245, 241, 255, 0.35);
+
+  @media (max-width: 768px) {
+    gap: 1rem;
+    flex-wrap: wrap;
+    bottom: 2vh;
+  }
+}
+
+.hero__strip-dot { color: rgba(138, 79, 255, 0.5); }

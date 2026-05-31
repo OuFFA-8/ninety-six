@@ -37,6 +37,7 @@ export class Home implements AfterViewInit, OnDestroy {
 
   private platformId = inject(PLATFORM_ID);
   private ngZone = inject(NgZone);
+  private _orbitRaf = 0;
 
   showLoading = false;
   showDartIntro = !sessionStorage.getItem('dartIntroPlayed');
@@ -336,7 +337,7 @@ export class Home implements AfterViewInit, OnDestroy {
 
   ngAfterViewInit() {
     if (!isPlatformBrowser(this.platformId)) return;
-    this.ngZone.runOutsideAngular(() => this.initPageStars());
+    this.ngZone.runOutsideAngular(() => { this.initPageStars(); this.initOrbits(); });
     this.initCursor();
     this.initServiceCards();
     this.initStats();
@@ -355,9 +356,108 @@ export class Home implements AfterViewInit, OnDestroy {
 
   ngOnDestroy() {
     ScrollTrigger.getAll().forEach((t) => t.kill());
-    if (this._veilRaf) cancelAnimationFrame(this._veilRaf);
+    if (this._veilRaf)    cancelAnimationFrame(this._veilRaf);
     if (this._pageStarRaf) cancelAnimationFrame(this._pageStarRaf);
+    if (this._orbitRaf)   cancelAnimationFrame(this._orbitRaf);
     this.unlockScroll();
+  }
+
+  private initOrbits(): void {
+    const arcsEl = this.heroArcs?.nativeElement;
+    if (!arcsEl) return;
+
+    const canvas = document.createElement('canvas');
+    Object.assign(canvas.style, {
+      position: 'absolute', inset: '0',
+      pointerEvents: 'none', zIndex: '2',
+    });
+    arcsEl.appendChild(canvas);
+    const ctx = canvas.getContext('2d')!;
+
+    const speeds = [0.012, 0.008, 0.006, 0.004, 0.003, 0.002];
+    const sizes  = [6, 8, 9, 10, 11, 12];
+
+    type Orbit = { cx: number; cy: number; r: number; angle: number; speed: number; size: number };
+    let orbits: Orbit[] = [];
+
+    const setup = () => {
+      // Match canvas pixels exactly to the container
+      const box = arcsEl.getBoundingClientRect();
+      canvas.width  = Math.round(box.width);
+      canvas.height = Math.round(box.height);
+
+      // Read each arc's real rendered position relative to container
+      const arcEls = Array.from(arcsEl.querySelectorAll<HTMLElement>('.hero-arc'));
+      orbits = arcEls.map((el, i) => {
+        const r  = el.getBoundingClientRect();
+        const cx = r.left - box.left + r.width  / 2;
+        const cy = r.top  - box.top  + r.height / 2;
+        return {
+          cx, cy,
+          r:     r.width / 2,
+          angle: (Math.PI * 2 * i) / arcEls.length,
+          speed: speeds[i] ?? 0.003,
+          size:  sizes[i]  ?? 5,
+        };
+      });
+    };
+
+    // Run setup after first paint so layout is ready
+    requestAnimationFrame(() => {
+      setup();
+      window.addEventListener('resize', setup, { passive: true });
+
+      const draw = () => {
+        this._orbitRaf = requestAnimationFrame(draw);
+        const w = canvas.width;
+        const h = canvas.height;
+        ctx.clearRect(0, 0, w, h);
+
+        orbits.forEach((p) => {
+          p.angle += p.speed;
+          const px  = p.cx + p.r * Math.cos(p.angle);
+          const py  = p.cy + p.r * Math.sin(p.angle);
+
+          const depth = (Math.sin(p.angle) + 1) / 2;
+          const sr    = p.size * (0.6 + 0.4 * depth);
+          const alpha = 0.55 + 0.45 * depth;
+
+          // glow
+          const glow = ctx.createRadialGradient(px, py, 0, px, py, sr * 5);
+          glow.addColorStop(0, `rgba(138,79,255,${(0.2 * depth + 0.05).toFixed(2)})`);
+          glow.addColorStop(1, 'rgba(138,79,255,0)');
+          ctx.fillStyle = glow;
+          ctx.beginPath(); ctx.arc(px, py, sr * 5, 0, Math.PI * 2); ctx.fill();
+
+          // 3D sphere — perfect circle
+          const sph = ctx.createRadialGradient(
+            px - sr * 0.38, py - sr * 0.38, sr * 0.05, px, py, sr
+          );
+          sph.addColorStop(0,    `rgba(245,230,255,${alpha.toFixed(2)})`);
+          sph.addColorStop(0.30, `rgba(196,155,255,${(alpha * 0.9).toFixed(2)})`);
+          sph.addColorStop(0.65, `rgba(100,45,200,${(alpha * 0.85).toFixed(2)})`);
+          sph.addColorStop(1,    `rgba(8,2,20,${alpha.toFixed(2)})`);
+          ctx.save();
+          ctx.shadowBlur  = sr * 3;
+          ctx.shadowColor = 'rgba(196,155,255,0.5)';
+          ctx.beginPath(); ctx.arc(px, py, sr, 0, Math.PI * 2);
+          ctx.fillStyle = sph; ctx.fill();
+          ctx.restore();
+
+          // specular highlight — small bright dot top-left
+          const specR = sr * 0.28;
+          const spec  = ctx.createRadialGradient(
+            px - sr * 0.32, py - sr * 0.32, 0,
+            px - sr * 0.32, py - sr * 0.32, specR
+          );
+          spec.addColorStop(0, `rgba(255,255,255,${(alpha * 0.85).toFixed(2)})`);
+          spec.addColorStop(1, 'rgba(255,255,255,0)');
+          ctx.beginPath(); ctx.arc(px - sr * 0.32, py - sr * 0.32, specR, 0, Math.PI * 2);
+          ctx.fillStyle = spec; ctx.fill();
+        });
+      };
+      draw();
+    });
   }
 
   private unlockScroll(): void {
