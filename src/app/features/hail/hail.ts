@@ -133,16 +133,23 @@ export class HailProject implements AfterViewInit, OnDestroy {
 
     ScrollTrigger.batch('.hail-item', {
       start: 'top 92%',
+      end: 'bottom 8%',
       onEnter: (batch) => gsap.to(batch, {
-        opacity: 1,
-        y: 0,
-        scale: 1,
-        duration: 0.85,
-        stagger: 0.07,
-        ease: 'power3.out',
-        overwrite: true,
+        opacity: 1, y: 0, scale: 1,
+        duration: 0.85, stagger: 0.07, ease: 'power3.out', overwrite: true,
       }),
-      once: true,
+      onLeave: (batch) => gsap.to(batch, {
+        opacity: 0, y: -30, scale: 0.96,
+        duration: 0.5, stagger: 0.04, ease: 'power2.in', overwrite: true,
+      }),
+      onEnterBack: (batch) => gsap.to(batch, {
+        opacity: 1, y: 0, scale: 1,
+        duration: 0.7, stagger: 0.05, ease: 'power3.out', overwrite: true,
+      }),
+      onLeaveBack: (batch) => gsap.to(batch, {
+        opacity: 0, y: 55, scale: 0.94,
+        duration: 0.5, stagger: 0.04, ease: 'power2.in', overwrite: true,
+      }),
     });
   }
 }
