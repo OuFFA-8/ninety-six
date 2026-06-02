@@ -32,7 +32,7 @@
   <main class="hail-gallery">
     @for (src of images; track src) {
       <div class="hail-item" (click)="open(src)">
-        <img [src]="src" loading="lazy" />
+        <img [src]="src" [loading]="$index < 4 ? 'eager' : 'lazy'" />
         <div class="hail-item__overlay">
           <svg viewBox="0 0 24 24" fill="none">
             <path

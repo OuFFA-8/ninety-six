@@ -49,6 +49,9 @@ export class HailProject implements AfterViewInit, OnDestroy {
       this.initEntrance();
       this.initGallery();
     });
+    window.addEventListener('load', () => {
+      ScrollTrigger.refresh();
+    }, { once: true });
   }
 
   ngOnDestroy(): void {
@@ -129,27 +132,20 @@ export class HailProject implements AfterViewInit, OnDestroy {
   // ── Gallery ───────────────────────────────────────────────
 
   private initGallery(): void {
-    gsap.set('.hail-item', { opacity: 0, y: 55, scale: 0.94 });
-
-    ScrollTrigger.batch('.hail-item', {
-      start: 'top 92%',
-      end: 'bottom 8%',
-      onEnter: (batch) => gsap.to(batch, {
-        opacity: 1, y: 0, scale: 1,
-        duration: 0.85, stagger: 0.07, ease: 'power3.out', overwrite: true,
-      }),
-      onLeave: (batch) => gsap.to(batch, {
-        opacity: 0, y: -30, scale: 0.96,
-        duration: 0.5, stagger: 0.04, ease: 'power2.in', overwrite: true,
-      }),
-      onEnterBack: (batch) => gsap.to(batch, {
-        opacity: 1, y: 0, scale: 1,
-        duration: 0.7, stagger: 0.05, ease: 'power3.out', overwrite: true,
-      }),
-      onLeaveBack: (batch) => gsap.to(batch, {
-        opacity: 0, y: 55, scale: 0.94,
-        duration: 0.5, stagger: 0.04, ease: 'power2.in', overwrite: true,
-      }),
+    document.querySelectorAll<HTMLElement>('.hail-item').forEach(item => {
+      gsap.fromTo(item,
+        { opacity: 0, y: 70, scale: 0.9 },
+        {
+          opacity: 1, y: 0, scale: 1,
+          ease: 'power2.out',
+          scrollTrigger: {
+            trigger: item,
+            start: 'top 95%',
+            end:   'top 40%',
+            scrub: 1.2,
+          },
+        },
+      );
     });
   }
 }
