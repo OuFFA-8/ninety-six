@@ -193,10 +193,11 @@ export class ContactPage implements AfterViewInit, OnDestroy {
     const stars = Array.from({ length: 80 }, () => ({
       x: Math.random() * window.innerWidth,
       y: Math.random() * window.innerHeight,
-      r: Math.random() * 1.1 + 0.3,
+      r: Math.random() * 1.8 + 0.8,
       baseAlpha: Math.random() * 0.4 + 0.08,
       phase: Math.random() * Math.PI * 2,
       spd: Math.random() * 0.5 + 0.2,
+      glow: Math.random() > 0.65,
     }));
 
     let t = 0;
@@ -207,10 +208,12 @@ export class ContactPage implements AfterViewInit, OnDestroy {
       ctx.fillRect(0, 0, canvas.width, canvas.height);
       for (const s of stars) {
         const a = s.baseAlpha * (0.5 + 0.5 * Math.sin(t * s.spd + s.phase));
+        if (s.glow) { ctx.shadowBlur = s.r * 7; ctx.shadowColor = `rgba(220,190,255,${a})`; }
         ctx.beginPath();
         ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(196,155,255,${a})`;
+        ctx.fillStyle = `rgba(${s.glow ? '245,225,255' : '196,155,255'},${a})`;
         ctx.fill();
+        if (s.glow) ctx.shadowBlur = 0;
       }
     };
     draw();

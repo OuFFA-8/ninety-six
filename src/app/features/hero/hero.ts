@@ -21,8 +21,8 @@ gsap.registerPlugin(ScrollTrigger);
   styleUrl: './hero.scss',
 })
 export class Hero implements AfterViewInit, OnDestroy {
-  @ViewChild('section',   { static: true })  section!:   ElementRef<HTMLElement>;
-  @ViewChild('headline',  { static: true })  headline!:  ElementRef;
+  @ViewChild('section', { static: true }) section!: ElementRef<HTMLElement>;
+  @ViewChild('headline', { static: true }) headline!: ElementRef;
   @ViewChild('cycleWord', { static: false }) cycleWord!: ElementRef<HTMLElement>;
 
   private platformId = inject(PLATFORM_ID);
@@ -31,8 +31,14 @@ export class Hero implements AfterViewInit, OnDestroy {
   private cycleTimer: ReturnType<typeof setInterval> | null = null;
   private wordIdx = 0;
   private readonly WORDS = [
-    'Chaos', 'Vision', 'Attention', 'Emotion',
-    'Memory', 'Culture', 'Courage', 'Momentum',
+    'Chaos',
+    'Vision',
+    'Attention',
+    'Emotion',
+    'Memory',
+    'Culture',
+    'Courage',
+    'Momentum',
   ];
 
   ngAfterViewInit(): void {
@@ -50,7 +56,7 @@ export class Hero implements AfterViewInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.sts.forEach(t => t.kill());
+    this.sts.forEach((t) => t.kill());
     if (this.cycleTimer) clearInterval(this.cycleTimer);
   }
 
@@ -64,7 +70,10 @@ export class Hero implements AfterViewInit, OnDestroy {
 
       const tl = gsap.timeline();
       tl.to(el, { yPercent: -120, opacity: 0, duration: 0.38, ease: 'power2.in' });
-      tl.call(() => { el.textContent = next; gsap.set(el, { yPercent: 120 }); });
+      tl.call(() => {
+        el.textContent = next;
+        gsap.set(el, { yPercent: 120 });
+      });
       tl.to(el, { yPercent: 0, opacity: 1, duration: 0.42, ease: 'power3.out' });
     }, 2600);
   }
@@ -78,22 +87,27 @@ export class Hero implements AfterViewInit, OnDestroy {
   private entranceAnimation(): void {
     const lines = this.headline.nativeElement.querySelectorAll('.line');
     const tl = gsap.timeline({ defaults: { ease: 'power3.out' } });
-    tl.to(lines,          { yPercent: 0, duration: 1.1, stagger: 0.14 }, 0.15);
-    tl.to('.hero__desc',  { opacity: 1, y: 0, duration: 0.8 },           0.85);
-    tl.to('.hero__strip', { opacity: 1, y: 0, duration: 0.6 },           1.05);
+    tl.to(lines, { yPercent: 0, duration: 1.1, stagger: 0.14 }, 0.15);
+    tl.to('.hero__desc', { opacity: 1, y: 0, duration: 0.8 }, 0.85);
+    tl.to('.hero__strip', { opacity: 1, y: 0, duration: 0.6 }, 1.05);
   }
 
   private initScrollTrigger(): void {
     const section = this.section.nativeElement;
 
     const st1 = ScrollTrigger.create({
-      trigger: section, start: 'top top', end: '+=30%',
-      pin: true, pinSpacing: true,
+      trigger: section,
+      start: 'top top',
+      end: '+=30%',
+      pin: true,
+      pinSpacing: true,
     });
     this.sts.push(st1);
 
     const anim = gsap.to(this.headline.nativeElement, {
-      opacity: 0, y: -40, ease: 'power2.in',
+      opacity: 0,
+      y: -40,
+      ease: 'power2.in',
       scrollTrigger: { trigger: section, start: 'top top', end: '+=25%', scrub: 0.6 },
     });
     if (anim.scrollTrigger) this.sts.push(anim.scrollTrigger);

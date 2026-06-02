@@ -19,6 +19,14 @@ export const routes: Routes = [
         path: 'contact',
         loadComponent: () => import('./features/contact/contact').then((m) => m.ContactPage),
       },
+      {
+        path: 'portfolio/hail',
+        loadComponent: () => import('./features/hail/hail').then((m) => m.HailProject),
+      },
+      {
+        path: 'portfolio/branding/:slug',
+        loadComponent: () => import('./features/branding/branding').then((m) => m.BrandingProject),
+      },
     ],
   },
   {

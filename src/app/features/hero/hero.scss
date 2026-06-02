@@ -5,7 +5,7 @@
 }
 
 .hero {
-  --accent:      #8a4fff;
+  --accent: #8a4fff;
   --accent-soft: #c49bff;
 
   position: relative;
@@ -48,7 +48,6 @@
 .hero__headline {
   font-family: 'Space Grotesk', sans-serif;
   font-weight: 700;
-  text-transform: lowercase;
   font-size: clamp(3rem, 9vw, 10.5rem);
   line-height: 0.9;
   letter-spacing: -0.04em;
@@ -63,7 +62,9 @@
   margin-bottom: -0.02em;
 }
 
-.line { display: block; }
+.line {
+  display: block;
+}
 
 .cycle-wrap {
   display: inline-block;
@@ -87,27 +88,17 @@
 
 // ── Bottom-right description ───────────────────────────────
 .hero__desc {
-  position: absolute;
-  right: 3vw;
-  bottom: 7vh;
-  z-index: 2;
-  max-width: 32ch;
+  max-width: 42ch;
   font-family: 'Space Grotesk', sans-serif;
-  font-size: clamp(0.9rem, 1.2vw, 1.1rem);
+  font-size: clamp(0.9rem, 1.1vw, 1.05rem);
   font-weight: 400;
-  line-height: 1.55;
-  color: rgba(245, 241, 255, 0.6);
+  line-height: 1.6;
+  color: rgba(245, 241, 255, 0.55);
+  margin-top: 1.8rem;
 
   strong {
     color: #fff;
     font-weight: 600;
-  }
-
-  @media (max-width: 768px) {
-    position: static;
-    margin-top: 2.5rem;
-    padding: 0 3vw;
-    max-width: none;
   }
 }
 
@@ -134,4 +125,6 @@
   }
 }
 
-.hero__strip-dot { color: rgba(138, 79, 255, 0.5); }
+.hero__strip-dot {
+  color: rgba(138, 79, 255, 0.5);
+}

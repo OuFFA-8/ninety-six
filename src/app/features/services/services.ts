@@ -35,7 +35,7 @@ export class ServicesPage implements AfterViewInit, OnDestroy {
   private _starRaf = 0;
 
   activeFilter = 'all';
-  filterCount  = '07';
+  filterCount  = '10';
   scNum        = '01';
   scProgress   = 0;
   caseCurrent  = '01';
@@ -68,6 +68,7 @@ export class ServicesPage implements AfterViewInit, OnDestroy {
       this.initShowcase();
       this.initCase();
       this.initCTA();
+      this.initNavHide();
       ScrollTrigger.refresh();
     }, 80);
   }
@@ -105,6 +106,9 @@ export class ServicesPage implements AfterViewInit, OnDestroy {
         onLeave: (els: Element[]) =>
           gsap.to(els, { opacity: 0, scale: 0.85, duration: 0.28 }),
       });
+
+      const sec = document.querySelector<HTMLElement>('.work-grid-sec');
+      if (sec) window.scrollTo({ top: sec.offsetTop, behavior: 'smooth' });
       ScrollTrigger.refresh();
     });
   }
@@ -125,10 +129,11 @@ export class ServicesPage implements AfterViewInit, OnDestroy {
     const stars = Array.from({ length: 80 }, () => ({
       x:         Math.random() * window.innerWidth,
       y:         Math.random() * window.innerHeight,
-      r:         Math.random() * 1.1 + 0.3,
+      r:         Math.random() * 1.8 + 0.8,
       baseAlpha: Math.random() * 0.4 + 0.08,
       phase:     Math.random() * Math.PI * 2,
       spd:       Math.random() * 0.5 + 0.2,
+      glow:      Math.random() > 0.65,
     }));
 
     let t = 0;
@@ -139,10 +144,12 @@ export class ServicesPage implements AfterViewInit, OnDestroy {
       ctx.fillRect(0, 0, canvas.width, canvas.height);
       for (const s of stars) {
         const a = s.baseAlpha * (0.5 + 0.5 * Math.sin(t * s.spd + s.phase));
+        if (s.glow) { ctx.shadowBlur = s.r * 7; ctx.shadowColor = `rgba(220,190,255,${a})`; }
         ctx.beginPath();
         ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(196,155,255,${a})`;
+        ctx.fillStyle = `rgba(${s.glow ? '245,225,255' : '196,155,255'},${a})`;
         ctx.fill();
+        if (s.glow) ctx.shadowBlur = 0;
       }
     };
     draw();
@@ -322,8 +329,16 @@ export class ServicesPage implements AfterViewInit, OnDestroy {
     const track = document.getElementById('stripTrack');
     if (!track) return;
 
-    const html = [...this.stripItems, ...this.stripItems]
-      .map(t => `<div class="strip__item"><span class="strip__star">✦</span> <em>${t}</em></div>`)
+    const logos = ['/LOGOES/Artboard 1.png', '/LOGOES/Artboard 1 copy.png'];
+    const repeated = Array(6).fill(logos).flat();
+    const imgStyle = 'width:140px;height:40px;object-fit:contain;object-position:center;display:block;filter:brightness(0) invert(1);opacity:0.65';
+    const itemStyle = 'display:flex;align-items:center;height:56px';
+    const sepStyle  = 'color:rgba(138,79,255,0.4);font-size:0.8rem;flex-shrink:0;margin:0 1rem';
+    const html = [...repeated, ...repeated]
+      .map((src, i) =>
+        `<div class="strip__item" style="${itemStyle}"><img src="${src}" alt="" style="${imgStyle}" /></div>` +
+        (i % 2 === 1 ? `<span style="${sepStyle}">✦</span>` : '')
+      )
       .join('');
     track.innerHTML = html;
 
@@ -350,6 +365,21 @@ export class ServicesPage implements AfterViewInit, OnDestroy {
     gsap.from('.svc-cta__inner > *', {
       opacity: 0, y: 40, duration: 0.9, stagger: 0.12, ease: 'expo.out',
       scrollTrigger: { trigger: '.svc-cta', start: 'top 78%' },
+    });
+  }
+
+  private initNavHide(): void {
+    const nav = document.querySelector<HTMLElement>('.navbar');
+    if (!nav) return;
+
+    ScrollTrigger.create({
+      trigger: '.work-grid-sec',
+      start: 'top top',
+      end: 'bottom bottom',
+      onEnter:     () => nav.classList.add('force-hidden'),
+      onLeave:     () => nav.classList.remove('force-hidden'),
+      onEnterBack: () => nav.classList.add('force-hidden'),
+      onLeaveBack: () => nav.classList.remove('force-hidden'),
     });
   }
 }

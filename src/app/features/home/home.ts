@@ -99,13 +99,14 @@ export class Home implements AfterViewInit, OnDestroy {
       driftAmp: number;
       driftSpd: number;
       parallax: number;
+      glow: boolean;
       ox: number;
       oy: number;
     }
     const stars: PS[] = Array.from({ length: 600 }, () => ({
       x: Math.random() * canvas.width,
       y: Math.random() * canvas.height,
-      r: Math.random() * 0.9 + 0.3,
+      r: Math.random() * 1.8 + 0.8,
       baseAlpha: Math.random() * 0.45 + 0.15,
       hue: Math.random() * 40 + 255,
       phase: Math.random() * Math.PI * 2,
@@ -114,6 +115,7 @@ export class Home implements AfterViewInit, OnDestroy {
       driftAmp: Math.random() * 0.4 + 0.1,
       driftSpd: Math.random() * 0.4 + 0.2,
       parallax: Math.random() * 0.8 + 0.2,
+      glow: Math.random() > 0.65,
       ox: 0,
       oy: 0,
     }));
@@ -145,10 +147,12 @@ export class Home implements AfterViewInit, OnDestroy {
         const alpha = s.baseAlpha * (0.6 + 0.4 * Math.sin(t * s.spd + s.phase));
         const wx = (((s.x + s.ox) % W()) + W()) % W();
         const wy = (((s.y + s.oy) % H()) + H()) % H();
+        if (s.glow) { ctx.shadowBlur = s.r * 7; ctx.shadowColor = `hsla(${s.hue}, 90%, 85%, ${alpha})`; }
         ctx.beginPath();
         ctx.arc(wx, wy, s.r, 0, Math.PI * 2);
-        ctx.fillStyle = `hsla(${s.hue}, 80%, 75%, ${alpha})`;
+        ctx.fillStyle = `hsla(${s.hue}, ${s.glow ? 90 : 80}%, ${s.glow ? 92 : 75}%, ${alpha})`;
         ctx.fill();
+        if (s.glow) ctx.shadowBlur = 0;
       }
     };
     draw();
@@ -488,7 +492,7 @@ export class Home implements AfterViewInit, OnDestroy {
     const stars: VS[] = Array.from({ length: 160 }, () => ({
       x: Math.random() * canvas.width,
       y: Math.random() * canvas.height,
-      r: Math.random() * 0.9 + 0.2,
+      r: Math.random() * 1.8 + 0.8,
       alpha: Math.random() * 0.5 + 0.12,
       hue: Math.random() * 40 + 255,
       phase: Math.random() * Math.PI * 2,

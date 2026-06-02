@@ -21,7 +21,8 @@ export class Navbar implements AfterViewInit {
 
   isMenuOpen = false;
   isHidden   = false;
-  private _lastY = 0;
+  private _lastY   = 0;
+  private _scrolled = 0;
 
   ngAfterViewInit(): void {
     gsap.from(this.navbar.nativeElement, {
@@ -32,9 +33,21 @@ export class Navbar implements AfterViewInit {
 
   @HostListener('window:scroll')
   onWindowScroll(): void {
-    const y = window.scrollY;
-    this.isHidden = y > 120 && y > this._lastY;
+    const y    = window.scrollY;
+    const diff = y - this._lastY;
     this._lastY = y;
+
+    if (y < 80) { this.isHidden = false; return; }
+
+    this._scrolled += diff;
+
+    if (this._scrolled > 60) {
+      this.isHidden  = true;
+      this._scrolled = 0;
+    } else if (this._scrolled < -40) {
+      this.isHidden  = false;
+      this._scrolled = 0;
+    }
   }
 
   toggleMenu(): void {
