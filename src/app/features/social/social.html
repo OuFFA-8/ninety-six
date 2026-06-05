@@ -20,9 +20,11 @@
       </div>
     </header>
 
-    <main class="social-gallery">
+    <main class="social-gallery" [class]="layout ? 'social-gallery social-gallery--' + layout : 'social-gallery'">
       @for (src of images; track src; let i = $index) {
-        <div class="social-item" (click)="open(src)">
+        <div class="social-item"
+             [class.social-item--full]="project.fullWidth?.includes(i)"
+             (click)="open(src)">
           <img [src]="src" [loading]="i < 4 ? 'eager' : 'lazy'" />
           <div class="social-item__overlay">
             <svg viewBox="0 0 24 24" fill="none">

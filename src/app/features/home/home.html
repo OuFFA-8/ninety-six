@@ -28,15 +28,15 @@
 <app-hero></app-hero>
 
 <!-- ═══ SERVICES ═══ -->
-<section class="services-portal">
-  <div class="section-head section-head--center">
-    <h2 class="section-head__title">Services Built<br />to <em>Perform</em>.</h2>
-    <p class="section-head__sub">Every service engineered with one goal — <em>Attract.</em></p>
-  </div>
-</section>
-
 <div class="deck-scroll-space">
 <div class="deck-scene">
+
+  <!-- Title overlay — animates out as first card rises -->
+  <div class="deck-title">
+    <h2 class="deck-title__text">Services Built<br />to <em>Perform</em>.</h2>
+    <p class="deck-title__sub">Every service engineered with one goal — <em>Attract.</em></p>
+  </div>
+
   <div class="cards-deck-wrapper">
     <ul class="cards-deck">
       @for (service of services; track service.title; let i = $index) {

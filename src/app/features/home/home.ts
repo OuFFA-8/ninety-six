@@ -527,39 +527,22 @@ export class Home implements AfterViewInit, OnDestroy {
   // ── Section animations ──
 
   initServiceCards() {
-    // Section head exit scrub — fades as deck-scene rises into view
-    gsap.to('.services-portal .section-head', {
-      opacity: 0,
-      scale: 0.85,
-      y: 40,
-      ease: 'none',
-      scrollTrigger: {
-        trigger: '.deck-scroll-space',
-        start: 'top 80%',
-        end: 'top 20%',
-        scrub: 0.4,
-      },
-    });
-
     const cards = Array.from(document.querySelectorAll<HTMLElement>('.deck-card'));
     const total = cards.length;
     if (!total) return;
 
-    // Give scroll-space enough height for all card transitions
     const scrollSpace = document.querySelector<HTMLElement>('.deck-scroll-space');
-    if (scrollSpace) scrollSpace.style.height = `${total * 60 + 100}vh`;
+    // +2 phases: title enter + card-0 rise
+    if (scrollSpace) scrollSpace.style.height = `${(total + 2) * 60 + 100}vh`;
 
-    // Initial stacked state
+    // Initial states
+    gsap.set(cards[0], { yPercent: 100, scale: 1, opacity: 1, zIndex: total });
     cards.forEach((card, i) => {
-      gsap.set(card, {
-        yPercent: i === 0 ? 0 : 8,
-        scale:    i === 0 ? 1 : 0.96,
-        opacity:  i === 0 ? 1 : 0,
-        zIndex:   total - i,
-      });
+      if (i === 0) return;
+      gsap.set(card, { yPercent: 8, scale: 0.96, opacity: 0, zIndex: total - i });
     });
+    gsap.set('.deck-title', { y: 70, opacity: 0 });
 
-    // CSS sticky handles the pin — GSAP just scrubs the card swap
     const tl = gsap.timeline({
       scrollTrigger: {
         trigger: '.deck-scroll-space',
@@ -570,10 +553,21 @@ export class Home implements AfterViewInit, OnDestroy {
       },
     });
 
+    // Phase 0 → title rises and pins center
+    tl.to('.deck-title', { y: 0, opacity: 1, duration: 1, ease: 'power3.out' }, 0);
+
+    // Phase 1 → card 0 rises from below, title falls behind it
+    tl.to(cards[0],      { yPercent: 0,  duration: 1, ease: 'power2.out'  }, 1);
+    tl.to('.deck-title', {
+      x: 120, rotation: 6, opacity: 0,
+      duration: 0.8, ease: 'power2.in',
+    }, 0.7);
+
+    // Phase 2+ → original stacked card swaps
     cards.forEach((_card, i) => {
       if (i === 0) return;
-      tl.to(cards[i],     { yPercent: 0, scale: 1, opacity: 1, duration: 1, ease: 'power2.inOut' }, i - 1);
-      tl.to(cards[i - 1], { yPercent: -8, scale: 0.96, opacity: 0, duration: 1, ease: 'power2.inOut' }, i - 1);
+      tl.to(cards[i],     { yPercent: 0,  scale: 1,    opacity: 1, duration: 1, ease: 'power2.inOut' }, i + 1);
+      tl.to(cards[i - 1], { yPercent: -8, scale: 0.96, opacity: 0, duration: 1, ease: 'power2.inOut' }, i + 1);
     });
   }
 

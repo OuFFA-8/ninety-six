@@ -14,7 +14,7 @@ const sm = (folder: string, file: string) =>
   `/SOCIAL%20MEDIA/${encodeURIComponent(folder)}/${encodeURIComponent(file)}`;
 
 interface Img { src: string; }
-interface ProjectCfg { title: string; tag: string; desc: string; images: Img[]; }
+interface ProjectCfg { title: string; tag: string; desc: string; images: Img[]; layout?: string; fullWidth?: number[]; }
 
 const i = (f: string, n: string): Img => ({ src: sm(f, n) });
 
@@ -48,14 +48,16 @@ const PROJECTS: Record<string, ProjectCfg> = {
   'cash-expo': {
     title: 'Cash Expo .', tag: 'Social Media · 2024',
     desc: 'Campaign coverage and digital content for Cash Expo.',
+    layout: 'cash-expo',
+    fullWidth: [6],
     images: [
       i('Cash Expo', 'Copy of  -3- دعوةة.png'),
       i('Cash Expo', 'Copy of  -٢- 4 خطوات.png'),
       i('Cash Expo', 'Copy of -١- اكسبو اليوم الوطني copy.png'),
       i('Cash Expo', 'Copy of 5000-5000.png'),
       i('Cash Expo', 'Copy of 5000-5000.png-٢-.png'),
-      i('Cash Expo', 'Copy of Artboard 1 copy.png'),
       i('Cash Expo', 'Copy of Artboard 1.png'),
+      i('Cash Expo', 'Copy of Artboard 1 copy.png'),
       i('Cash Expo', 'Copy of Artboard 11.png'),
       i('Cash Expo', 'Copy of Artboard 12 copy 2.png'),
       i('Cash Expo', 'Copy of Artboard 12 copy.jpg'),
@@ -82,6 +84,7 @@ const PROJECTS: Record<string, ProjectCfg> = {
   dunkin: {
     title: 'Dunkin .',  tag: 'Social Media · 2024',
     desc: 'Social media content for Dunkin.',
+    layout: 'dunkin',
     images: [
       i('DUNKIN', 'Artboard 1 copy 2-100.jpg'),
       i('DUNKIN', 'Artboard 1 copy 3-100.jpg'),
@@ -143,11 +146,15 @@ export class SocialProject implements OnInit, AfterViewInit, OnDestroy {
   lightbox = signal<string | null>(null);
   project: ProjectCfg | null = null;
   images: string[] = [];
+  layout = '';
 
   ngOnInit(): void {
     const slug   = this.route.snapshot.paramMap.get('slug') ?? '';
     this.project = PROJECTS[slug] ?? null;
-    if (this.project) this.images = this.project.images.map(img => img.src);
+    if (this.project) {
+      this.images = this.project.images.map(img => img.src);
+      this.layout = this.project.layout ?? '';
+    }
   }
 
   ngAfterViewInit(): void {

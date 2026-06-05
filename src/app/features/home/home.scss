@@ -626,22 +626,51 @@ app-hero,
 // ══════════════════════════════
 // SERVICES PORTAL
 // ══════════════════════════════
-.services-portal {
-  padding: 5rem 5rem 0;
-  position: relative;
-  z-index: 2;
+.deck-title {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  padding-top: 22vh;
+  z-index: 1;
+  pointer-events: none;
+  text-align: center;
 
-  > .section-head {
-    border-bottom: none;
-    transform-origin: center center;
+  &__text {
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 300;
+    font-size: clamp(2.8rem, 5vw, 5.5rem);
+    line-height: 1.05;
+    letter-spacing: -0.03em;
+    color: #fff;
+    margin: 0 0 1.2rem;
+
+    em {
+      font-family: 'Fraunces', serif;
+      font-style: italic;
+      font-weight: 300;
+      background: linear-gradient(135deg, #e0c4ff, #8a4fff 60%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
   }
 
-  @media (max-width: 768px) { padding: 4rem 1.5rem 0; }
+  &__sub {
+    font-size: 1rem;
+    color: rgba(245, 241, 255, 0.45);
+    font-weight: 300;
+
+    em { font-style: italic; color: rgba(196, 155, 255, 0.8); }
+  }
 }
 
 .deck-scroll-space {
   position: relative;
-  z-index: 2;
+  z-index: 3;
+  margin-top: 10vh;
   // height set by JS: (total * 60 + 100)vh
 }
 
@@ -651,6 +680,7 @@ app-hero,
   height: 100vh;
   display: flex;
   align-items: center;
+  isolation: isolate;
   padding: 0 5rem;
 
   @media (max-width: 768px) { padding: 0 1.5rem; }

@@ -64,6 +64,33 @@ $accent: #8a4fff;
   @media (max-width: 480px)  { columns: 1; }
 }
 
+// ── Full-width item ────────────────────────────────────────
+.social-item--full {
+  column-span: all;    // for columns layout
+  margin-bottom: 1rem;
+  img { border-radius: 12px; }
+}
+
+// ── Cash Expo: 2-col masonry, full images shown ───────────
+.social-gallery--cash-expo {
+  columns: 2;
+  column-gap: 0.75rem;
+}
+
+// ── Dunkin layout: 5 cols + full-width last ───────────────
+.social-gallery--dunkin {
+  columns: unset;
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 1rem;
+
+  .social-item:last-child {
+    grid-column: 1 / -1;
+    border-radius: 12px;
+    overflow: hidden;
+  }
+}
+
 // ── Gallery item ──────────────────────────────────────────
 .social-item {
   break-inside: avoid;
