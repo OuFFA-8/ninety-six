@@ -1257,7 +1257,7 @@ app-hero,
     overflow: hidden;
     cursor: pointer;
     width: 100%;
-    padding-bottom: 130%; // ← بدل aspect-ratio
+    padding-bottom: 130%; // fallback for aspect-ratio
     position: relative;
     transition: transform 0.4s ease;
 

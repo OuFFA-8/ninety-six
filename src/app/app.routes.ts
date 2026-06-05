@@ -27,6 +27,10 @@ export const routes: Routes = [
         path: 'portfolio/branding/:slug',
         loadComponent: () => import('./features/branding/branding').then((m) => m.BrandingProject),
       },
+      {
+        path: 'portfolio/social/:slug',
+        loadComponent: () => import('./features/social/social').then((m) => m.SocialProject),
+      },
     ],
   },
   {

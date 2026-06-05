@@ -36,7 +36,7 @@
         engineered to land — explore what we aimed at, and where it hit.
       </p>
       <div class="intro__count">
-        <span class="intro__count-num">10</span>
+        <span class="intro__count-num">18</span>
         <span class="intro__count-label">Projects · Selected</span>
       </div>
     </div>
@@ -62,6 +62,7 @@
       <button class="filter-btn" [class.is-active]="activeFilter === 'campaign'"  (click)="setFilter('campaign')">Campaigns</button>
       <button class="filter-btn" [class.is-active]="activeFilter === 'motion'"    (click)="setFilter('motion')">Motion</button>
       <button class="filter-btn" [class.is-active]="activeFilter === 'web'"       (click)="setFilter('web')">Web</button>
+      <button class="filter-btn" [class.is-active]="activeFilter === 'social'"    (click)="setFilter('social')">Social</button>
     </div>
     <div class="filter-bar__count"><strong>{{ filterCount }}</strong> projects</div>
   </div>
@@ -73,7 +74,7 @@
              style="--w-color:#0d1f3c; cursor:pointer; aspect-ratio: 1563 / 1401"
              routerLink="/portfolio/hail">
       <div class="work-item__media work-item__media--photo">
-        <img src="/حائل/الغلاف1.jpg" alt="رالي حائل" class="work-item__photo" />
+        <img src="/SOCIAL%20MEDIA/الغلاف/حائل.png" alt="Rally Hail" class="work-item__photo" />
       </div>
       <div class="work-item__shade"></div>
       <div class="work-item__view">
@@ -85,7 +86,7 @@
           <span class="work-item__index">08</span>
         </div>
         <div class="work-item__bottom">
-          <div class="work-item__client">— رالي حائل</div>
+          <div class="work-item__client">— Rally Hail</div>
           <h3 class="work-item__title">Digital content, <em>delivered</em></h3>
           <p class="work-item__desc">Social media designs, event coverage, and digital content for Rally Hail — 17 pieces.</p>
           <div class="work-item__meta">
@@ -96,11 +97,119 @@
       </div>
     </article>
 
-    <!-- 09 Cake Can — MD -->
-    <article class="work-item work-item--md" data-cat="brand" style="--w-color:#1a0d33;cursor:pointer"
-             routerLink="/portfolio/branding/cake-can">
+    <!-- 09 Cash Expo — MD -->
+    <article class="work-item work-item--md" data-cat="social" style="--w-color:#0d1f1a;cursor:pointer"
+             routerLink="/portfolio/social/cash-expo">
       <div class="work-item__media work-item__media--photo">
-        <img src="/branding/cake can/1.jpg" alt="Cake Can" class="work-item__photo" />
+        <img src="/SOCIAL%20MEDIA/الغلاف/Cash%20Expo.png" alt="Cash Expo" class="work-item__photo" />
+      </div>
+      <div class="work-item__shade"></div>
+      <div class="work-item__view">
+        <svg viewBox="0 0 18 18" fill="none"><path d="M3 15L15 3M15 3H6M15 3V12" stroke="currentColor" stroke-width="1.5"/></svg>
+      </div>
+      <div class="work-item__content">
+        <div class="work-item__top">
+          <span class="work-item__tag">Social Media</span>
+          <span class="work-item__index">09</span>
+        </div>
+        <div class="work-item__bottom">
+          <div class="work-item__client">— Cash Expo</div>
+          <h3 class="work-item__title">Campaign coverage, <em>delivered</em></h3>
+          <p class="work-item__desc">Event coverage and digital content — 30 pieces.</p>
+          <div class="work-item__meta">
+            <span class="work-item__meta-item"><strong>Year</strong> 2024</span>
+            <span class="work-item__meta-item"><strong>Scope</strong> Social</span>
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <!-- 10 DUNKIN — SM -->
+    <article class="work-item work-item--sm" data-cat="social" style="--w-color:#331a0d;cursor:pointer"
+             routerLink="/portfolio/social/dunkin">
+      <div class="work-item__media work-item__media--photo">
+        <img src="/SOCIAL%20MEDIA/الغلاف/DUNKIN.png" alt="DUNKIN" class="work-item__photo" />
+      </div>
+      <div class="work-item__shade"></div>
+      <div class="work-item__view">
+        <svg viewBox="0 0 18 18" fill="none"><path d="M3 15L15 3M15 3H6M15 3V12" stroke="currentColor" stroke-width="1.5"/></svg>
+      </div>
+      <div class="work-item__content">
+        <div class="work-item__top">
+          <span class="work-item__tag">Social Media</span>
+          <span class="work-item__index">10</span>
+        </div>
+        <div class="work-item__bottom">
+          <div class="work-item__client">— Dunkin</div>
+          <h3 class="work-item__title">Sweet content, <em>fresh daily</em></h3>
+          <p class="work-item__desc">Social media content — 6 pieces.</p>
+          <div class="work-item__meta">
+            <span class="work-item__meta-item"><strong>Year</strong> 2024</span>
+            <span class="work-item__meta-item"><strong>Scope</strong> Social</span>
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <!-- 11 Saudi Restaurant — SM -->
+    <article class="work-item work-item--sm" data-cat="social" style="--w-color:#1a0d0d;cursor:pointer"
+             routerLink="/portfolio/social/saudi-restaurant">
+      <div class="work-item__media work-item__media--photo">
+        <img src="/SOCIAL%20MEDIA/الغلاف/المطعم%20السعودي.png" alt="Saudi Restaurant" class="work-item__photo" />
+      </div>
+      <div class="work-item__shade"></div>
+      <div class="work-item__view">
+        <svg viewBox="0 0 18 18" fill="none"><path d="M3 15L15 3M15 3H6M15 3V12" stroke="currentColor" stroke-width="1.5"/></svg>
+      </div>
+      <div class="work-item__content">
+        <div class="work-item__top">
+          <span class="work-item__tag">Social Media</span>
+          <span class="work-item__index">11</span>
+        </div>
+        <div class="work-item__bottom">
+          <div class="work-item__client">— Saudi Restaurant</div>
+          <h3 class="work-item__title">Authentic taste, <em>told right</em></h3>
+          <p class="work-item__desc">Social media designs — 12 pieces.</p>
+          <div class="work-item__meta">
+            <span class="work-item__meta-item"><strong>Year</strong> 2024</span>
+            <span class="work-item__meta-item"><strong>Scope</strong> Social</span>
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <!-- 12 Turbs — SM -->
+    <article class="work-item work-item--sm" data-cat="social" style="--w-color:#1a1a0d;cursor:pointer"
+             routerLink="/portfolio/social/turbs">
+      <div class="work-item__media work-item__media--photo">
+        <img src="/SOCIAL%20MEDIA/الغلاف/تربس.png" alt="Turbs" class="work-item__photo" />
+      </div>
+      <div class="work-item__shade"></div>
+      <div class="work-item__view">
+        <svg viewBox="0 0 18 18" fill="none"><path d="M3 15L15 3M15 3H6M15 3V12" stroke="currentColor" stroke-width="1.5"/></svg>
+      </div>
+      <div class="work-item__content">
+        <div class="work-item__top">
+          <span class="work-item__tag">Social Media</span>
+          <span class="work-item__index">12</span>
+        </div>
+        <div class="work-item__bottom">
+          <div class="work-item__client">— Turbs</div>
+          <h3 class="work-item__title">Energy in every <em>frame</em></h3>
+          <p class="work-item__desc">Social media content — 7 pieces.</p>
+          <div class="work-item__meta">
+            <span class="work-item__meta-item"><strong>Year</strong> 2024</span>
+            <span class="work-item__meta-item"><strong>Scope</strong> Social</span>
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <!-- 13 310 — MD -->
+    <article class="work-item work-item--md" data-cat="brand" style="--w-color:#0d1a33;cursor:pointer"
+             routerLink="/portfolio/branding/310">
+      <div class="work-item__media work-item__media--photo">
+        <img src="/BRADNING/310/1x/1.jpg" alt="310" class="work-item__photo" />
       </div>
       <div class="work-item__shade"></div>
       <div class="work-item__view">
@@ -109,12 +218,12 @@
       <div class="work-item__content">
         <div class="work-item__top">
           <span class="work-item__tag">Brand Identity</span>
-          <span class="work-item__index">09</span>
+          <span class="work-item__index">13</span>
         </div>
         <div class="work-item__bottom">
-          <div class="work-item__client">— Cake Can</div>
-          <h3 class="work-item__title">Sweet identity, <em>crafted</em></h3>
-          <p class="work-item__desc">Full brand identity system with 10 deliverables.</p>
+          <div class="work-item__client">— 310</div>
+          <h3 class="work-item__title">Bold numbers, <em>bold identity</em></h3>
+          <p class="work-item__desc">Full brand identity system — 12 pieces.</p>
           <div class="work-item__meta">
             <span class="work-item__meta-item"><strong>Year</strong> 2024</span>
             <span class="work-item__meta-item"><strong>Scope</strong> Brand</span>
@@ -123,11 +232,11 @@
       </div>
     </article>
 
-    <!-- 10 Canned — SM -->
-    <article class="work-item work-item--sm" data-cat="brand" style="--w-color:#2a0d4a;cursor:pointer"
-             routerLink="/portfolio/branding/canned">
+    <!-- 10 DOT — SM -->
+    <article class="work-item work-item--sm" data-cat="brand" style="--w-color:#1a1a3a;cursor:pointer"
+             routerLink="/portfolio/branding/dot">
       <div class="work-item__media work-item__media--photo">
-        <img src="/branding/canned/1.jpg" alt="Canned" class="work-item__photo" />
+        <img src="/BRADNING/DOT/1x/1.jpg" alt="DOT" class="work-item__photo" />
       </div>
       <div class="work-item__shade"></div>
       <div class="work-item__view">
@@ -136,12 +245,120 @@
       <div class="work-item__content">
         <div class="work-item__top">
           <span class="work-item__tag">Brand Identity</span>
-          <span class="work-item__index">10</span>
+          <span class="work-item__index">14</span>
+        </div>
+        <div class="work-item__bottom">
+          <div class="work-item__client">— DOT</div>
+          <h3 class="work-item__title">Minimal mark, <em>maximum impact</em></h3>
+          <p class="work-item__desc">Identity system — 10 pieces.</p>
+          <div class="work-item__meta">
+            <span class="work-item__meta-item"><strong>Year</strong> 2024</span>
+            <span class="work-item__meta-item"><strong>Scope</strong> Brand</span>
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <!-- 11 SBL — SM -->
+    <article class="work-item work-item--sm" data-cat="brand" style="--w-color:#1a0d2e;cursor:pointer"
+             routerLink="/portfolio/branding/sbl">
+      <div class="work-item__media work-item__media--photo">
+        <img src="/BRADNING/SBL/1x/1.jpg" alt="SBL" class="work-item__photo" />
+      </div>
+      <div class="work-item__shade"></div>
+      <div class="work-item__view">
+        <svg viewBox="0 0 18 18" fill="none"><path d="M3 15L15 3M15 3H6M15 3V12" stroke="currentColor" stroke-width="1.5"/></svg>
+      </div>
+      <div class="work-item__content">
+        <div class="work-item__top">
+          <span class="work-item__tag">Brand Identity</span>
+          <span class="work-item__index">15</span>
+        </div>
+        <div class="work-item__bottom">
+          <div class="work-item__client">— SBL</div>
+          <h3 class="work-item__title">Structure meets <em>style</em></h3>
+          <p class="work-item__desc">Identity system — 10 pieces.</p>
+          <div class="work-item__meta">
+            <span class="work-item__meta-item"><strong>Year</strong> 2024</span>
+            <span class="work-item__meta-item"><strong>Scope</strong> Brand</span>
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <!-- 12 Ruh — LG -->
+    <article class="work-item work-item--lg" data-cat="brand" style="--w-color:#2a0d1a;cursor:pointer"
+             routerLink="/portfolio/branding/ruh">
+      <div class="work-item__media work-item__media--photo">
+        <img src="/BRADNING/ruh/New folder/1.jpg" alt="Ruh" class="work-item__photo" />
+      </div>
+      <div class="work-item__shade"></div>
+      <div class="work-item__view">
+        <svg viewBox="0 0 18 18" fill="none"><path d="M3 15L15 3M15 3H6M15 3V12" stroke="currentColor" stroke-width="1.5"/></svg>
+      </div>
+      <div class="work-item__content">
+        <div class="work-item__top">
+          <span class="work-item__tag">Brand Identity</span>
+          <span class="work-item__index">16</span>
+        </div>
+        <div class="work-item__bottom">
+          <div class="work-item__client">— Ruh</div>
+          <h3 class="work-item__title">Soul in every <em>detail</em></h3>
+          <p class="work-item__desc">Full brand identity — 17 pieces.</p>
+          <div class="work-item__meta">
+            <span class="work-item__meta-item"><strong>Year</strong> 2024</span>
+            <span class="work-item__meta-item"><strong>Scope</strong> Brand</span>
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <!-- 13 Cake Can — SM -->
+    <article class="work-item work-item--sm" data-cat="brand" style="--w-color:#1a0d33;cursor:pointer"
+             routerLink="/portfolio/branding/cake-can">
+      <div class="work-item__media work-item__media--photo">
+        <img src="/BRADNING/cake%20can/1.jpg" alt="Cake Can" class="work-item__photo" />
+      </div>
+      <div class="work-item__shade"></div>
+      <div class="work-item__view">
+        <svg viewBox="0 0 18 18" fill="none"><path d="M3 15L15 3M15 3H6M15 3V12" stroke="currentColor" stroke-width="1.5"/></svg>
+      </div>
+      <div class="work-item__content">
+        <div class="work-item__top">
+          <span class="work-item__tag">Brand Identity</span>
+          <span class="work-item__index">17</span>
+        </div>
+        <div class="work-item__bottom">
+          <div class="work-item__client">— Cake Can</div>
+          <h3 class="work-item__title">Sweet identity, <em>crafted</em></h3>
+          <p class="work-item__desc">Brand identity system — 10 pieces.</p>
+          <div class="work-item__meta">
+            <span class="work-item__meta-item"><strong>Year</strong> 2024</span>
+            <span class="work-item__meta-item"><strong>Scope</strong> Brand</span>
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <!-- 14 Canned — SM -->
+    <article class="work-item work-item--sm" data-cat="brand" style="--w-color:#2a0d4a;cursor:pointer"
+             routerLink="/portfolio/branding/canned">
+      <div class="work-item__media work-item__media--photo">
+        <img src="/BRADNING/canned/1.jpg" alt="Canned" class="work-item__photo" />
+      </div>
+      <div class="work-item__shade"></div>
+      <div class="work-item__view">
+        <svg viewBox="0 0 18 18" fill="none"><path d="M3 15L15 3M15 3H6M15 3V12" stroke="currentColor" stroke-width="1.5"/></svg>
+      </div>
+      <div class="work-item__content">
+        <div class="work-item__top">
+          <span class="work-item__tag">Brand Identity</span>
+          <span class="work-item__index">18</span>
         </div>
         <div class="work-item__bottom">
           <div class="work-item__client">— Canned</div>
           <h3 class="work-item__title">Bold shelf <em>presence</em></h3>
-          <p class="work-item__desc">Complete identity and packaging system — 8 pieces.</p>
+          <p class="work-item__desc">Identity and packaging system — 8 pieces.</p>
           <div class="work-item__meta">
             <span class="work-item__meta-item"><strong>Year</strong> 2024</span>
             <span class="work-item__meta-item"><strong>Scope</strong> Brand</span>

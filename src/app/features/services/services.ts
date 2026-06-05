@@ -35,7 +35,7 @@ export class ServicesPage implements AfterViewInit, OnDestroy {
   private _starRaf = 0;
 
   activeFilter = 'all';
-  filterCount  = '10';
+  filterCount  = '18';
   scNum        = '01';
   scProgress   = 0;
   caseCurrent  = '01';

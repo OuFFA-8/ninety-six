@@ -4,22 +4,39 @@ import { ActivatedRoute, RouterLink } from '@angular/router';
 interface ProjectConfig {
   title: string;
   tag: string;
-  folder: string;
-  count: number;
+  images: string[];
 }
 
 const PROJECTS: Record<string, ProjectConfig> = {
+  '310': {
+    title: '310 .',
+    tag: 'Brand Identity · 2024',
+    images: [1,2,3,5,6,7,8,9,10,11,12,13].map(n => `/BRADNING/310/1x/${n}.jpg`),
+  },
+  dot: {
+    title: 'DOT .',
+    tag: 'Brand Identity · 2024',
+    images: Array.from({ length: 10 }, (_, i) => `/BRADNING/DOT/1x/${i + 1}.jpg`),
+  },
+  sbl: {
+    title: 'SBL .',
+    tag: 'Brand Identity · 2024',
+    images: Array.from({ length: 10 }, (_, i) => `/BRADNING/SBL/1x/${i + 1}.jpg`),
+  },
   'cake-can': {
     title: 'Cake Can .',
     tag: 'Brand Identity · 2024',
-    folder: 'cake can',
-    count: 10,
+    images: Array.from({ length: 10 }, (_, i) => `/BRADNING/cake%20can/${i + 1}.jpg`),
   },
   canned: {
     title: 'Canned .',
     tag: 'Brand Identity · 2024',
-    folder: 'canned',
-    count: 8,
+    images: Array.from({ length: 8 }, (_, i) => `/BRADNING/canned/${i + 1}.jpg`),
+  },
+  ruh: {
+    title: 'Ruh .',
+    tag: 'Brand Identity · 2024',
+    images: Array.from({ length: 17 }, (_, i) => `/BRADNING/ruh/New%20folder/${i + 1}.jpg`),
   },
 };
 
@@ -40,10 +57,7 @@ export class BrandingProject implements OnInit {
     const slug = this.route.snapshot.paramMap.get('slug') ?? '';
     this.project = PROJECTS[slug] ?? null;
     if (this.project) {
-      this.images = Array.from(
-        { length: this.project.count },
-        (_, i) => `/branding/${encodeURIComponent(this.project!.folder)}/${i + 1}.jpg`,
-      );
+      this.images = this.project.images;
     }
   }
 }
