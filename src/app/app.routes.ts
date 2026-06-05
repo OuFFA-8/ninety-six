@@ -21,7 +21,8 @@ export const routes: Routes = [
       },
       {
         path: 'portfolio/hail',
-        loadComponent: () => import('./features/hail/hail').then((m) => m.HailProject),
+        redirectTo: 'portfolio/social/hail',
+        pathMatch: 'full',
       },
       {
         path: 'portfolio/branding/:slug',

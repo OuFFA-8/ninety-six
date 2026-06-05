@@ -21,6 +21,30 @@ const i = (f: string, n: string): Img => ({ src: sm(f, n) });
 // ── project data ───────────────────────────────────────────
 const PROJECTS: Record<string, ProjectCfg> = {
 
+  hail: {
+    title: 'Rally Hail .', tag: 'Social Media · Motion · 2024',
+    desc: 'Social media designs, event coverage, and digital content for Rally Hail — celebrations, competitions, and brand moments.',
+    images: [
+      i('حائل', 'معكم رالي حائل.png'),
+      i('حائل', 'مليونية الفروسية.png'),
+      i('حائل', 'تصميم كاس العال.png'),
+      i('حائل', 'الشيخ طلال.png'),
+      i('حائل', 'رمضان مبارك.png'),
+      i('حائل', 'جوائز ابار 2.png'),
+      i('حائل', 'عيد الاضحى.png'),
+      i('حائل', 'دعوة عامة الحفل الختامي.png'),
+      i('حائل', 'تهنئة العيد - بندر.png'),
+      i('حائل', 'راية التوحيد.png'),
+      i('حائل', '3.5 مشاهدة.png'),
+      i('حائل', 'سيارة ابار.png'),
+      i('حائل', 'صرف جوائز.png'),
+      i('حائل', 'صيانة المضمار.png'),
+      i('حائل', 'اقتباس الامير.png'),
+      i('حائل', 'اوقات الحفل العاشر.png'),
+      i('حائل', 'مسابقة تصوير.png'),
+    ],
+  },
+
   'cash-expo': {
     title: 'Cash Expo .', tag: 'Social Media · 2024',
     desc: 'Campaign coverage and digital content for Cash Expo.',
