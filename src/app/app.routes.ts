@@ -20,11 +20,6 @@ export const routes: Routes = [
         loadComponent: () => import('./features/contact/contact').then((m) => m.ContactPage),
       },
       {
-        path: 'portfolio/hail',
-        redirectTo: 'portfolio/social/hail',
-        pathMatch: 'full',
-      },
-      {
         path: 'portfolio/branding/:slug',
         loadComponent: () => import('./features/branding/branding').then((m) => m.BrandingProject),
       },

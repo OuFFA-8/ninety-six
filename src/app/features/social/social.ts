@@ -153,8 +153,11 @@ export class SocialProject implements OnInit, AfterViewInit, OnDestroy {
   ngAfterViewInit(): void {
     if (!isPlatformBrowser(this.platformId)) return;
     this.initStars();
-    requestAnimationFrame(() => this.initGallery());
-    window.addEventListener('load', () => ScrollTrigger.refresh(), { once: true });
+    this.initEntrance();
+    setTimeout(() => {
+      this.initGallery();
+      ScrollTrigger.refresh();
+    }, 120);
   }
 
   ngOnDestroy(): void {
@@ -197,16 +200,43 @@ export class SocialProject implements OnInit, AfterViewInit, OnDestroy {
     draw();
   }
 
+  // ── entrance ──────────────────────────────────────────────
+  private initEntrance(): void {
+    gsap.set('.social-back',  { opacity: 0, x: -24 });
+    gsap.set('.social-tag',   { opacity: 0, y: 14 });
+    gsap.set('.social-ln',    { yPercent: 110 });
+    gsap.set('.social-desc',  { opacity: 0, y: 22 });
+    gsap.set('.social-count', { opacity: 0, y: 10 });
+
+    const tl = gsap.timeline({ defaults: { ease: 'expo.out' } });
+    tl.to('.social-back',  { opacity: 1, x: 0,    duration: 0.7 }, 0);
+    tl.to('.social-tag',   { opacity: 1, y: 0,    duration: 0.7 }, 0.2);
+    tl.to('.social-ln',    { yPercent: 0,          duration: 1.1 }, 0.35);
+    tl.to('.social-desc',  { opacity: 1, y: 0,    duration: 0.9 }, 0.65);
+    tl.to('.social-count', { opacity: 1, y: 0,    duration: 0.6 }, 0.85);
+
+    gsap.to('.social-header', {
+      yPercent: -18, ease: 'none',
+      scrollTrigger: {
+        trigger: '.social-page', start: 'top top', end: '40% top', scrub: 1.2,
+      },
+    });
+  }
+
   // ── gallery ───────────────────────────────────────────────
   private initGallery(): void {
-    document.querySelectorAll<HTMLElement>('.social-item').forEach(item => {
-      gsap.fromTo(item,
-        { opacity: 0, y: 70, scale: 0.9 },
-        {
-          opacity: 1, y: 0, scale: 1, ease: 'power2.out',
-          scrollTrigger: { trigger: item, start: 'top 95%', end: 'top 40%', scrub: 1.2 },
-        },
-      );
+    gsap.set('.social-item', { opacity: 0, y: 55, scale: 0.94 });
+
+    ScrollTrigger.batch('.social-item', {
+      start: 'top 92%',
+      onEnter: batch => gsap.to(batch, {
+        opacity: 1, y: 0, scale: 1,
+        duration: 0.8, stagger: 0.07, ease: 'power3.out', overwrite: true,
+      }),
+      onEnterBack: batch => gsap.to(batch, {
+        opacity: 1, y: 0, scale: 1,
+        duration: 0.6, stagger: 0.05, ease: 'power3.out', overwrite: true,
+      }),
     });
   }
 }
