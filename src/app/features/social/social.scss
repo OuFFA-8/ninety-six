@@ -91,11 +91,6 @@ $accent: #8a4fff;
     .social-item__overlay { opacity: 1; }
   }
 
-  // Landscape: spans full width of the column container
-  &--land {
-    column-span: all;
-    margin-bottom: 1rem;
-  }
 }
 
 // ── Lightbox ──────────────────────────────────────────────

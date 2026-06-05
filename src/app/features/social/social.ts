@@ -10,17 +10,13 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 gsap.registerPlugin(ScrollTrigger);
 
 // ── helpers ────────────────────────────────────────────────
-const enc = (s: string) => s.replace(/ /g, '%20');
-const sm  = (folder: string, file: string) =>
-  `/SOCIAL%20MEDIA/${enc(folder)}/${enc(file)}`;
+const sm = (folder: string, file: string) =>
+  `/SOCIAL%20MEDIA/${encodeURIComponent(folder)}/${encodeURIComponent(file)}`;
 
-type Orient = 'port' | 'sq' | 'land';
-interface Img { src: string; orient: Orient; }
+interface Img { src: string; }
 interface ProjectCfg { title: string; tag: string; desc: string; images: Img[]; }
 
-const p = (f: string, n: string): Img => ({ src: sm(f, n), orient: 'port' });
-const s = (f: string, n: string): Img => ({ src: sm(f, n), orient: 'sq'   });
-const l = (f: string, n: string): Img => ({ src: sm(f, n), orient: 'land' });
+const i = (f: string, n: string): Img => ({ src: sm(f, n) });
 
 // ── project data ───────────────────────────────────────────
 const PROJECTS: Record<string, ProjectCfg> = {
@@ -29,36 +25,33 @@ const PROJECTS: Record<string, ProjectCfg> = {
     title: 'Cash Expo .', tag: 'Social Media · 2024',
     desc: 'Campaign coverage and digital content for Cash Expo.',
     images: [
-      p('Cash Expo', 'Copy of  -3- دعوةة.png'),
-      p('Cash Expo', 'Copy of  -٢- 4 خطوات.png'),
-      p('Cash Expo', 'Copy of -١- اكسبو اليوم الوطني copy.png'),
-      s('Cash Expo', 'Copy of 5000-5000.png'),
-      s('Cash Expo', 'Copy of 5000-5000.png-٢-.png'),
-      l('Cash Expo', 'Copy of Artboard 1 copy.png'),
-      p('Cash Expo', 'Copy of Artboard 1.png'),
-      p('Cash Expo', 'Copy of Artboard 11.png'),
-      p('Cash Expo', 'Copy of Artboard 12 copy 2.png'),
-      p('Cash Expo', 'Copy of Artboard 12 copy.jpg'),
-      p('Cash Expo', 'Copy of Artboard 12.png'),
-      p('Cash Expo', 'Copy of Artboard 4 (1).png'),
-      p('Cash Expo', 'Copy of Artboard 8 (1).png'),
-      p('Cash Expo', 'Copy of instgram.png'),
-      l('Cash Expo', 'Copy of linked.png'),
-      l('Cash Expo', 'Copy of x copy.png'),
-      l('Cash Expo', 'Copy of x.png'),
-      p('Cash Expo', 'Copy of اكسبو اليوم الوطني.png'),
-      p('Cash Expo', 'Copy of انضم كاش اكسبو copy (1).png'),
-      p('Cash Expo', 'Copy of انضم كاش اكسبو copy 2 (1).png'),
-      p('Cash Expo', 'Copy of انضم كاش اكسبو copy 2.png'),
-      p('Cash Expo', 'Copy of انضم كاش اكسبو copy.png'),
-      p('Cash Expo', 'Copy of انضم كاش اكسبو.png'),
-      p('Cash Expo', 'Copy of عد تنازلي_6 ساعات.png'),
-      p('Cash Expo', 'Copy of كااش اكسبو.png'),
-      p('Cash Expo', 'Copy of ١.png'),
-      p('Cash Expo', 'Copy of ١٠٢.png'),
-      p('Cash Expo', 'Copy of ٢.png'),
-      p('Cash Expo', 'Copy of ٣-4 خطوات copy 2.png'),
-      p('Cash Expo', 'Copy of ٣.png'),
+      i('Cash Expo', 'Copy of  -3- دعوةة.png'),
+      i('Cash Expo', 'Copy of  -٢- 4 خطوات.png'),
+      i('Cash Expo', 'Copy of -١- اكسبو اليوم الوطني copy.png'),
+      i('Cash Expo', 'Copy of 5000-5000.png'),
+      i('Cash Expo', 'Copy of 5000-5000.png-٢-.png'),
+      i('Cash Expo', 'Copy of Artboard 1 copy.png'),
+      i('Cash Expo', 'Copy of Artboard 1.png'),
+      i('Cash Expo', 'Copy of Artboard 11.png'),
+      i('Cash Expo', 'Copy of Artboard 12 copy 2.png'),
+      i('Cash Expo', 'Copy of Artboard 12 copy.jpg'),
+      i('Cash Expo', 'Copy of Artboard 12.png'),
+      i('Cash Expo', 'Copy of Artboard 4 (1).png'),
+      i('Cash Expo', 'Copy of Artboard 8 (1).png'),
+      i('Cash Expo', 'Copy of instgram.png'),
+      i('Cash Expo', 'Copy of اكسبو اليوم الوطني.png'),
+      i('Cash Expo', 'Copy of انضم كاش اكسبو copy (1).png'),
+      i('Cash Expo', 'Copy of انضم كاش اكسبو copy 2 (1).png'),
+      i('Cash Expo', 'Copy of انضم كاش اكسبو copy 2.png'),
+      i('Cash Expo', 'Copy of انضم كاش اكسبو copy.png'),
+      i('Cash Expo', 'Copy of انضم كاش اكسبو.png'),
+      i('Cash Expo', 'Copy of عد تنازلي_6 ساعات.png'),
+      i('Cash Expo', 'Copy of كااش اكسبو.png'),
+      i('Cash Expo', 'Copy of ١.png'),
+      i('Cash Expo', 'Copy of ١٠٢.png'),
+      i('Cash Expo', 'Copy of ٢.png'),
+      i('Cash Expo', 'Copy of ٣-4 خطوات copy 2.png'),
+      i('Cash Expo', 'Copy of ٣.png'),
     ],
   },
 
@@ -66,12 +59,12 @@ const PROJECTS: Record<string, ProjectCfg> = {
     title: 'Dunkin .',  tag: 'Social Media · 2024',
     desc: 'Social media content for Dunkin.',
     images: [
-      p('DUNKIN', 'Artboard 1 copy 2-100.jpg'),
-      p('DUNKIN', 'Artboard 1 copy 3-100.jpg'),
-      p('DUNKIN', 'Artboard 1 copy 4-100.jpg'),
-      p('DUNKIN', 'Artboard 1 copy-100.jpg'),
-      p('DUNKIN', 'Artboard 1-100.jpg'),
-      l('DUNKIN', 'Artboard 2-100.jpg'),
+      i('DUNKIN', 'Artboard 1 copy 2-100.jpg'),
+      i('DUNKIN', 'Artboard 1 copy 3-100.jpg'),
+      i('DUNKIN', 'Artboard 1 copy 4-100.jpg'),
+      i('DUNKIN', 'Artboard 1 copy-100.jpg'),
+      i('DUNKIN', 'Artboard 1-100.jpg'),
+      i('DUNKIN', 'Artboard 2-100.jpg'),
     ],
   },
 
@@ -79,18 +72,18 @@ const PROJECTS: Record<string, ProjectCfg> = {
     title: 'Saudi Restaurant .', tag: 'Social Media · 2024',
     desc: 'Social media designs for Saudi Restaurant.',
     images: [
-      p('المطعم السعودي', '1.png'),
-      p('المطعم السعودي', '2.png'),
-      p('المطعم السعودي', '3.png'),
-      p('المطعم السعودي', '4.png'),
-      p('المطعم السعودي', '5.png'),
-      p('المطعم السعودي', '6.png'),
-      p('المطعم السعودي', '7.png'),
-      p('المطعم السعودي', 'تكة لحم_.png'),
-      p('المطعم السعودي', 'جبنا لك الشتا-1.png'),
-      p('المطعم السعودي', 'جبنا لك الشتا.png'),
-      p('المطعم السعودي', 'خصم 25.png'),
-      p('المطعم السعودي', 'ستوري عرض اليوم الوطني.png'),
+      i('المطعم السعودي', '1.png'),
+      i('المطعم السعودي', '2.png'),
+      i('المطعم السعودي', '3.png'),
+      i('المطعم السعودي', '4.png'),
+      i('المطعم السعودي', '5.png'),
+      i('المطعم السعودي', '6.png'),
+      i('المطعم السعودي', '7.png'),
+      i('المطعم السعودي', 'تكة لحم_.png'),
+      i('المطعم السعودي', 'جبنا لك الشتا-1.png'),
+      i('المطعم السعودي', 'جبنا لك الشتا.png'),
+      i('المطعم السعودي', 'خصم 25.png'),
+      i('المطعم السعودي', 'ستوري عرض اليوم الوطني.png'),
     ],
   },
 
@@ -98,13 +91,13 @@ const PROJECTS: Record<string, ProjectCfg> = {
     title: 'Turbs .', tag: 'Social Media · 2024',
     desc: 'Social media content for Turbs.',
     images: [
-      p('تربس', 'Artboard 1 copy 2-100.jpg'),
-      p('تربس', 'Artboard 1 copy 3-100.jpg'),
-      p('تربس', 'Artboard 1 copy 4-100.jpg'),
-      p('تربس', 'Artboard 1 copy 5-100.jpg'),
-      p('تربس', 'Artboard 1 copy 6-100.jpg'),
-      p('تربس', 'Artboard 1 copy-100.jpg'),
-      p('تربس', 'Artboard 1-100.jpg'),
+      i('تربس', 'Artboard 1 copy 2-100.jpg'),
+      i('تربس', 'Artboard 1 copy 3-100.jpg'),
+      i('تربس', 'Artboard 1 copy 4-100.jpg'),
+      i('تربس', 'Artboard 1 copy 5-100.jpg'),
+      i('تربس', 'Artboard 1 copy 6-100.jpg'),
+      i('تربس', 'Artboard 1 copy-100.jpg'),
+      i('تربس', 'Artboard 1-100.jpg'),
     ],
   },
 };
@@ -125,12 +118,12 @@ export class SocialProject implements OnInit, AfterViewInit, OnDestroy {
 
   lightbox = signal<string | null>(null);
   project: ProjectCfg | null = null;
-  images: Img[] = [];
+  images: string[] = [];
 
   ngOnInit(): void {
-    const slug    = this.route.snapshot.paramMap.get('slug') ?? '';
-    this.project  = PROJECTS[slug] ?? null;
-    if (this.project) this.images = this.project.images;
+    const slug   = this.route.snapshot.paramMap.get('slug') ?? '';
+    this.project = PROJECTS[slug] ?? null;
+    if (this.project) this.images = this.project.images.map(img => img.src);
   }
 
   ngAfterViewInit(): void {
@@ -145,8 +138,8 @@ export class SocialProject implements OnInit, AfterViewInit, OnDestroy {
     if (this._starRaf) cancelAnimationFrame(this._starRaf);
   }
 
-  open(src: string) { this.lightbox.set(src); }
-  close()           { this.lightbox.set(null); }
+  open(src: string)  { this.lightbox.set(src); }
+  close()            { this.lightbox.set(null); }
 
   // ── stars ─────────────────────────────────────────────────
   private initStars(): void {

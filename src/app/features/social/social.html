@@ -21,14 +21,9 @@
     </header>
 
     <main class="social-gallery">
-      @for (img of images; track img.src; let i = $index) {
-        <div
-          class="social-item"
-          [class.social-item--land]="img.orient === 'land'"
-          [class.social-item--sq]="img.orient === 'sq'"
-          (click)="open(img.src)"
-        >
-          <img [src]="img.src" [loading]="i < 4 ? 'eager' : 'lazy'" />
+      @for (src of images; track src; let i = $index) {
+        <div class="social-item" (click)="open(src)">
+          <img [src]="src" [loading]="i < 4 ? 'eager' : 'lazy'" />
           <div class="social-item__overlay">
             <svg viewBox="0 0 24 24" fill="none">
               <path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"
@@ -50,5 +45,6 @@
       </svg>
     </button>
     <img [src]="lightbox()!" (click)="$event.stopPropagation()" />
+
   </div>
 }
