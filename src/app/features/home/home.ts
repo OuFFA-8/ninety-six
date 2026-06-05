@@ -284,24 +284,24 @@ export class Home implements AfterViewInit, OnDestroy {
 
   galleryColumns = [
     [
-      { label: 'Brand Strategy', bg: 'linear-gradient(135deg, #1a0535, #3d1a7a)' },
-      { label: 'Visual Identity', bg: 'linear-gradient(135deg, #0a0318, #6a3bbf)' },
-      { label: 'Motion Design', bg: 'linear-gradient(135deg, #120526, #8a4fff)' },
+      { src: '/HOME%20-%20WORK/1.png',  service: 'Social Media', project: 'Cash Expo',       link: '/portfolio/social/cash-expo'   },
+      { src: '/HOME%20-%20WORK/2.jpg',  service: 'Branding',     project: 'Ruh',              link: '/portfolio/branding/ruh'       },
+      { src: '/HOME%20-%20WORK/3.png',  service: 'Motion',       project: 'Motion Design',    link: '/portfolio/motion&video'       },
     ],
     [
-      { label: 'Web Design', bg: 'linear-gradient(135deg, #0d0520, #5c2ea8)' },
-      { label: 'Social Media', bg: 'linear-gradient(135deg, #1a0535, #9d6fff)' },
-      { label: 'Campaigns', bg: 'linear-gradient(135deg, #080314, #7b52d4)' },
+      { src: '/HOME%20-%20WORK/4.png',  service: 'Web Design',   project: 'About El-Khaleej', link: null                            },
+      { src: '/HOME%20-%20WORK/5.jpg',  service: 'Social Media', project: 'Dunkin',           link: '/portfolio/social/dunkin'      },
+      { src: '/HOME%20-%20WORK/6.jpg',  service: 'Branding',     project: 'Dot',              link: '/portfolio/branding/dot'       },
     ],
     [
-      { label: 'Photography', bg: 'linear-gradient(135deg, #120526, #4a1a96)' },
-      { label: 'Print Design', bg: 'linear-gradient(135deg, #0a0318, #8a4fff)' },
-      { label: 'Branding', bg: 'linear-gradient(135deg, #1a0535, #6a3bbf)' },
+      { src: '/HOME%20-%20WORK/7.jpg',  service: 'Branding',     project: 'Carnaval',         link: null                            },
+      { src: '/HOME%20-%20WORK/8.png',  service: 'Video',        project: 'Video Production', link: '/portfolio/motion&video'       },
+      { src: '/HOME%20-%20WORK/9.png',  service: 'Social Media', project: 'Hail',             link: '/portfolio/social/hail'        },
     ],
     [
-      { label: 'UI/UX Design', bg: 'linear-gradient(135deg, #0d0520, #c49bff)' },
-      { label: 'Digital Ads', bg: 'linear-gradient(135deg, #080314, #8a4fff)' },
-      { label: 'Marketing', bg: 'linear-gradient(135deg, #120526, #5c2ea8)' },
+      { src: '/HOME%20-%20WORK/10.jpg', service: 'Application',  project: 'Coming Soon',      link: null                            },
+      { src: '/HOME%20-%20WORK/11.jpg', service: 'Branding',     project: '310',              link: '/portfolio/branding/310'       },
+      { src: '/HOME%20-%20WORK/12.jpg', service: 'Social Media', project: 'Turbs',            link: '/portfolio/social/turbs'       },
     ],
   ];
 

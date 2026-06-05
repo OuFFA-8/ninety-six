@@ -138,11 +138,27 @@
       @for (col of galleryColumns; track $index; let i = $index) {
         <div class="gallery__col" [attr.data-col]="i">
           @for (item of col; track $index) {
-            <div class="gallery__item">
-              <div class="gallery__item-inner" [style.background]="item.bg">
-                <span class="gallery__item-label">{{ item.label }}</span>
+            @if (item.link) {
+              <a class="gallery__item gallery__item--link" [routerLink]="item.link">
+                <div class="gallery__item-inner">
+                  <img [src]="item.src" [alt]="item.project" class="gallery__item-img" loading="lazy" />
+                  <div class="gallery__item-overlay">
+                    <span class="gallery__item-service">{{ item.service }}</span>
+                    <span class="gallery__item-project">{{ item.project }}</span>
+                  </div>
+                </div>
+              </a>
+            } @else {
+              <div class="gallery__item gallery__item--soon">
+                <div class="gallery__item-inner">
+                  <img [src]="item.src" [alt]="item.project" class="gallery__item-img" loading="lazy" />
+                  <div class="gallery__item-overlay">
+                    <span class="gallery__item-service">{{ item.service }}</span>
+                    <span class="gallery__item-project">{{ item.project }}</span>
+                  </div>
+                </div>
               </div>
-            </div>
+            }
           }
         </div>
       }

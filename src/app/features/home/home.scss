@@ -1282,49 +1282,94 @@ app-hero,
   &__item {
     border-radius: 16px;
     overflow: hidden;
-    cursor: pointer;
     width: 100%;
-    padding-bottom: 130%; // fallback for aspect-ratio
+    padding-bottom: 130%;
     position: relative;
-    transition: transform 0.4s ease;
+    transition: transform 0.45s cubic-bezier(0.7, 0, 0.3, 1);
+    text-decoration: none;
+    display: block;
 
-    &:hover {
+    &--link { cursor: pointer; }
+    &--soon  { cursor: default; }
+
+    &--link:hover {
       transform: scale(1.03);
-      .gallery__item-label {
-        opacity: 1;
-        transform: translateY(0);
-      }
+      .gallery__item-overlay { opacity: 1; }
+      .gallery__item-img     { transform: scale(1.07); }
+    }
+
+    &--soon:hover {
+      .gallery__item-overlay { opacity: 1; }
     }
   }
 
   &__item-inner {
     position: absolute;
     inset: 0;
-    display: flex;
-    align-items: flex-end;
-    padding: 1.2rem;
+    overflow: hidden;
+    border-radius: 16px;
 
     &::after {
       content: '';
       position: absolute;
       inset: 0;
-      border: 1px solid rgba(138, 79, 255, 0.15);
+      border: 1px solid rgba(138, 79, 255, 0.18);
       border-radius: 16px;
       pointer-events: none;
+      z-index: 3;
     }
   }
 
-  &__item-label {
-    font-size: 0.78rem;
-    font-weight: 700;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: rgba(255, 255, 255, 0.7);
-    opacity: 0;
-    transform: translateY(8px);
-    transition: all 0.3s;
-    position: relative;
+  &__item-img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center top;
+    transition: transform 0.55s cubic-bezier(0.7, 0, 0.3, 1);
     z-index: 1;
+  }
+
+  &__item-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgba(6, 3, 12, 0.88) 0%, rgba(6, 3, 12, 0.2) 55%, transparent 100%);
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 1.2rem;
+    opacity: 0;
+    transition: opacity 0.35s;
+    z-index: 2;
+  }
+
+  &__item-service {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.55rem;
+    font-weight: 700;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: rgba(196, 155, 255, 0.85);
+    margin-bottom: 0.3rem;
+    display: block;
+  }
+
+  &__item-project {
+    font-size: 0.92rem;
+    font-weight: 600;
+    color: #fff;
+    letter-spacing: 0.02em;
+    display: block;
+  }
+
+  &__item--soon &__item-project::after {
+    content: ' ·';
+    font-size: 0.65rem;
+    color: rgba(196, 155, 255, 0.5);
+    letter-spacing: 0.1em;
+    margin-left: 0.3rem;
+    vertical-align: middle;
   }
 }
 // ══════════════════════════════
