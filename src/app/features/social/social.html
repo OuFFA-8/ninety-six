@@ -21,11 +21,12 @@
     </header>
 
     <main class="social-gallery" [class]="layout ? 'social-gallery social-gallery--' + layout : 'social-gallery'">
-      @for (src of images; track src; let i = $index) {
+      @for (img of images; track img.src; let idx = $index) {
         <div class="social-item"
-             [class.social-item--full]="project.fullWidth?.includes(i)"
-             (click)="open(src)">
-          <img [src]="src" [loading]="i < 4 ? 'eager' : 'lazy'" />
+             [class.social-item--full]="project.fullWidth?.includes(idx)"
+             [style.grid-column]="project.fullWidth?.includes(idx) ? '1 / -1' : null"
+             (click)="open(img.src)">
+          <img [src]="img.src" [loading]="idx < 4 ? 'eager' : 'lazy'" />
           <div class="social-item__overlay">
             <svg viewBox="0 0 24 24" fill="none">
               <path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"

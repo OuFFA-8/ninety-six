@@ -13,10 +13,10 @@ gsap.registerPlugin(ScrollTrigger);
 const sm = (folder: string, file: string) =>
   `/SOCIAL%20MEDIA/${encodeURIComponent(folder)}/${encodeURIComponent(file)}`;
 
-interface Img { src: string; }
+interface Img { src: string; span?: number; }
 interface ProjectCfg { title: string; tag: string; desc: string; images: Img[]; layout?: string; fullWidth?: number[]; }
 
-const i = (f: string, n: string): Img => ({ src: sm(f, n) });
+const i = (f: string, n: string, span?: number): Img => ({ src: sm(f, n), ...(span ? { span } : {}) });
 
 // ── project data ───────────────────────────────────────────
 const PROJECTS: Record<string, ProjectCfg> = {
@@ -49,7 +49,8 @@ const PROJECTS: Record<string, ProjectCfg> = {
     title: 'Cash Expo .', tag: 'Social Media · 2024',
     desc: 'Campaign coverage and digital content for Cash Expo.',
     layout: 'cash-expo',
-    fullWidth: [6],
+    // idx 6 = Artboard 1 copy (16:9, 1.78) | idx 27-29 = LinkedIn/X banners (3.9–5.9)
+    fullWidth: [6, 27, 28, 29],
     images: [
       i('Cash Expo', 'Copy of  -3- دعوةة.png'),
       i('Cash Expo', 'Copy of  -٢- 4 خطوات.png'),
@@ -78,6 +79,9 @@ const PROJECTS: Record<string, ProjectCfg> = {
       i('Cash Expo', 'Copy of ٢.png'),
       i('Cash Expo', 'Copy of ٣-4 خطوات copy 2.png'),
       i('Cash Expo', 'Copy of ٣.png'),
+      i('Cash Expo', 'Copy of linked.png'),
+      i('Cash Expo', 'Copy of x.png'),
+      i('Cash Expo', 'Copy of x copy.png'),
     ],
   },
 
@@ -85,6 +89,8 @@ const PROJECTS: Record<string, ProjectCfg> = {
     title: 'Dunkin .',  tag: 'Social Media · 2024',
     desc: 'Social media content for Dunkin.',
     layout: 'dunkin',
+    // idx 5 = Artboard 2 (ultra-wide banner, ratio 6.9)
+    fullWidth: [5],
     images: [
       i('DUNKIN', 'Artboard 1 copy 2-100.jpg'),
       i('DUNKIN', 'Artboard 1 copy 3-100.jpg'),
@@ -145,14 +151,14 @@ export class SocialProject implements OnInit, AfterViewInit, OnDestroy {
 
   lightbox = signal<string | null>(null);
   project: ProjectCfg | null = null;
-  images: string[] = [];
+  images: Img[] = [];
   layout = '';
 
   ngOnInit(): void {
     const slug   = this.route.snapshot.paramMap.get('slug') ?? '';
     this.project = PROJECTS[slug] ?? null;
     if (this.project) {
-      this.images = this.project.images.map(img => img.src);
+      this.images = this.project.images;
       this.layout = this.project.layout ?? '';
     }
   }
