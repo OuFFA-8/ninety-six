@@ -27,6 +27,10 @@ export const routes: Routes = [
         path: 'portfolio/social/:slug',
         loadComponent: () => import('./features/social/social').then((m) => m.SocialProject),
       },
+      {
+        path: 'portfolio/motion&video',
+        loadComponent: () => import('./features/motion-video/motion-video').then((m) => m.MotionVideoPage),
+      },
     ],
   },
   {

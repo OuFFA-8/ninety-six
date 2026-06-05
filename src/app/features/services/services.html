@@ -36,7 +36,7 @@
         engineered to land — explore what we aimed at, and where it hit.
       </p>
       <div class="intro__count">
-        <span class="intro__count-num">11</span>
+        <span class="intro__count-num">12</span>
         <span class="intro__count-label">Projects · Selected</span>
       </div>
     </div>
@@ -60,6 +60,7 @@
       <button class="filter-btn" [class.is-active]="activeFilter === 'all'"       (click)="setFilter('all')">All</button>
       <button class="filter-btn" [class.is-active]="activeFilter === 'brand'"     (click)="setFilter('brand')">Brand</button>
       <button class="filter-btn" [class.is-active]="activeFilter === 'social'"    (click)="setFilter('social')">Social</button>
+      <button class="filter-btn" [class.is-active]="activeFilter === 'motion'"    (click)="setFilter('motion')">Motion</button>
     </div>
     <div class="filter-bar__count"><strong>{{ filterCount }}</strong> projects</div>
   </div>
@@ -197,6 +198,96 @@
           <div class="work-item__meta">
             <span class="work-item__meta-item"><strong>Year</strong> 2024</span>
             <span class="work-item__meta-item"><strong>Scope</strong> Social</span>
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <!-- Motion 01 — SM -->
+    <article class="work-item work-item--sm" data-cat="motion"
+             style="--w-color:#1a0535; cursor:pointer"
+             routerLink="/portfolio/motion&video">
+      <div class="work-item__media work-item__media--photo">
+        <img src="https://drive.google.com/thumbnail?id=1jhTt5nCZiN11ltnhmydPN7IdXh8cOK5T&sz=w800"
+             alt="STC" class="work-item__photo" />
+        <div class="work-item__play-badge">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+        </div>
+      </div>
+      <div class="work-item__shade"></div>
+      <div class="work-item__view">
+        <svg viewBox="0 0 18 18" fill="none"><path d="M3 15L15 3M15 3H6M15 3V12" stroke="currentColor" stroke-width="1.5"/></svg>
+      </div>
+      <div class="work-item__content">
+        <div class="work-item__top">
+          <span class="work-item__tag">Motion</span>
+          <span class="work-item__index">01</span>
+        </div>
+        <div class="work-item__bottom">
+          <div class="work-item__client">— STC</div>
+          <h3 class="work-item__title">STC <em>Campaign</em></h3>
+          <div class="work-item__meta">
+            <span class="work-item__meta-item"><strong>Year</strong> 2024</span>
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <!-- Motion 02 — SM -->
+    <article class="work-item work-item--sm" data-cat="motion"
+             style="--w-color:#0d1a35; cursor:pointer"
+             routerLink="/portfolio/motion&video">
+      <div class="work-item__media work-item__media--photo">
+        <img src="https://drive.google.com/thumbnail?id=1_jAe7YdzuLEnLRAHwGpFzgen6wycGk4-&sz=w800"
+             alt="First Day" class="work-item__photo" />
+        <div class="work-item__play-badge">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+        </div>
+      </div>
+      <div class="work-item__shade"></div>
+      <div class="work-item__view">
+        <svg viewBox="0 0 18 18" fill="none"><path d="M3 15L15 3M15 3H6M15 3V12" stroke="currentColor" stroke-width="1.5"/></svg>
+      </div>
+      <div class="work-item__content">
+        <div class="work-item__top">
+          <span class="work-item__tag">Video</span>
+          <span class="work-item__index">02</span>
+        </div>
+        <div class="work-item__bottom">
+          <div class="work-item__client">— First Day</div>
+          <h3 class="work-item__title">First Day <em>Film</em></h3>
+          <div class="work-item__meta">
+            <span class="work-item__meta-item"><strong>Year</strong> 2024</span>
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <!-- Motion 03 — SM -->
+    <article class="work-item work-item--sm" data-cat="motion"
+             style="--w-color:#1a0820; cursor:pointer"
+             routerLink="/portfolio/motion&video">
+      <div class="work-item__media work-item__media--photo">
+        <img src="https://drive.google.com/thumbnail?id=13MfXEFwEipClaDVK26bwmo8A6VBmKEAr&sz=w800"
+             alt="Do Good" class="work-item__photo" />
+        <div class="work-item__play-badge">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+        </div>
+      </div>
+      <div class="work-item__shade"></div>
+      <div class="work-item__view">
+        <svg viewBox="0 0 18 18" fill="none"><path d="M3 15L15 3M15 3H6M15 3V12" stroke="currentColor" stroke-width="1.5"/></svg>
+      </div>
+      <div class="work-item__content">
+        <div class="work-item__top">
+          <span class="work-item__tag">Video</span>
+          <span class="work-item__index">03</span>
+        </div>
+        <div class="work-item__bottom">
+          <div class="work-item__client">— Do Good</div>
+          <h3 class="work-item__title">Do Good <em>Campaign</em></h3>
+          <div class="work-item__meta">
+            <span class="work-item__meta-item"><strong>Year</strong> 2024</span>
           </div>
         </div>
       </div>
@@ -366,6 +457,18 @@
 
 
   </div>
+
+  <div class="work-load-more" [hidden]="activeFilter !== 'motion'">
+    <a routerLink="/portfolio/motion&video" class="work-load-more__btn">
+      <span class="work-load-more__label">View All — 17 projects</span>
+      <span class="work-load-more__arrow">
+        <svg viewBox="0 0 24 24" fill="none">
+          <path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </span>
+    </a>
+  </div>
+
 </section>
 
 <!-- ══════════════════════════════════════════

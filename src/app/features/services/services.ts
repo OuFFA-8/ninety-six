@@ -35,7 +35,7 @@ export class ServicesPage implements AfterViewInit, OnDestroy {
   private _starRaf = 0;
 
   activeFilter = 'all';
-  filterCount  = '11';
+  filterCount  = '12';
   scNum        = '01';
   scProgress   = 0;
   caseCurrent  = '01';
@@ -97,6 +97,8 @@ export class ServicesPage implements AfterViewInit, OnDestroy {
         el.style.display = (cat === 'all' || el.dataset['cat'] === cat) ? '' : 'none';
       });
 
+      const visibleItems = items.filter(el => el.style.display !== 'none');
+
       Flip.from(state, {
         duration: 0.6,
         ease: 'smooth',
@@ -105,6 +107,9 @@ export class ServicesPage implements AfterViewInit, OnDestroy {
           gsap.fromTo(els, { opacity: 0, scale: 0.85 }, { opacity: 1, scale: 1, duration: 0.4, delay: 0.08 }),
         onLeave: (els: Element[]) =>
           gsap.to(els, { opacity: 0, scale: 0.85, duration: 0.28 }),
+        onComplete: () => {
+          gsap.to(visibleItems, { opacity: 1, y: 0, duration: 0.35, overwrite: true });
+        },
       });
 
       const sec = document.querySelector<HTMLElement>('.work-grid-sec');

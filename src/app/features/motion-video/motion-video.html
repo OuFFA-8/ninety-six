@@ -1,0 +1,65 @@
+<canvas #starsCanvas class="mv-stars"></canvas>
+
+<div class="mv-page">
+
+  <header class="mv-header">
+    <a routerLink="/portfolio" class="mv-back">
+      <svg viewBox="0 0 20 20" fill="none">
+        <path d="M12 4L6 10L12 16" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+      </svg>
+      Portfolio
+    </a>
+    <div class="mv-info">
+      <span class="mv-tag">Motion · Video · Production · 2024</span>
+      <h1 class="mv-title">
+        <span class="mv-lw"><span class="mv-ln">Motion &amp;</span></span>
+        <span class="mv-lw"><span class="mv-ln">Video .</span></span>
+      </h1>
+      <p class="mv-desc">Motion graphics, video production, and creative content.</p>
+      <div class="mv-meta">
+        <span>{{ motionCount }} motion</span>
+        <span class="mv-sep">·</span>
+        <span>{{ videoCount }} video</span>
+      </div>
+    </div>
+  </header>
+
+  <div class="mv-filters">
+    <button [class.active]="filter() === 'all'"    (click)="setFilter('all')">All</button>
+    <button [class.active]="filter() === 'motion'" (click)="setFilter('motion')">Motion</button>
+    <button [class.active]="filter() === 'video'"  (click)="setFilter('video')">Video</button>
+  </div>
+
+  <main class="mv-grid">
+    @for (v of filtered(); track v.id) {
+      <div class="mv-card" (click)="open(v.id)">
+        <div class="mv-card__thumb">
+          <img [src]="thumbUrl(v.id)" [alt]="v.title" loading="lazy" />
+          <div class="mv-card__overlay">
+            <div class="mv-card__play">
+              <svg viewBox="0 0 24 24" fill="currentColor">
+                <path d="M8 5v14l11-7z"/>
+              </svg>
+            </div>
+          </div>
+          <span class="mv-card__badge">{{ v.category }}</span>
+        </div>
+        <p class="mv-card__title">{{ v.title }}</p>
+      </div>
+    }
+  </main>
+
+</div>
+
+@if (lightbox()) {
+  <div class="mv-lightbox" (click)="close()">
+    <button class="mv-lightbox__close" (click)="close()">
+      <svg viewBox="0 0 24 24" fill="none">
+        <path d="M18 6L6 18M6 6l12 12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+      </svg>
+    </button>
+    <div class="mv-lightbox__frame" (click)="$event.stopPropagation()">
+      <iframe [src]="embedUrl(lightbox()!)" allowfullscreen frameborder="0"></iframe>
+    </div>
+  </div>
+}
