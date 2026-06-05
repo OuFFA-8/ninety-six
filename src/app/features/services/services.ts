@@ -35,7 +35,9 @@ export class ServicesPage implements AfterViewInit, OnDestroy {
   private _starRaf = 0;
 
   activeFilter = 'all';
-  filterCount  = '12';
+  filterCount  = '05';
+  allHasMore   = true;
+  private _allMax = 5;
   scNum        = '01';
   scProgress   = 0;
   caseCurrent  = '01';
@@ -86,18 +88,18 @@ export class ServicesPage implements AfterViewInit, OnDestroy {
     const state = Flip.getState(items);
 
     this.activeFilter = cat;
-
-    const visible = cat === 'all'
-      ? items.length
-      : items.filter(el => el.dataset['cat'] === cat).length;
-    this.filterCount = String(visible).padStart(2, '0');
+    if (cat === 'all') this._allMax = 5;
 
     setTimeout(() => {
-      items.forEach(el => {
-        el.style.display = (cat === 'all' || el.dataset['cat'] === cat) ? '' : 'none';
+      items.forEach((el, i) => {
+        el.style.display = cat === 'all'
+          ? (i < this._allMax ? '' : 'none')
+          : (el.dataset['cat'] === cat ? '' : 'none');
       });
 
       const visibleItems = items.filter(el => el.style.display !== 'none');
+      this.filterCount = String(visibleItems.length).padStart(2, '0');
+      this.allHasMore   = cat === 'all' && items.length > this._allMax;
 
       Flip.from(state, {
         duration: 0.6,
@@ -116,6 +118,28 @@ export class ServicesPage implements AfterViewInit, OnDestroy {
       if (sec) window.scrollTo({ top: sec.offsetTop, behavior: 'smooth' });
       ScrollTrigger.refresh();
     });
+  }
+
+  loadMore(): void {
+    const items = Array.from(document.querySelectorAll<HTMLElement>('.work-item'));
+    const state = Flip.getState(items);
+
+    this._allMax   = items.length;
+    this.allHasMore = false;
+    items.forEach(el => { el.style.display = ''; });
+    this.filterCount = String(items.length).padStart(2, '0');
+
+    Flip.from(state, {
+      duration: 0.6,
+      ease: 'smooth',
+      scale: true,
+      onEnter: (els: Element[]) =>
+        gsap.fromTo(els, { opacity: 0, scale: 0.85 }, { opacity: 1, scale: 1, duration: 0.4, delay: 0.08 }),
+      onComplete: () => {
+        gsap.to(items, { opacity: 1, y: 0, duration: 0.35, overwrite: true });
+      },
+    });
+    ScrollTrigger.refresh();
   }
 
   // ── Stars ───────────────────────────────────────────────
@@ -217,6 +241,10 @@ export class ServicesPage implements AfterViewInit, OnDestroy {
   // ── Work grid ───────────────────────────────────────────
 
   private initWorkGrid(): void {
+    const allItems = Array.from(document.querySelectorAll<HTMLElement>('.work-item'));
+    allItems.forEach((el, i) => { if (i >= this._allMax) el.style.display = 'none'; });
+    this.allHasMore = allItems.length > this._allMax;
+
     gsap.set('.work-item', { opacity: 0, y: 80 });
 
     ScrollTrigger.batch('.work-item', {

@@ -458,6 +458,19 @@
 
   </div>
 
+  <!-- All tab: Load More -->
+  <div class="work-load-more" [hidden]="activeFilter !== 'all' || !allHasMore">
+    <button class="work-load-more__btn" (click)="loadMore()">
+      <span class="work-load-more__label">Load More</span>
+      <span class="work-load-more__arrow">
+        <svg viewBox="0 0 24 24" fill="none">
+          <path d="M12 5v14M5 13l7 7 7-7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </span>
+    </button>
+  </div>
+
+  <!-- Motion tab: View All -->
   <div class="work-load-more" [hidden]="activeFilter !== 'motion'">
     <a routerLink="/portfolio/motion&video" class="work-load-more__btn">
       <span class="work-load-more__label">View All — 17 projects</span>
