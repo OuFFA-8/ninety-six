@@ -35,7 +35,7 @@ export class ServicesPage implements AfterViewInit, OnDestroy {
   private _starRaf = 0;
 
   activeFilter = 'all';
-  filterCount  = '18';
+  filterCount  = '11';
   scNum        = '01';
   scProgress   = 0;
   caseCurrent  = '01';
@@ -255,7 +255,7 @@ export class ServicesPage implements AfterViewInit, OnDestroy {
         onUpdate: (self) => {
           this.ngZone.run(() => {
             this.scProgress = self.progress * 100;
-            this.scNum = String(Math.min(5, Math.floor(self.progress * 5) + 1)).padStart(2, '0');
+            this.scNum = String(Math.min(3, Math.floor(self.progress * 3) + 1)).padStart(2, '0');
           });
         },
       },
