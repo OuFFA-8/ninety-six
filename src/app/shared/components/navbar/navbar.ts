@@ -27,6 +27,7 @@ export class Navbar implements AfterViewInit {
   ngAfterViewInit(): void {
     gsap.from(this.navbar.nativeElement, {
       y: -80, opacity: 0, duration: 1.1, ease: 'power4.out',
+      clearProps: 'transform,opacity',
     });
     this._lastY = window.scrollY;
   }
