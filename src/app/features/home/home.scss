@@ -683,15 +683,15 @@ app-hero,
     background: linear-gradient(135deg, #0c0420 0%, #150830 100%);
     border: 1px solid rgba(138, 79, 255, 0.2);
     border-radius: 28px;
-    padding: 4.5rem 5rem;
+    padding: 3rem 3.5rem;
     box-shadow:
       0 30px 80px rgba(0, 0, 0, 0.5),
       inset 0 1px 0 rgba(138, 79, 255, 0.08);
     display: grid;
     grid-template-columns: 1fr 1.2fr;
     align-items: center;
-    gap: 4rem;
-    min-height: 540px;
+    gap: 2.5rem;
+    min-height: 640px;
     position: relative;
     overflow: hidden;
 
@@ -713,7 +713,7 @@ app-hero,
   }
 
   &__tag {
-    font-size: 0.7rem;
+    font-size: 0.8rem;
     font-weight: 700;
     letter-spacing: 0.3em;
     color: rgba(138, 79, 255, 0.55);
@@ -722,7 +722,7 @@ app-hero,
 
   &__title {
     font-family: 'Space Grotesk', sans-serif;
-    font-size: clamp(2.2rem, 4vw, 3.5rem);
+    font-size: clamp(2.6rem, 4.5vw, 4.2rem);
     font-weight: 300;
     color: #fff;
     line-height: 1.05;
@@ -731,16 +731,16 @@ app-hero,
 
   p {
     color: rgba(255, 255, 255, 0.48);
-    font-size: 1rem;
+    font-size: 1.1rem;
     line-height: 1.75;
-    max-width: 400px;
+    max-width: 420px;
   }
 
   &__cta {
     display: inline-flex;
     align-items: center;
     gap: 0.5rem;
-    font-size: 0.85rem;
+    font-size: 0.95rem;
     font-weight: 700;
     color: #8a4fff;
     cursor: pointer;
@@ -760,6 +760,8 @@ app-hero,
   &__right {
     position: relative;
     z-index: 1;
+    margin: -3rem -3.5rem -3rem 0;
+    align-self: stretch;
   }
 
   // per card color
@@ -791,31 +793,14 @@ app-hero,
   }
 }
 
-// ── Card media placeholder ──
+// ── Card media ──
 .deck-card__media {
   width: 100%;
   height: 100%;
-  min-height: 380px;
-  border-radius: 18px;
+  min-height: 500px;
   overflow: hidden;
   position: relative;
   background: #080214;
-  border: 1px solid rgba(255, 255, 255, 0.06);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-
-  &-bg {
-    position: absolute;
-    inset: 0;
-    background:
-      radial-gradient(ellipse at 70% 30%, color-mix(in srgb, var(--c, #8a4fff) 28%, transparent), transparent 65%),
-      radial-gradient(ellipse at 20% 80%, color-mix(in srgb, var(--c, #8a4fff) 12%, transparent), transparent 55%);
-    transition: opacity 0.4s;
-  }
-
-  &:hover &-bg { opacity: 1.3; }
 
   &-label {
     position: absolute;
@@ -829,6 +814,18 @@ app-hero,
     letter-spacing: 0.02em;
     pointer-events: none;
   }
+}
+
+.deck-card__img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  transition: transform 0.6s cubic-bezier(0.7, 0, 0.3, 1);
+
+  .deck-card__media:hover & { transform: scale(1.04); }
 }
 
 .deck-card__play {

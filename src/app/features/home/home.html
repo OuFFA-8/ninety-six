@@ -50,13 +50,8 @@
             </div>
 
             <div class="deck-card__right">
-              <div class="deck-card__media" [style.--c]="service.works[0].color">
-                <div class="deck-card__media-bg"></div>
-                <div class="deck-card__play">
-                  <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-                    <path d="M6 4L16 10L6 16V4Z" fill="currentColor" />
-                  </svg>
-                </div>
+              <div class="deck-card__media">
+                <img [src]="service.image" [alt]="service.title" class="deck-card__img" />
               </div>
             </div>
           </div>
