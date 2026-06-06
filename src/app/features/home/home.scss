@@ -721,9 +721,8 @@ app-hero,
     grid-template-columns: 1fr 1.2fr;
     align-items: center;
     gap: 2.5rem;
-    min-height: 640px;
+    min-height: 580px;
     position: relative;
-    overflow: hidden;
 
     &::before {
       content: '';
@@ -790,8 +789,10 @@ app-hero,
   &__right {
     position: relative;
     z-index: 1;
-    margin: -3rem -3.5rem -3rem 0;
-    align-self: stretch;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1.5rem 1.5rem 1.5rem 0;
   }
 
   // per card color
@@ -826,8 +827,9 @@ app-hero,
 // ── Card media ──
 .deck-card__media {
   width: 100%;
-  height: 100%;
-  min-height: 500px;
+  aspect-ratio: 4 / 3;
+  border-radius: 18px;
+  border: 1px solid rgba(138, 79, 255, 0.2);
   overflow: hidden;
   position: relative;
   background: #080214;
@@ -851,7 +853,7 @@ app-hero,
   inset: 0;
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  object-fit: contain;
   object-position: center;
   transition: transform 0.6s cubic-bezier(0.7, 0, 0.3, 1);
 

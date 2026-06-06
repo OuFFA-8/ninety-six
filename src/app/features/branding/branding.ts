@@ -39,7 +39,7 @@ const PROJECTS: Record<string, ProjectConfig> = {
     images: Array.from({ length: 17 }, (_, i) => `/BRADNING/ruh/New%20folder/${i + 1}.jpg`),
   },
   'prince-festival': {
-    title: 'مهرجان الأمير عبد العزيز .',
+    title: 'Prince Abdul Aziz Festival .',
     tag: 'Brand Identity · 2025',
     images: [
       '/BRADNING/%D9%85%D9%87%D8%B1%D8%AC%D8%A7%D9%86%20%D8%A7%D9%84%D8%A7%D9%85%D9%8A%D8%B1%20%D8%B9%D8%A8%D8%AF%20%D8%A7%D9%84%D8%B9%D8%B2%D9%8A%D8%B2/1.jpg',
