@@ -56,13 +56,12 @@
 <section class="work-grid-sec">
 
   <div class="filter-bar">
-    <div class="filter-bar__group">
+    <div class="filter-bar__pill">
       <button class="filter-btn" [class.is-active]="activeFilter === 'all'"       (click)="setFilter('all')">All</button>
       <button class="filter-btn" [class.is-active]="activeFilter === 'brand'"     (click)="setFilter('brand')">Brand</button>
       <button class="filter-btn" [class.is-active]="activeFilter === 'social'"    (click)="setFilter('social')">Social</button>
       <button class="filter-btn" [class.is-active]="activeFilter === 'motion'"    (click)="setFilter('motion')">Motion</button>
     </div>
-    <div class="filter-bar__count"><strong>{{ filterCount }}</strong> projects</div>
   </div>
 
   <div class="work-grid" id="workGrid">
@@ -455,6 +454,35 @@
       </div>
     </article>
 
+    <!-- 15 مهرجان الأمير عبد العزيز — Brand LG -->
+    <article class="work-item work-item--lg" data-cat="brand"
+             style="--w-color:#0a1a2e; cursor:pointer"
+             routerLink="/portfolio/branding/prince-festival">
+      <div class="work-item__media work-item__media--photo">
+        <img src="/BRADNING/%D9%85%D9%87%D8%B1%D8%AC%D8%A7%D9%86%20%D8%A7%D9%84%D8%A7%D9%85%D9%8A%D8%B1%20%D8%B9%D8%A8%D8%AF%20%D8%A7%D9%84%D8%B9%D8%B2%D9%8A%D8%B2/1.jpg"
+             alt="مهرجان الأمير عبد العزيز" class="work-item__photo" />
+      </div>
+      <div class="work-item__shade"></div>
+      <div class="work-item__view">
+        <svg viewBox="0 0 18 18" fill="none"><path d="M3 15L15 3M15 3H6M15 3V12" stroke="currentColor" stroke-width="1.5"/></svg>
+      </div>
+      <div class="work-item__content">
+        <div class="work-item__top">
+          <span class="work-item__tag">Brand Identity</span>
+          <span class="work-item__index">15</span>
+        </div>
+        <div class="work-item__bottom">
+          <div class="work-item__client">— Prince Festival</div>
+          <h3 class="work-item__title">A festival <em>identity</em></h3>
+          <p class="work-item__desc">Brand identity for مهرجان الأمير عبد العزيز — 20 pieces.</p>
+          <div class="work-item__meta">
+            <span class="work-item__meta-item"><strong>Year</strong> 2025</span>
+            <span class="work-item__meta-item"><strong>Scope</strong> Brand</span>
+          </div>
+        </div>
+      </div>
+    </article>
+
 
   </div>
 
@@ -621,7 +649,7 @@
       </div>
       <div class="case__counter">
         <span class="case__counter-current">{{ caseCurrent }}</span>
-        <span class="case__counter-total">/ 06</span>
+        <span class="case__counter-total">/ 05</span>
         <span class="case__counter-label">{{ caseLabel }}</span>
       </div>
     </div>
@@ -631,79 +659,34 @@
 
         <div class="case__slide" style="--slide-color:#3d1a7a">
           <div class="case__slide-media"></div>
-          <div class="case__slide-deco">
-            <svg viewBox="0 0 400 400" fill="none">
-              <circle cx="200" cy="200" r="150" stroke="rgba(255,255,255,.2)"/>
-              <circle cx="200" cy="200" r="100" stroke="rgba(255,255,255,.3)"/>
-              <circle cx="200" cy="200" r="50"  stroke="rgba(255,255,255,.5)"/>
-              <circle cx="200" cy="200" r="16"  fill="#fff"/>
-              <line x1="200" y1="20" x2="200" y2="380" stroke="rgba(255,255,255,.15)" stroke-dasharray="4 4"/>
-              <line x1="20" y1="200" x2="380" y2="200" stroke="rgba(255,255,255,.15)" stroke-dasharray="4 4"/>
-            </svg>
-          </div>
+          <img class="case__slide-img" src="/1x/Logo-100.jpg" alt="Logo Construction" />
           <span class="case__slide-label">01 · Logo Construction</span>
         </div>
 
         <div class="case__slide" style="--slide-color:#4a1c8a">
           <div class="case__slide-media"></div>
-          <div class="case__slide-deco">
-            <svg viewBox="0 0 400 400" fill="none">
-              <rect x="60"  y="120" width="60" height="160" rx="6" fill="rgba(255,255,255,.7)"/>
-              <rect x="130" y="120" width="60" height="160" rx="6" fill="rgba(196,155,255,.6)"/>
-              <rect x="200" y="120" width="60" height="160" rx="6" fill="rgba(138,79,255,.6)"/>
-              <rect x="270" y="120" width="60" height="160" rx="6" fill="rgba(92,46,168,.6)"/>
-            </svg>
-          </div>
+          <img class="case__slide-img" src="/1x/Color%20Palette-100.jpg" alt="Colour Palette" />
           <span class="case__slide-label">02 · Colour Palette</span>
         </div>
 
         <div class="case__slide" style="--slide-color:#5c2ea8">
           <div class="case__slide-media"></div>
-          <div class="case__slide-deco">
-            <svg viewBox="0 0 400 400" fill="none">
-              <text x="200" y="220" font-family="serif" font-size="160" font-style="italic"
-                    fill="rgba(255,255,255,.85)" text-anchor="middle">Aa</text>
-            </svg>
-          </div>
+          <img class="case__slide-img" src="/1x/Typography%20-100.jpg" alt="Typography" />
           <span class="case__slide-label">03 · Typography</span>
         </div>
 
         <div class="case__slide" style="--slide-color:#6a3bbf">
           <div class="case__slide-media"></div>
-          <div class="case__slide-deco">
-            <svg viewBox="0 0 400 400" fill="none">
-              <rect x="90" y="80"  width="220" height="150" rx="10" stroke="rgba(255,255,255,.4)" stroke-width="2"/>
-              <rect x="120" y="190" width="160" height="120" rx="10" fill="rgba(255,255,255,.15)" stroke="rgba(255,255,255,.4)" stroke-width="2"/>
-              <circle cx="200" cy="140" r="22" fill="rgba(255,255,255,.6)"/>
-            </svg>
-          </div>
+          <img class="case__slide-img" src="/1x/Stationery-100.jpg" alt="Stationery" />
           <span class="case__slide-label">04 · Stationery</span>
         </div>
 
         <div class="case__slide" style="--slide-color:#7a3edb">
           <div class="case__slide-media"></div>
-          <div class="case__slide-deco">
-            <svg viewBox="0 0 400 400" fill="none">
-              <rect x="140" y="60" width="120" height="240" rx="20" stroke="rgba(255,255,255,.4)" stroke-width="2"/>
-              <circle cx="200" cy="160" r="40" stroke="rgba(255,255,255,.5)" stroke-width="2"/>
-              <circle cx="200" cy="160" r="14" fill="rgba(255,255,255,.7)"/>
-            </svg>
-          </div>
+          <img class="case__slide-img" src="/1x/Digital-100.jpg" alt="Digital / App" />
           <span class="case__slide-label">05 · Digital / App</span>
         </div>
 
-        <div class="case__slide" style="--slide-color:#8a4fff">
-          <div class="case__slide-media"></div>
-          <div class="case__slide-deco">
-            <svg viewBox="0 0 400 400" fill="none">
-              <circle cx="200" cy="200" r="160" stroke="rgba(255,255,255,.18)"/>
-              <circle cx="200" cy="200" r="110" stroke="rgba(255,255,255,.28)"/>
-              <circle cx="200" cy="200" r="60"  stroke="rgba(255,255,255,.45)"/>
-              <circle cx="200" cy="200" r="20"  fill="#fff"/>
-            </svg>
-          </div>
-          <span class="case__slide-label">06 · Brand World</span>
-        </div>
 
       </div>
     </div>

@@ -45,7 +45,7 @@ export class ServicesPage implements AfterViewInit, OnDestroy {
 
   readonly caseLabels = [
     'Logo Construction', 'Colour Palette', 'Typography',
-    'Stationery', 'Digital / App', 'Brand World',
+    'Stationery', 'Digital / App',
   ];
 
   readonly stripItems = [
