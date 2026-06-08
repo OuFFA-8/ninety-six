@@ -164,6 +164,7 @@ export class Home implements AfterViewInit, OnDestroy {
       title: 'Branding & Identity',
       desc: 'We build the foundation before the noise starts. Positioning, messaging, visual direction, logos, colors, typography, and brand systems designed to make your brand clear, recognizable, and hard to ignore.',
       cta: 'Explore Identity',
+      link: '/portfolio',
       image: '/Home%20-%20Services%20Built/Branding%20%26%20Identity.png',
       works: [
         { title: 'Brand Systems', color: '#8a4fff' },
@@ -176,6 +177,7 @@ export class Home implements AfterViewInit, OnDestroy {
       title: 'Graphic Design',
       desc: 'Every visual touchpoint is a chance to say something without explaining. We design social posts, campaigns, decks, ads, and brand assets that carry your identity with consistency, taste, and edge.',
       cta: 'Explore Design',
+      link: '/portfolio',
       image: '/Home%20-%20Services%20Built/graphic%20design.png',
       works: [
         { title: 'Social Assets', color: '#5c2ea8' },
@@ -188,6 +190,7 @@ export class Home implements AfterViewInit, OnDestroy {
       title: 'Motion & Video',
       desc: 'Static gets skipped. We create campaign videos, reels, motion graphics, and brand films that turn attention into emotion — and emotion into memory.',
       cta: 'Explore Motion',
+      link: '/portfolio/motion&video',
       image: '/Home%20-%20Services%20Built/Motion.png',
       works: [
         { title: 'Brand Film', color: '#9d6fff' },
@@ -200,6 +203,7 @@ export class Home implements AfterViewInit, OnDestroy {
       title: 'Web & Mobile App Development',
       desc: 'Your web & app are not decoration. It is where trust is built, interest is shaped, and action begins. We design digital experiences that look sharp, feel intentional, and move people forward.',
       cta: 'Explore Development',
+      link: '/portfolio',
       image: '/Home%20-%20Services%20Built/web%20%26%20mobile%20app%20development.png',
       works: [
         { title: 'Web Design', color: '#7b52d4' },
@@ -212,6 +216,7 @@ export class Home implements AfterViewInit, OnDestroy {
       title: 'Digital Marketing',
       desc: 'We do not chase noise. We build direction. From content strategy to paid campaigns, we create marketing systems designed to attract the right audience, shape demand, and convert attention into action.',
       cta: 'Explore Growth',
+      link: '/portfolio',
       image: '/Home%20-%20Services%20Built/Digital%20markting.png',
       works: [
         { title: 'Paid Ads', color: '#8a4fff' },
