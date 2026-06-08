@@ -708,6 +708,7 @@ app-hero,
   position: absolute;
   inset: 0;
   will-change: transform, opacity;
+  pointer-events: none;
 
   &__inner {
     background: linear-gradient(135deg, #0c0420 0%, #150830 100%);
@@ -766,23 +767,51 @@ app-hero,
   }
 
   &__cta {
+    position: relative;
+    z-index: 10;
+    pointer-events: auto;
+    overflow: hidden;
     display: inline-flex;
     align-items: center;
-    gap: 0.5rem;
-    font-size: 0.95rem;
-    font-weight: 700;
-    color: #8a4fff;
+    text-decoration: none;
     cursor: pointer;
     width: fit-content;
     padding: 0.65rem 1.6rem;
-    border: 1px solid rgba(138, 79, 255, 0.3);
+    border: 1px solid rgba(138, 79, 255, 0.35);
     border-radius: 50px;
-    transition: all 0.3s;
+    color: #8a4fff;
+    transition: color 0.5s ease, border-color 0.4s ease;
+
+    span {
+      position: relative;
+      z-index: 1;
+      font-size: 0.95rem;
+      font-weight: 700;
+    }
+
+    // water blob — starts fully below, rises on hover
+    &::before {
+      content: '';
+      position: absolute;
+      top: 100%;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 150%;
+      aspect-ratio: 1;
+      background: #8a4fff;
+      border-radius: 46% 54% 44% 56% / 28% 28% 72% 72%;
+      transition: top 0.6s cubic-bezier(0.4, 0, 0.15, 1),
+                  border-radius 0.7s ease;
+    }
 
     &:hover {
-      background: rgba(138, 79, 255, 0.1);
+      color: #fff;
       border-color: #8a4fff;
-      gap: 0.9rem;
+
+      &::before {
+        top: -80%;
+        border-radius: 50% 50% 48% 52% / 30% 30% 70% 70%;
+      }
     }
   }
 
@@ -826,6 +855,7 @@ app-hero,
 
 // ── Card media ──
 .deck-card__media {
+  pointer-events: auto;
   width: 100%;
   aspect-ratio: 4 / 3;
   border-radius: 18px;
