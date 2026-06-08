@@ -11,18 +11,25 @@
       <div class="branding-info">
         <span class="branding-tag">{{ project.tag }}</span>
         <h1 class="branding-title"><span class="branding-lw"><span class="branding-ln">{{ project.title }}</span></span></h1>
-        <div class="branding-count">{{ images.length }} pieces</div>
+        <div class="branding-count">{{ totalImages }} pieces</div>
       </div>
     </header>
 
     <main class="branding-stack">
-      @for (src of images; track src; let i = $index) {
-        <img
-          [src]="src"
-          [alt]="project.title + ' · ' + (i + 1)"
-          [loading]="i < 2 ? 'eager' : 'lazy'"
-          class="branding-img"
-        />
+      @for (item of images; track $index; let i = $index) {
+        @if (isPair(item)) {
+          <div class="branding-pair">
+            <img [src]="item[0]" [alt]="project.title" loading="lazy" class="branding-img" />
+            <img [src]="item[1]" [alt]="project.title" loading="lazy" class="branding-img" />
+          </div>
+        } @else {
+          <img
+            [src]="item"
+            [alt]="project.title + ' · ' + (i + 1)"
+            [loading]="i < 2 ? 'eager' : 'lazy'"
+            class="branding-img"
+          />
+        }
       }
     </main>
 

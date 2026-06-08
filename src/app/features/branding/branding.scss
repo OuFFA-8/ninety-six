@@ -74,12 +74,20 @@ $accent: #8a4fff;
 .branding-stack {
   display: flex;
   flex-direction: column;
-  // No gap — images touch each other for a seamless feel
 }
 
 .branding-img {
   display: block;
   width: 100%;
   height: auto;
-  // No margin — completely seamless
+}
+
+.branding-pair {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+
+  .branding-img {
+    height: 100%;
+    object-fit: cover;
+  }
 }
