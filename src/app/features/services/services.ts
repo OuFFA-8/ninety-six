@@ -362,16 +362,50 @@ export class ServicesPage implements AfterViewInit, OnDestroy {
     const track = document.getElementById('stripTrack');
     if (!track) return;
 
-    const logos = ['/LOGOES/Artboard 1.png', '/LOGOES/Artboard 1 copy.png'];
-    const repeated = Array(6).fill(logos).flat();
-    const imgStyle = 'width:140px;height:40px;object-fit:contain;object-position:center;display:block;filter:brightness(0) invert(1);opacity:0.65';
+    const logos = [
+      '/LOGOES/Artboard 1.png',
+      '/LOGOES/Artboard 1 copy.png',
+      '/LOGOES/Artboard 1-100.jpg',
+      '/LOGOES/Artboard 1 copy-100.jpg',
+      '/LOGOES/Artboard 1 copy 2-100.jpg',
+      '/LOGOES/Artboard 1 copy 3-100.jpg',
+      '/LOGOES/Artboard 1 copy 4-100.jpg',
+      '/LOGOES/Artboard 1 copy 5-100.jpg',
+      '/LOGOES/Artboard 1 copy 6-100.jpg',
+      '/LOGOES/Artboard 1 copy 7-100.jpg',
+      '/LOGOES/Artboard 1 copy 8-100.jpg',
+      '/LOGOES/Artboard 1 copy 9-100.jpg',
+      '/LOGOES/Artboard 1 copy 10-100.jpg',
+      '/LOGOES/Artboard 1 copy 11-100.jpg',
+      '/LOGOES/Artboard 1 copy 12-100.jpg',
+      '/LOGOES/Artboard 1 copy 13-100.jpg',
+      '/LOGOES/Artboard 1 copy 14-100.jpg',
+      '/LOGOES/Artboard 1 copy 15-100.jpg',
+      '/LOGOES/Artboard 1 copy 16-100.jpg',
+      '/LOGOES/Artboard 1 copy 17.png',
+      '/LOGOES/Artboard 1 copy 18.png',
+      '/LOGOES/Artboard 1 copy 19.png',
+      '/LOGOES/Artboard 1 copy 20.png',
+      '/LOGOES/Artboard 1 copy 21.png',
+    ];
+    const repeated = Array(2).fill(logos).flat();
+    const lightOnTransparent = new Set([
+      '/LOGOES/Artboard 1 copy 17.png',
+      '/LOGOES/Artboard 1 copy 18.png',
+      '/LOGOES/Artboard 1 copy 19.png',
+      '/LOGOES/Artboard 1 copy 20.png',
+      '/LOGOES/Artboard 1 copy 21.png',
+    ]);
+    const baseStyle = 'width:140px;height:40px;object-fit:contain;object-position:center;display:block;opacity:0.65';
     const itemStyle = 'display:flex;align-items:center;height:56px';
     const sepStyle  = 'color:rgba(138,79,255,0.4);font-size:0.8rem;flex-shrink:0;margin:0 1rem';
     const html = [...repeated, ...repeated]
-      .map((src, i) =>
-        `<div class="strip__item" style="${itemStyle}"><img src="${src}" alt="" style="${imgStyle}" /></div>` +
-        (i % 2 === 1 ? `<span style="${sepStyle}">✦</span>` : '')
-      )
+      .map((src, i) => {
+        const filter = lightOnTransparent.has(src) ? 'grayscale(1)' : 'invert(1) grayscale(1)';
+        const imgStyle = `${baseStyle};filter:${filter}`;
+        return `<div class="strip__item" style="${itemStyle}"><img src="${src}" alt="" style="${imgStyle}" /></div>` +
+          (i % 2 === 1 ? `<span style="${sepStyle}">✦</span>` : '');
+      })
       .join('');
     track.innerHTML = html;
 

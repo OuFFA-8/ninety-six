@@ -13,6 +13,9 @@ gsap.registerPlugin(ScrollTrigger);
 const sm = (folder: string, file: string) =>
   `/SOCIAL%20MEDIA/${encodeURIComponent(folder)}/${encodeURIComponent(file)}`;
 
+const smSub = (folder: string, sub: string, file: string) =>
+  `/SOCIAL%20MEDIA/${encodeURIComponent(folder)}/${encodeURIComponent(sub)}/${encodeURIComponent(file)}`;
+
 interface Img { src: string; span?: number; }
 interface ProjectCfg { title: string; tag: string; desc: string; images: Img[]; layout?: string; fullWidth?: number[]; }
 
@@ -131,6 +134,46 @@ const PROJECTS: Record<string, ProjectCfg> = {
       i('تربس', 'Artboard 1 copy 6-100.jpg'),
       i('تربس', 'Artboard 1 copy-100.jpg'),
       i('تربس', 'Artboard 1-100.jpg'),
+    ],
+  },
+
+  lilak: {
+    title: 'Li Lak .',
+    tag: 'Social Media · 2025',
+    desc: 'Brand visuals and social media content for Li Lak — identity posts, product imagery, and story formats.',
+    images: [
+      // Square 1:1 posts (1200×1200)
+      i('لي لك', '1.png'),
+      i('لي لك', '2.png'),
+      i('لي لك', '3.png'),
+      i('لي لك', '6.png'),
+      i('لي لك', '7.png'),
+      i('لي لك', '8.png'),
+      i('لي لك', '9.png'),
+      i('لي لك', '10.png'),
+      // Portrait stories 9:16 (1080×1920)
+      { src: smSub('لي لك', 'طولي', '1.png') },
+      { src: smSub('لي لك', 'طولي', '2.png') },
+      { src: smSub('لي لك', 'طولي', '3.png') },
+      { src: smSub('لي لك', 'طولي', '4.png') },
+      { src: smSub('لي لك', 'طولي', '5.png') },
+      { src: smSub('لي لك', 'طولي', '6.png') },
+    ],
+  },
+
+  salada: {
+    title: 'Salada .',
+    tag: 'Social Media · 2025',
+    desc: 'Social media content for Salada — product shots, identity visuals, and awareness campaigns.',
+    images: [
+      i('صلادة', 'هوية 1.png'),
+      i('صلادة', 'هوية 2.png'),
+      i('صلادة', 'هوية 3.png'),
+      i('صلادة', 'منتج 1.png'),
+      i('صلادة', 'منتج 2.png'),
+      i('صلادة', 'منتج 3.png'),
+      i('صلادة', 'توعوي 1.png'),
+      i('صلادة', 'توعوي 2.png'),
     ],
   },
 };
