@@ -241,14 +241,18 @@
 // 02  FILTER BAR
 // ══════════════════════════════════════════
 .filter-bar {
-  position: relative;
+  position: sticky;
+  top: 0;
   z-index: 800;
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 2.5rem 3rem;
+  padding: 1.4rem 3rem;
+  background: rgba(6, 3, 12, .72);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
 
-  @media (max-width: 900px) { padding: 1.6rem 1.5rem; }
+  @media (max-width: 900px) { padding: 1rem 1.5rem; }
 
   &__pill {
     display: flex;
