@@ -27,13 +27,15 @@
 
     <h1 class="intro__title">
       <span class="intro__title-line"><span class="intro__title-inner">Selected</span></span>
-      <span class="intro__title-line"><span class="intro__title-inner"><em>work</em>.</span></span>
+      <span class="intro__title-line"
+        ><span class="intro__title-inner"><em>work</em>.</span></span
+      >
     </h1>
 
     <div class="intro__meta">
       <p class="intro__desc">
-        Every project is a <em>shot taken</em>. Brands, campaigns and identities
-        engineered to land — explore what we aimed at, and where it hit.
+        Every project is a <em>shot taken</em>. Brands, campaigns and identities engineered to land
+        — explore what we aimed at, and where it hit.
       </p>
       <div class="intro__count">
         <span class="intro__count-num">12</span>
@@ -54,28 +56,55 @@
      02  WORK GRID + FILTER
 ══════════════════════════════════════════ -->
 <section class="work-grid-sec">
-
   <div class="filter-bar">
     <div class="filter-bar__pill">
-      <button class="filter-btn" [class.is-active]="activeFilter === 'all'"       (click)="setFilter('all')">All</button>
-      <button class="filter-btn" [class.is-active]="activeFilter === 'brand'"     (click)="setFilter('brand')">Brand</button>
-      <button class="filter-btn" [class.is-active]="activeFilter === 'social'"    (click)="setFilter('social')">Social</button>
-      <button class="filter-btn" [class.is-active]="activeFilter === 'motion'"    (click)="setFilter('motion')">Motion</button>
+      <button
+        class="filter-btn"
+        [class.is-active]="activeFilter === 'all'"
+        (click)="setFilter('all')"
+      >
+        All
+      </button>
+      <button
+        class="filter-btn"
+        [class.is-active]="activeFilter === 'brand'"
+        (click)="setFilter('brand')"
+      >
+        Brand
+      </button>
+      <button
+        class="filter-btn"
+        [class.is-active]="activeFilter === 'social'"
+        (click)="setFilter('social')"
+      >
+        Social
+      </button>
+      <button
+        class="filter-btn"
+        [class.is-active]="activeFilter === 'motion'"
+        (click)="setFilter('motion')"
+      >
+        Motion
+      </button>
     </div>
   </div>
 
   <div class="work-grid" id="workGrid">
-
     <!-- 01 Rally Hail — Social LG -->
-    <article class="work-item work-item--lg" data-cat="social"
-             style="--w-color:#0d1f3c; cursor:pointer; aspect-ratio: 1563 / 1401"
-             routerLink="/portfolio/social/hail">
+    <article
+      class="work-item work-item--lg"
+      data-cat="social"
+      style="--w-color: #0d1f3c; cursor: pointer; aspect-ratio: 1563 / 1401"
+      routerLink="/portfolio/social/hail"
+    >
       <div class="work-item__media work-item__media--photo">
         <img src="/SOCIAL%20MEDIA/الغلاف/حائل.png" alt="Rally Hail" class="work-item__photo" />
       </div>
       <div class="work-item__shade"></div>
       <div class="work-item__view">
-        <svg viewBox="0 0 18 18" fill="none"><path d="M3 15L15 3M15 3H6M15 3V12" stroke="currentColor" stroke-width="1.5"/></svg>
+        <svg viewBox="0 0 18 18" fill="none">
+          <path d="M3 15L15 3M15 3H6M15 3V12" stroke="currentColor" stroke-width="1.5" />
+        </svg>
       </div>
       <div class="work-item__content">
         <div class="work-item__top">
@@ -85,7 +114,9 @@
         <div class="work-item__bottom">
           <div class="work-item__client">— Rally Hail</div>
           <h3 class="work-item__title">Digital content, <em>delivered</em></h3>
-          <p class="work-item__desc">Social media designs, event coverage, and digital content for Rally Hail — 17 pieces.</p>
+          <p class="work-item__desc">
+            Social media designs, event coverage, and digital content for Rally Hail — 17 pieces.
+          </p>
           <div class="work-item__meta">
             <span class="work-item__meta-item"><strong>Year</strong> 2024</span>
             <span class="work-item__meta-item"><strong>Scope</strong> Social · Motion</span>
@@ -95,14 +126,24 @@
     </article>
 
     <!-- 02 Cash Expo — Social MD -->
-    <article class="work-item work-item--md" data-cat="social" style="--w-color:#0d1f1a;cursor:pointer"
-             routerLink="/portfolio/social/cash-expo">
+    <article
+      class="work-item work-item--md"
+      data-cat="social"
+      style="--w-color: #0d1f1a; cursor: pointer"
+      routerLink="/portfolio/social/cash-expo"
+    >
       <div class="work-item__media work-item__media--photo">
-        <img src="/SOCIAL%20MEDIA/الغلاف/Cash%20Expo.png" alt="Cash Expo" class="work-item__photo" />
+        <img
+          src="/SOCIAL%20MEDIA/الغلاف/Cash%20Expo.png"
+          alt="Cash Expo"
+          class="work-item__photo"
+        />
       </div>
       <div class="work-item__shade"></div>
       <div class="work-item__view">
-        <svg viewBox="0 0 18 18" fill="none"><path d="M3 15L15 3M15 3H6M15 3V12" stroke="currentColor" stroke-width="1.5"/></svg>
+        <svg viewBox="0 0 18 18" fill="none">
+          <path d="M3 15L15 3M15 3H6M15 3V12" stroke="currentColor" stroke-width="1.5" />
+        </svg>
       </div>
       <div class="work-item__content">
         <div class="work-item__top">
@@ -122,19 +163,27 @@
     </article>
 
     <!-- 03 Motion / STC — SM -->
-    <article class="work-item work-item--sm" data-cat="motion"
-             style="--w-color:#1a0535; cursor:pointer"
-             routerLink="/portfolio/motion&video">
+    <article
+      class="work-item work-item--sm"
+      data-cat="motion"
+      style="--w-color: #1a0535; cursor: pointer"
+      routerLink="/portfolio/motion&video"
+    >
       <div class="work-item__media work-item__media--photo">
-        <img src="https://drive.google.com/thumbnail?id=1jhTt5nCZiN11ltnhmydPN7IdXh8cOK5T&sz=w800"
-             alt="STC" class="work-item__photo" />
+        <img
+          src="https://drive.google.com/thumbnail?id=1jhTt5nCZiN11ltnhmydPN7IdXh8cOK5T&sz=w800"
+          alt="STC"
+          class="work-item__photo"
+        />
         <div class="work-item__play-badge">
-          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z" /></svg>
         </div>
       </div>
       <div class="work-item__shade"></div>
       <div class="work-item__view">
-        <svg viewBox="0 0 18 18" fill="none"><path d="M3 15L15 3M15 3H6M15 3V12" stroke="currentColor" stroke-width="1.5"/></svg>
+        <svg viewBox="0 0 18 18" fill="none">
+          <path d="M3 15L15 3M15 3H6M15 3V12" stroke="currentColor" stroke-width="1.5" />
+        </svg>
       </div>
       <div class="work-item__content">
         <div class="work-item__top">
@@ -152,14 +201,20 @@
     </article>
 
     <!-- 04 SBL — Brand SM -->
-    <article class="work-item work-item--sm" data-cat="brand" style="--w-color:#1a0d2e;cursor:pointer"
-             routerLink="/portfolio/branding/sbl">
+    <article
+      class="work-item work-item--sm"
+      data-cat="brand"
+      style="--w-color: #1a0d2e; cursor: pointer"
+      routerLink="/portfolio/branding/sbl"
+    >
       <div class="work-item__media work-item__media--photo">
         <img src="/BRADNING/SBL/1x/1.jpg" alt="SBL" class="work-item__photo" />
       </div>
       <div class="work-item__shade"></div>
       <div class="work-item__view">
-        <svg viewBox="0 0 18 18" fill="none"><path d="M3 15L15 3M15 3H6M15 3V12" stroke="currentColor" stroke-width="1.5"/></svg>
+        <svg viewBox="0 0 18 18" fill="none">
+          <path d="M3 15L15 3M15 3H6M15 3V12" stroke="currentColor" stroke-width="1.5" />
+        </svg>
       </div>
       <div class="work-item__content">
         <div class="work-item__top">
@@ -179,14 +234,20 @@
     </article>
 
     <!-- 05 Ruh — Brand SM -->
-    <article class="work-item work-item--sm" data-cat="brand" style="--w-color:#2a0d1a;cursor:pointer"
-             routerLink="/portfolio/branding/ruh">
+    <article
+      class="work-item work-item--sm"
+      data-cat="brand"
+      style="--w-color: #2a0d1a; cursor: pointer"
+      routerLink="/portfolio/branding/ruh"
+    >
       <div class="work-item__media work-item__media--photo">
         <img src="/BRADNING/ruh/New folder/1.jpg" alt="Ruh" class="work-item__photo" />
       </div>
       <div class="work-item__shade"></div>
       <div class="work-item__view">
-        <svg viewBox="0 0 18 18" fill="none"><path d="M3 15L15 3M15 3H6M15 3V12" stroke="currentColor" stroke-width="1.5"/></svg>
+        <svg viewBox="0 0 18 18" fill="none">
+          <path d="M3 15L15 3M15 3H6M15 3V12" stroke="currentColor" stroke-width="1.5" />
+        </svg>
       </div>
       <div class="work-item__content">
         <div class="work-item__top">
@@ -206,14 +267,20 @@
     </article>
 
     <!-- 06 Dunkin — Social MD -->
-    <article class="work-item work-item--md" data-cat="social" style="--w-color:#331a0d;cursor:pointer"
-             routerLink="/portfolio/social/dunkin">
+    <article
+      class="work-item work-item--md"
+      data-cat="social"
+      style="--w-color: #331a0d; cursor: pointer"
+      routerLink="/portfolio/social/dunkin"
+    >
       <div class="work-item__media work-item__media--photo">
         <img src="/SOCIAL%20MEDIA/الغلاف/DUNKIN.png" alt="DUNKIN" class="work-item__photo" />
       </div>
       <div class="work-item__shade"></div>
       <div class="work-item__view">
-        <svg viewBox="0 0 18 18" fill="none"><path d="M3 15L15 3M15 3H6M15 3V12" stroke="currentColor" stroke-width="1.5"/></svg>
+        <svg viewBox="0 0 18 18" fill="none">
+          <path d="M3 15L15 3M15 3H6M15 3V12" stroke="currentColor" stroke-width="1.5" />
+        </svg>
       </div>
       <div class="work-item__content">
         <div class="work-item__top">
@@ -233,14 +300,20 @@
     </article>
 
     <!-- 07 Turbs — Social LG -->
-    <article class="work-item work-item--lg" data-cat="social" style="--w-color:#1a1a0d;cursor:pointer"
-             routerLink="/portfolio/social/turbs">
+    <article
+      class="work-item work-item--lg"
+      data-cat="social"
+      style="--w-color: #1a1a0d; cursor: pointer"
+      routerLink="/portfolio/social/turbs"
+    >
       <div class="work-item__media work-item__media--photo">
         <img src="/SOCIAL%20MEDIA/الغلاف/تربس.png" alt="Turbs" class="work-item__photo" />
       </div>
       <div class="work-item__shade"></div>
       <div class="work-item__view">
-        <svg viewBox="0 0 18 18" fill="none"><path d="M3 15L15 3M15 3H6M15 3V12" stroke="currentColor" stroke-width="1.5"/></svg>
+        <svg viewBox="0 0 18 18" fill="none">
+          <path d="M3 15L15 3M15 3H6M15 3V12" stroke="currentColor" stroke-width="1.5" />
+        </svg>
       </div>
       <div class="work-item__content">
         <div class="work-item__top">
@@ -260,14 +333,24 @@
     </article>
 
     <!-- 08 Saudi Restaurant — Social SM -->
-    <article class="work-item work-item--sm" data-cat="social" style="--w-color:#1a0d0d;cursor:pointer"
-             routerLink="/portfolio/social/saudi-restaurant">
+    <article
+      class="work-item work-item--sm"
+      data-cat="social"
+      style="--w-color: #1a0d0d; cursor: pointer"
+      routerLink="/portfolio/social/saudi-restaurant"
+    >
       <div class="work-item__media work-item__media--photo">
-        <img src="/SOCIAL%20MEDIA/الغلاف/المطعم%20السعودي.png" alt="Saudi Restaurant" class="work-item__photo" />
+        <img
+          src="/SOCIAL%20MEDIA/الغلاف/المطعم%20السعودي.png"
+          alt="Saudi Restaurant"
+          class="work-item__photo"
+        />
       </div>
       <div class="work-item__shade"></div>
       <div class="work-item__view">
-        <svg viewBox="0 0 18 18" fill="none"><path d="M3 15L15 3M15 3H6M15 3V12" stroke="currentColor" stroke-width="1.5"/></svg>
+        <svg viewBox="0 0 18 18" fill="none">
+          <path d="M3 15L15 3M15 3H6M15 3V12" stroke="currentColor" stroke-width="1.5" />
+        </svg>
       </div>
       <div class="work-item__content">
         <div class="work-item__top">
@@ -287,14 +370,20 @@
     </article>
 
     <!-- 09 310 — Brand XL (row 4: 4+8) -->
-    <article class="work-item work-item--xl" data-cat="brand" style="--w-color:#0d1a33;cursor:pointer"
-             routerLink="/portfolio/branding/310">
+    <article
+      class="work-item work-item--xl"
+      data-cat="brand"
+      style="--w-color: #0d1a33; cursor: pointer"
+      routerLink="/portfolio/branding/310"
+    >
       <div class="work-item__media work-item__media--photo">
         <img src="/BRADNING/310/1x/1.jpg" alt="310" class="work-item__photo" />
       </div>
       <div class="work-item__shade"></div>
       <div class="work-item__view">
-        <svg viewBox="0 0 18 18" fill="none"><path d="M3 15L15 3M15 3H6M15 3V12" stroke="currentColor" stroke-width="1.5"/></svg>
+        <svg viewBox="0 0 18 18" fill="none">
+          <path d="M3 15L15 3M15 3H6M15 3V12" stroke="currentColor" stroke-width="1.5" />
+        </svg>
       </div>
       <div class="work-item__content">
         <div class="work-item__top">
@@ -314,14 +403,20 @@
     </article>
 
     <!-- 10 Cake Can — Brand LG (row 5: 7+5) -->
-    <article class="work-item work-item--lg" data-cat="brand" style="--w-color:#1a0d33;cursor:pointer"
-             routerLink="/portfolio/branding/cake-can">
+    <article
+      class="work-item work-item--lg"
+      data-cat="brand"
+      style="--w-color: #1a0d33; cursor: pointer"
+      routerLink="/portfolio/branding/cake-can"
+    >
       <div class="work-item__media work-item__media--photo">
         <img src="/BRADNING/cake%20can/1.jpg" alt="Cake Can" class="work-item__photo" />
       </div>
       <div class="work-item__shade"></div>
       <div class="work-item__view">
-        <svg viewBox="0 0 18 18" fill="none"><path d="M3 15L15 3M15 3H6M15 3V12" stroke="currentColor" stroke-width="1.5"/></svg>
+        <svg viewBox="0 0 18 18" fill="none">
+          <path d="M3 15L15 3M15 3H6M15 3V12" stroke="currentColor" stroke-width="1.5" />
+        </svg>
       </div>
       <div class="work-item__content">
         <div class="work-item__top">
@@ -341,14 +436,20 @@
     </article>
 
     <!-- 11 DOT — Brand MD (row 5: 7+5) -->
-    <article class="work-item work-item--md" data-cat="brand" style="--w-color:#1a1a3a;cursor:pointer"
-             routerLink="/portfolio/branding/dot">
+    <article
+      class="work-item work-item--md"
+      data-cat="brand"
+      style="--w-color: #1a1a3a; cursor: pointer"
+      routerLink="/portfolio/branding/dot"
+    >
       <div class="work-item__media work-item__media--photo">
         <img src="/BRADNING/DOT/1x/1.jpg" alt="DOT" class="work-item__photo" />
       </div>
       <div class="work-item__shade"></div>
       <div class="work-item__view">
-        <svg viewBox="0 0 18 18" fill="none"><path d="M3 15L15 3M15 3H6M15 3V12" stroke="currentColor" stroke-width="1.5"/></svg>
+        <svg viewBox="0 0 18 18" fill="none">
+          <path d="M3 15L15 3M15 3H6M15 3V12" stroke="currentColor" stroke-width="1.5" />
+        </svg>
       </div>
       <div class="work-item__content">
         <div class="work-item__top">
@@ -368,19 +469,27 @@
     </article>
 
     <!-- 12 First Day — Video SM (row 6: 4+4+4) -->
-    <article class="work-item work-item--sm" data-cat="motion"
-             style="--w-color:#0d1a35; cursor:pointer"
-             routerLink="/portfolio/motion&video">
+    <article
+      class="work-item work-item--sm"
+      data-cat="motion"
+      style="--w-color: #0d1a35; cursor: pointer"
+      routerLink="/portfolio/motion&video"
+    >
       <div class="work-item__media work-item__media--photo">
-        <img src="https://drive.google.com/thumbnail?id=1_jAe7YdzuLEnLRAHwGpFzgen6wycGk4-&sz=w800"
-             alt="First Day" class="work-item__photo" />
+        <img
+          src="https://drive.google.com/thumbnail?id=1_jAe7YdzuLEnLRAHwGpFzgen6wycGk4-&sz=w800"
+          alt="First Day"
+          class="work-item__photo"
+        />
         <div class="work-item__play-badge">
-          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z" /></svg>
         </div>
       </div>
       <div class="work-item__shade"></div>
       <div class="work-item__view">
-        <svg viewBox="0 0 18 18" fill="none"><path d="M3 15L15 3M15 3H6M15 3V12" stroke="currentColor" stroke-width="1.5"/></svg>
+        <svg viewBox="0 0 18 18" fill="none">
+          <path d="M3 15L15 3M15 3H6M15 3V12" stroke="currentColor" stroke-width="1.5" />
+        </svg>
       </div>
       <div class="work-item__content">
         <div class="work-item__top">
@@ -398,19 +507,27 @@
     </article>
 
     <!-- 13 Do Good — Video SM (row 6: 4+4+4) -->
-    <article class="work-item work-item--sm" data-cat="motion"
-             style="--w-color:#1a0820; cursor:pointer"
-             routerLink="/portfolio/motion&video">
+    <article
+      class="work-item work-item--sm"
+      data-cat="motion"
+      style="--w-color: #1a0820; cursor: pointer"
+      routerLink="/portfolio/motion&video"
+    >
       <div class="work-item__media work-item__media--photo">
-        <img src="https://drive.google.com/thumbnail?id=13MfXEFwEipClaDVK26bwmo8A6VBmKEAr&sz=w800"
-             alt="Do Good" class="work-item__photo" />
+        <img
+          src="https://drive.google.com/thumbnail?id=13MfXEFwEipClaDVK26bwmo8A6VBmKEAr&sz=w800"
+          alt="Do Good"
+          class="work-item__photo"
+        />
         <div class="work-item__play-badge">
-          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z" /></svg>
         </div>
       </div>
       <div class="work-item__shade"></div>
       <div class="work-item__view">
-        <svg viewBox="0 0 18 18" fill="none"><path d="M3 15L15 3M15 3H6M15 3V12" stroke="currentColor" stroke-width="1.5"/></svg>
+        <svg viewBox="0 0 18 18" fill="none">
+          <path d="M3 15L15 3M15 3H6M15 3V12" stroke="currentColor" stroke-width="1.5" />
+        </svg>
       </div>
       <div class="work-item__content">
         <div class="work-item__top">
@@ -428,14 +545,20 @@
     </article>
 
     <!-- 14 Canned — Brand SM (row 6: 4+4+4) -->
-    <article class="work-item work-item--sm" data-cat="brand" style="--w-color:#2a0d4a;cursor:pointer"
-             routerLink="/portfolio/branding/canned">
+    <article
+      class="work-item work-item--sm"
+      data-cat="brand"
+      style="--w-color: #2a0d4a; cursor: pointer"
+      routerLink="/portfolio/branding/canned"
+    >
       <div class="work-item__media work-item__media--photo">
         <img src="/BRADNING/canned/1.jpg" alt="Canned" class="work-item__photo" />
       </div>
       <div class="work-item__shade"></div>
       <div class="work-item__view">
-        <svg viewBox="0 0 18 18" fill="none"><path d="M3 15L15 3M15 3H6M15 3V12" stroke="currentColor" stroke-width="1.5"/></svg>
+        <svg viewBox="0 0 18 18" fill="none">
+          <path d="M3 15L15 3M15 3H6M15 3V12" stroke="currentColor" stroke-width="1.5" />
+        </svg>
       </div>
       <div class="work-item__content">
         <div class="work-item__top">
@@ -455,16 +578,24 @@
     </article>
 
     <!-- 15 Prince Festival — Brand LG -->
-    <article class="work-item work-item--lg" data-cat="brand"
-             style="--w-color:#0a1a2e; cursor:pointer"
-             routerLink="/portfolio/branding/prince-festival">
+    <article
+      class="work-item work-item--lg"
+      data-cat="brand"
+      style="--w-color: #0a1a2e; cursor: pointer"
+      routerLink="/portfolio/branding/prince-festival"
+    >
       <div class="work-item__media work-item__media--photo">
-        <img src="/BRADNING/%D9%85%D9%87%D8%B1%D8%AC%D8%A7%D9%86%20%D8%A7%D9%84%D8%A7%D9%85%D9%8A%D8%B1%20%D8%B9%D8%A8%D8%AF%20%D8%A7%D9%84%D8%B9%D8%B2%D9%8A%D8%B2/1.jpg"
-             alt="Prince Abdul Aziz Festival" class="work-item__photo" />
+        <img
+          src="/BRADNING/%D9%85%D9%87%D8%B1%D8%AC%D8%A7%D9%86%20%D8%A7%D9%84%D8%A7%D9%85%D9%8A%D8%B1%20%D8%B9%D8%A8%D8%AF%20%D8%A7%D9%84%D8%B9%D8%B2%D9%8A%D8%B2/1.jpg"
+          alt="Prince Abdul Aziz Festival"
+          class="work-item__photo"
+        />
       </div>
       <div class="work-item__shade"></div>
       <div class="work-item__view">
-        <svg viewBox="0 0 18 18" fill="none"><path d="M3 15L15 3M15 3H6M15 3V12" stroke="currentColor" stroke-width="1.5"/></svg>
+        <svg viewBox="0 0 18 18" fill="none">
+          <path d="M3 15L15 3M15 3H6M15 3V12" stroke="currentColor" stroke-width="1.5" />
+        </svg>
       </div>
       <div class="work-item__content">
         <div class="work-item__top">
@@ -484,16 +615,24 @@
     </article>
 
     <!-- 16 Li Lak — Social MD (row 8: 7+5=12 with Prince Festival) -->
-    <article class="work-item work-item--md" data-cat="social"
-             style="--w-color:#1a0a2e; cursor:pointer"
-             routerLink="/portfolio/social/lilak">
+    <article
+      class="work-item work-item--md"
+      data-cat="social"
+      style="--w-color: #1a0a2e; cursor: pointer"
+      routerLink="/portfolio/social/lilak"
+    >
       <div class="work-item__media work-item__media--photo">
-        <img src="/SOCIAL%20MEDIA/%D9%84%D9%8A%20%D9%84%D9%83/1.png"
-             alt="Li Lak" class="work-item__photo" />
+        <img
+          src="/SOCIAL%20MEDIA/%D9%84%D9%8A%20%D9%84%D9%83/1.png"
+          alt="Li Lak"
+          class="work-item__photo"
+        />
       </div>
       <div class="work-item__shade"></div>
       <div class="work-item__view">
-        <svg viewBox="0 0 18 18" fill="none"><path d="M3 15L15 3M15 3H6M15 3V12" stroke="currentColor" stroke-width="1.5"/></svg>
+        <svg viewBox="0 0 18 18" fill="none">
+          <path d="M3 15L15 3M15 3H6M15 3V12" stroke="currentColor" stroke-width="1.5" />
+        </svg>
       </div>
       <div class="work-item__content">
         <div class="work-item__top">
@@ -513,16 +652,24 @@
     </article>
 
     <!-- 17 Salada — Social SM (row 9) -->
-    <article class="work-item work-item--sm" data-cat="social"
-             style="--w-color:#0a1a0d; cursor:pointer"
-             routerLink="/portfolio/social/salada">
+    <article
+      class="work-item work-item--sm"
+      data-cat="social"
+      style="--w-color: #0a1a0d; cursor: pointer"
+      routerLink="/portfolio/social/salada"
+    >
       <div class="work-item__media work-item__media--photo">
-        <img src="/SOCIAL%20MEDIA/%D8%B5%D9%84%D8%A7%D8%AF%D8%A9/%D9%87%D9%88%D9%8A%D8%A9%201.png"
-             alt="Salada" class="work-item__photo" />
+        <img
+          src="/SOCIAL%20MEDIA/%D8%B5%D9%84%D8%A7%D8%AF%D8%A9/%D9%87%D9%88%D9%8A%D8%A9%201.png"
+          alt="Salada"
+          class="work-item__photo"
+        />
       </div>
       <div class="work-item__shade"></div>
       <div class="work-item__view">
-        <svg viewBox="0 0 18 18" fill="none"><path d="M3 15L15 3M15 3H6M15 3V12" stroke="currentColor" stroke-width="1.5"/></svg>
+        <svg viewBox="0 0 18 18" fill="none">
+          <path d="M3 15L15 3M15 3H6M15 3V12" stroke="currentColor" stroke-width="1.5" />
+        </svg>
       </div>
       <div class="work-item__content">
         <div class="work-item__top">
@@ -532,7 +679,9 @@
         <div class="work-item__bottom">
           <div class="work-item__client">— Salada</div>
           <h3 class="work-item__title">Fresh content, <em>on brand</em></h3>
-          <p class="work-item__desc">Product shots and awareness campaigns for Salada — 8 pieces.</p>
+          <p class="work-item__desc">
+            Product shots and awareness campaigns for Salada — 8 pieces.
+          </p>
           <div class="work-item__meta">
             <span class="work-item__meta-item"><strong>Year</strong> 2025</span>
             <span class="work-item__meta-item"><strong>Scope</strong> Social</span>
@@ -540,8 +689,6 @@
         </div>
       </div>
     </article>
-
-
   </div>
 
   <!-- All tab: Load More -->
@@ -550,7 +697,13 @@
       <span class="work-load-more__label">Load More</span>
       <span class="work-load-more__arrow">
         <svg viewBox="0 0 24 24" fill="none">
-          <path d="M12 5v14M5 13l7 7 7-7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          <path
+            d="M12 5v14M5 13l7 7 7-7"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
         </svg>
       </span>
     </button>
@@ -562,12 +715,17 @@
       <span class="work-load-more__label">View All — 17 projects</span>
       <span class="work-load-more__arrow">
         <svg viewBox="0 0 24 24" fill="none">
-          <path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          <path
+            d="M5 12h14M13 6l6 6-6 6"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
         </svg>
       </span>
     </a>
   </div>
-
 </section>
 
 <!-- ══════════════════════════════════════════
@@ -577,29 +735,36 @@
   <div class="showcase__pin">
     <div class="showcase__intro">
       <div class="showcase__label">Web &amp; Mobile · Scroll to explore</div>
-      <h2 class="showcase__heading">Interfaces built<br>to <em>perform</em>.</h2>
+      <h2 class="showcase__heading">Interfaces built<br />to <em>perform</em>.</h2>
     </div>
 
     <div class="showcase__track" id="showcaseTrack">
-
       <!-- Browser / Web card -->
-      <div class="showcase__card showcase__card--browser" style="--sc-color:#0d1a33">
+      <div class="showcase__card showcase__card--browser" style="--sc-color: #0d1a33">
         <div class="showcase__card-media"></div>
         <div class="showcase__card-deco" data-sc-deco>
           <svg viewBox="0 0 560 360" fill="none">
             <!-- browser chrome -->
-            <rect x="20" y="20" width="520" height="320" rx="12" stroke="rgba(255,255,255,.18)" stroke-width="1.5"/>
-            <rect x="20" y="20" width="520" height="44" rx="12" fill="rgba(255,255,255,.06)"/>
-            <rect x="20" y="52" width="520" height="12" fill="rgba(255,255,255,.06)"/>
-            <circle cx="44" cy="42" r="5" fill="rgba(255,80,80,.5)"/>
-            <circle cx="62" cy="42" r="5" fill="rgba(255,180,0,.5)"/>
-            <circle cx="80" cy="42" r="5" fill="rgba(80,200,80,.5)"/>
-            <rect x="110" y="33" width="260" height="18" rx="9" fill="rgba(255,255,255,.08)"/>
+            <rect
+              x="20"
+              y="20"
+              width="520"
+              height="320"
+              rx="12"
+              stroke="rgba(255,255,255,.18)"
+              stroke-width="1.5"
+            />
+            <rect x="20" y="20" width="520" height="44" rx="12" fill="rgba(255,255,255,.06)" />
+            <rect x="20" y="52" width="520" height="12" fill="rgba(255,255,255,.06)" />
+            <circle cx="44" cy="42" r="5" fill="rgba(255,80,80,.5)" />
+            <circle cx="62" cy="42" r="5" fill="rgba(255,180,0,.5)" />
+            <circle cx="80" cy="42" r="5" fill="rgba(80,200,80,.5)" />
+            <rect x="110" y="33" width="260" height="18" rx="9" fill="rgba(255,255,255,.08)" />
             <!-- page skeleton -->
-            <rect x="40" y="82" width="480" height="120" rx="8" fill="rgba(255,255,255,.05)"/>
-            <rect x="40" y="216" width="220" height="14" rx="4" fill="rgba(255,255,255,.1)"/>
-            <rect x="40" y="238" width="160" height="10" rx="4" fill="rgba(255,255,255,.06)"/>
-            <rect x="280" y="216" width="240" height="90" rx="8" fill="rgba(255,255,255,.05)"/>
+            <rect x="40" y="82" width="480" height="120" rx="8" fill="rgba(255,255,255,.05)" />
+            <rect x="40" y="216" width="220" height="14" rx="4" fill="rgba(255,255,255,.1)" />
+            <rect x="40" y="238" width="160" height="10" rx="4" fill="rgba(255,255,255,.06)" />
+            <rect x="280" y="216" width="240" height="90" rx="8" fill="rgba(255,255,255,.05)" />
           </svg>
         </div>
         <div class="showcase__card-shade"></div>
@@ -607,29 +772,37 @@
           <span class="showcase__card-num">01</span>
           <div class="showcase__card-info">
             <div class="showcase__card-cat">Web Design · Coming soon</div>
-            <h3 class="showcase__card-title">Next project,<br><em>in progress</em></h3>
+            <h3 class="showcase__card-title">Next project,<br /><em>in progress</em></h3>
           </div>
         </div>
       </div>
 
       <!-- Mobile app card -->
-      <div class="showcase__card showcase__card--mobile" style="--sc-color:#1a0d33">
+      <div class="showcase__card showcase__card--mobile" style="--sc-color: #1a0d33">
         <div class="showcase__card-media"></div>
         <div class="showcase__card-deco" data-sc-deco>
           <svg viewBox="0 0 260 480" fill="none">
             <!-- phone frame -->
-            <rect x="30" y="10" width="200" height="460" rx="32" stroke="rgba(255,255,255,.2)" stroke-width="2"/>
-            <rect x="38" y="18" width="184" height="444" rx="26" fill="rgba(255,255,255,.04)"/>
+            <rect
+              x="30"
+              y="10"
+              width="200"
+              height="460"
+              rx="32"
+              stroke="rgba(255,255,255,.2)"
+              stroke-width="2"
+            />
+            <rect x="38" y="18" width="184" height="444" rx="26" fill="rgba(255,255,255,.04)" />
             <!-- notch -->
-            <rect x="90" y="18" width="80" height="22" rx="11" fill="rgba(0,0,0,.5)"/>
+            <rect x="90" y="18" width="80" height="22" rx="11" fill="rgba(0,0,0,.5)" />
             <!-- screen content skeleton -->
-            <rect x="54" y="60" width="152" height="80" rx="10" fill="rgba(255,255,255,.07)"/>
-            <rect x="54" y="152" width="70" height="10" rx="4" fill="rgba(255,255,255,.12)"/>
-            <rect x="54" y="170" width="50" height="8"  rx="4" fill="rgba(255,255,255,.07)"/>
-            <rect x="54" y="192" width="152" height="60" rx="8" fill="rgba(255,255,255,.06)"/>
-            <rect x="54" y="264" width="152" height="60" rx="8" fill="rgba(255,255,255,.06)"/>
+            <rect x="54" y="60" width="152" height="80" rx="10" fill="rgba(255,255,255,.07)" />
+            <rect x="54" y="152" width="70" height="10" rx="4" fill="rgba(255,255,255,.12)" />
+            <rect x="54" y="170" width="50" height="8" rx="4" fill="rgba(255,255,255,.07)" />
+            <rect x="54" y="192" width="152" height="60" rx="8" fill="rgba(255,255,255,.06)" />
+            <rect x="54" y="264" width="152" height="60" rx="8" fill="rgba(255,255,255,.06)" />
             <!-- home bar -->
-            <rect x="100" y="442" width="60" height="5" rx="2.5" fill="rgba(255,255,255,.25)"/>
+            <rect x="100" y="442" width="60" height="5" rx="2.5" fill="rgba(255,255,255,.25)" />
           </svg>
         </div>
         <div class="showcase__card-shade"></div>
@@ -637,30 +810,38 @@
           <span class="showcase__card-num">02</span>
           <div class="showcase__card-info">
             <div class="showcase__card-cat">Mobile App · Coming soon</div>
-            <h3 class="showcase__card-title">App design,<br><em>landing soon</em></h3>
+            <h3 class="showcase__card-title">App design,<br /><em>landing soon</em></h3>
           </div>
         </div>
       </div>
 
       <!-- Dashboard / Web app card -->
-      <div class="showcase__card showcase__card--browser" style="--sc-color:#0a1a0d">
+      <div class="showcase__card showcase__card--browser" style="--sc-color: #0a1a0d">
         <div class="showcase__card-media"></div>
         <div class="showcase__card-deco" data-sc-deco>
           <svg viewBox="0 0 560 360" fill="none">
-            <rect x="20" y="20" width="520" height="320" rx="12" stroke="rgba(255,255,255,.18)" stroke-width="1.5"/>
+            <rect
+              x="20"
+              y="20"
+              width="520"
+              height="320"
+              rx="12"
+              stroke="rgba(255,255,255,.18)"
+              stroke-width="1.5"
+            />
             <!-- sidebar -->
-            <rect x="20" y="20" width="120" height="320" rx="12" fill="rgba(255,255,255,.05)"/>
-            <rect x="36" y="48" width="88" height="10" rx="4" fill="rgba(255,255,255,.15)"/>
-            <rect x="36" y="72" width="70" height="8"  rx="4" fill="rgba(255,255,255,.08)"/>
-            <rect x="36" y="90" width="80" height="8"  rx="4" fill="rgba(255,255,255,.08)"/>
-            <rect x="36" y="108" width="60" height="8" rx="4" fill="rgba(255,255,255,.08)"/>
+            <rect x="20" y="20" width="120" height="320" rx="12" fill="rgba(255,255,255,.05)" />
+            <rect x="36" y="48" width="88" height="10" rx="4" fill="rgba(255,255,255,.15)" />
+            <rect x="36" y="72" width="70" height="8" rx="4" fill="rgba(255,255,255,.08)" />
+            <rect x="36" y="90" width="80" height="8" rx="4" fill="rgba(255,255,255,.08)" />
+            <rect x="36" y="108" width="60" height="8" rx="4" fill="rgba(255,255,255,.08)" />
             <!-- main content -->
-            <rect x="156" y="36" width="110" height="60" rx="8" fill="rgba(255,255,255,.07)"/>
-            <rect x="278" y="36" width="110" height="60" rx="8" fill="rgba(255,255,255,.07)"/>
-            <rect x="400" y="36" width="120" height="60" rx="8" fill="rgba(255,255,255,.07)"/>
-            <rect x="156" y="112" width="364" height="140" rx="8" fill="rgba(255,255,255,.05)"/>
-            <rect x="156" y="264" width="174" height="60" rx="8" fill="rgba(255,255,255,.05)"/>
-            <rect x="346" y="264" width="174" height="60" rx="8" fill="rgba(255,255,255,.05)"/>
+            <rect x="156" y="36" width="110" height="60" rx="8" fill="rgba(255,255,255,.07)" />
+            <rect x="278" y="36" width="110" height="60" rx="8" fill="rgba(255,255,255,.07)" />
+            <rect x="400" y="36" width="120" height="60" rx="8" fill="rgba(255,255,255,.07)" />
+            <rect x="156" y="112" width="364" height="140" rx="8" fill="rgba(255,255,255,.05)" />
+            <rect x="156" y="264" width="174" height="60" rx="8" fill="rgba(255,255,255,.05)" />
+            <rect x="346" y="264" width="174" height="60" rx="8" fill="rgba(255,255,255,.05)" />
           </svg>
         </div>
         <div class="showcase__card-shade"></div>
@@ -668,15 +849,16 @@
           <span class="showcase__card-num">03</span>
           <div class="showcase__card-info">
             <div class="showcase__card-cat">Web App · Coming soon</div>
-            <h3 class="showcase__card-title">Dashboard,<br><em>in the works</em></h3>
+            <h3 class="showcase__card-title">Dashboard,<br /><em>in the works</em></h3>
           </div>
         </div>
       </div>
-
     </div>
 
     <div class="showcase__progress">
-      <span class="showcase__progress-label"><strong>{{ scNum }}</strong> / 03</span>
+      <span class="showcase__progress-label"
+        ><strong>{{ scNum }}</strong> / 03</span
+      >
       <div class="showcase__progress-track">
         <div class="showcase__progress-fill" [style.width.%]="scProgress"></div>
       </div>
@@ -695,10 +877,10 @@
       <div class="case__client">— Prince Abdul Aziz bin Saad Festival</div>
       <h2 class="case__title">Crafted for <em>heritage</em>.</h2>
       <p class="case__desc">
-        Its identity bridges geometric Arabic script and equestrian heritage, reflecting
-        an official Saudi brand built on authenticity, competition, and celebration.
-        Grounded in national green, with golden accents that lend the mark a luxurious
-        character befitting the festival's prestige and its ties to horse racing.
+        Its identity bridges geometric Arabic script and equestrian heritage, reflecting an official
+        Saudi brand built on authenticity, competition, and celebration. Grounded in national green,
+        with golden accents that lend the mark a luxurious character befitting the festival's
+        prestige and its ties to horse racing.
       </p>
       <div class="case__tags">
         <span class="case__tag">Logo</span>
@@ -716,38 +898,35 @@
 
     <div class="case__right">
       <div class="case__stack">
-
-        <div class="case__slide" style="--slide-color:#3d1a7a">
+        <div class="case__slide" style="--slide-color: #3d1a7a">
           <div class="case__slide-media"></div>
           <img class="case__slide-img" src="/1x/Logo-100.jpg" alt="Logo Construction" />
           <span class="case__slide-label">01 · Logo Construction</span>
         </div>
 
-        <div class="case__slide" style="--slide-color:#4a1c8a">
+        <div class="case__slide" style="--slide-color: #4a1c8a">
           <div class="case__slide-media"></div>
           <img class="case__slide-img" src="/1x/Color%20Palette-100.jpg" alt="Colour Palette" />
           <span class="case__slide-label">02 · Colour Palette</span>
         </div>
 
-        <div class="case__slide" style="--slide-color:#5c2ea8">
+        <div class="case__slide" style="--slide-color: #5c2ea8">
           <div class="case__slide-media"></div>
           <img class="case__slide-img" src="/1x/Typography%20-100.jpg" alt="Typography" />
           <span class="case__slide-label">03 · Typography</span>
         </div>
 
-        <div class="case__slide" style="--slide-color:#6a3bbf">
+        <div class="case__slide" style="--slide-color: #6a3bbf">
           <div class="case__slide-media"></div>
           <img class="case__slide-img" src="/1x/Stationery-100.jpg" alt="Stationery" />
           <span class="case__slide-label">04 · Stationery</span>
         </div>
 
-        <div class="case__slide" style="--slide-color:#7a3edb">
+        <div class="case__slide" style="--slide-color: #7a3edb">
           <div class="case__slide-media"></div>
           <img class="case__slide-img" src="/1x/Digital-100.jpg" alt="Digital / App" />
           <span class="case__slide-label">05 · Digital / App</span>
         </div>
-
-
       </div>
     </div>
   </div>
@@ -766,12 +945,20 @@
 <section class="svc-cta">
   <div class="svc-cta__glow"></div>
   <div class="svc-cta__inner">
-    <h2 class="svc-cta__title">Got a target<br>in <em>mind</em>?</h2>
-    <p class="svc-cta__desc">Let's add your project to the next reel. Tell us what you're aiming at.</p>
+    <h2 class="svc-cta__title">Got a target<br />in <em>mind </em>?</h2>
+    <p class="svc-cta__desc">
+      Let's add your project to the next reel. Tell us what you're aiming at.
+    </p>
     <a routerLink="/contact" class="svc-cta__btn">
       <span>Start a Project</span>
       <svg viewBox="0 0 24 24" fill="none">
-        <path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+        <path
+          d="M5 12h14M13 6l6 6-6 6"
+          stroke="currentColor"
+          stroke-width="2.5"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        />
       </svg>
     </a>
   </div>

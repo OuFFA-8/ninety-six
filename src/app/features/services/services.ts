@@ -388,7 +388,43 @@ export class ServicesPage implements AfterViewInit, OnDestroy {
       '/LOGOES/Artboard 1 copy 20.png',
       '/LOGOES/Artboard 1 copy 21.png',
     ];
-    const repeated = Array(2).fill(logos).flat();
+    // natural px dimensions — used to normalize display size
+    const naturalDims: Record<string, [number, number]> = {
+      '/LOGOES/Artboard 1.png':             [274, 35],
+      '/LOGOES/Artboard 1 copy.png':        [274, 92],
+      '/LOGOES/Artboard 1-100.jpg':         [274, 35],
+      '/LOGOES/Artboard 1 copy-100.jpg':    [157, 177],
+      '/LOGOES/Artboard 1 copy 2-100.jpg':  [216, 132],
+      '/LOGOES/Artboard 1 copy 3-100.jpg':  [193, 89],
+      '/LOGOES/Artboard 1 copy 4-100.jpg':  [206, 36],
+      '/LOGOES/Artboard 1 copy 5-100.jpg':  [207, 55],
+      '/LOGOES/Artboard 1 copy 6-100.jpg':  [79,  81],
+      '/LOGOES/Artboard 1 copy 7-100.jpg':  [185, 69],
+      '/LOGOES/Artboard 1 copy 8-100.jpg':  [184, 59],
+      '/LOGOES/Artboard 1 copy 9-100.jpg':  [184, 44],
+      '/LOGOES/Artboard 1 copy 10-100.jpg': [239, 56],
+      '/LOGOES/Artboard 1 copy 11-100.jpg': [213, 57],
+      '/LOGOES/Artboard 1 copy 12-100.jpg': [110, 75],
+      '/LOGOES/Artboard 1 copy 13-100.jpg': [182, 46],
+      '/LOGOES/Artboard 1 copy 14-100.jpg': [108, 39],
+      '/LOGOES/Artboard 1 copy 15-100.jpg': [113, 83],
+      '/LOGOES/Artboard 1 copy 16-100.jpg': [231, 77],
+      '/LOGOES/Artboard 1 copy 17.png':     [114, 118],
+      '/LOGOES/Artboard 1 copy 18.png':     [164, 96],
+      '/LOGOES/Artboard 1 copy 19.png':     [114, 101],
+      '/LOGOES/Artboard 1 copy 20.png':     [114, 98],
+      '/LOGOES/Artboard 1 copy 21.png':     [114, 142],
+    };
+    const TARGET_H = 46;
+    const MAX_W    = 210;
+    const getDisplaySize = (src: string) => {
+      const d = naturalDims[src] ?? [140, 40];
+      let w = (d[0] / d[1]) * TARGET_H;
+      let h = TARGET_H;
+      if (w > MAX_W) { h = Math.round(h * MAX_W / w); w = MAX_W; }
+      return { w: Math.round(w), h };
+    };
+
     const lightOnTransparent = new Set([
       '/LOGOES/Artboard 1 copy 17.png',
       '/LOGOES/Artboard 1 copy 18.png',
@@ -396,13 +432,14 @@ export class ServicesPage implements AfterViewInit, OnDestroy {
       '/LOGOES/Artboard 1 copy 20.png',
       '/LOGOES/Artboard 1 copy 21.png',
     ]);
-    const baseStyle = 'width:140px;height:40px;object-fit:contain;object-position:center;display:block;opacity:0.65';
-    const itemStyle = 'display:flex;align-items:center;height:56px';
-    const sepStyle  = 'color:rgba(138,79,255,0.4);font-size:0.8rem;flex-shrink:0;margin:0 1rem';
+    const repeated  = Array(2).fill(logos).flat();
+    const itemStyle = 'display:flex;align-items:center;justify-content:center;height:64px;padding:0 12px';
+    const sepStyle  = 'color:rgba(138,79,255,0.4);font-size:0.8rem;flex-shrink:0;margin:0 0.5rem';
     const html = [...repeated, ...repeated]
       .map((src, i) => {
         const filter = lightOnTransparent.has(src) ? 'grayscale(1)' : 'invert(1) grayscale(1)';
-        const imgStyle = `${baseStyle};filter:${filter}`;
+        const { w, h } = getDisplaySize(src);
+        const imgStyle = `width:${w}px;height:${h}px;object-fit:contain;object-position:center;display:block;opacity:0.65;filter:${filter}`;
         return `<div class="strip__item" style="${itemStyle}"><img src="${src}" alt="" style="${imgStyle}" /></div>` +
           (i % 2 === 1 ? `<span style="${sepStyle}">✦</span>` : '');
       })
@@ -429,9 +466,15 @@ export class ServicesPage implements AfterViewInit, OnDestroy {
   // ── CTA ─────────────────────────────────────────────────
 
   private initCTA(): void {
-    gsap.from('.svc-cta__inner > *', {
-      opacity: 0, y: 40, duration: 0.9, stagger: 0.12, ease: 'expo.out',
-      scrollTrigger: { trigger: '.svc-cta', start: 'top 78%' },
+    const els = gsap.utils.toArray<Element>('.svc-cta__inner > *');
+    gsap.set(els, { opacity: 0, y: 40 });
+    ScrollTrigger.create({
+      trigger: '.svc-cta',
+      start: 'top 80%',
+      once: true,
+      onEnter: () => gsap.to(els, {
+        opacity: 1, y: 0, duration: 0.9, stagger: 0.12, ease: 'expo.out',
+      }),
     });
   }
 
