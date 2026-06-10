@@ -452,6 +452,10 @@ export class ServicesPage implements AfterViewInit, OnDestroy {
       const half  = track.scrollWidth / 2;
       const tween = gsap.to(track, { x: -half, duration: 70, ease: 'none', repeat: -1 });
 
+      const strip = document.querySelector<HTMLElement>('.strip');
+      strip?.addEventListener('mouseenter', () => gsap.to(tween, { timeScale: 0, duration: 0.4, ease: 'power2.out' }));
+      strip?.addEventListener('mouseleave', () => gsap.to(tween, { timeScale: 1, duration: 0.6, ease: 'power2.inOut' }));
+
       ScrollTrigger.create({
         trigger: '.strip', start: 'top bottom', end: 'bottom top',
         onUpdate: (self) => {
