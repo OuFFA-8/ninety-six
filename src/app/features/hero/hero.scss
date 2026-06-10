@@ -58,8 +58,14 @@
 .line-wrap {
   display: block;
   overflow: hidden;
-  padding-bottom: 0.06em;
-  margin-bottom: -0.02em;
+  padding-top: 0.08em;
+  padding-bottom: 0.35em;
+  padding-left: 0.08em;
+  padding-right: 0.08em;
+  margin-top: -0.08em;
+  margin-bottom: -0.35em;
+  margin-left: -0.08em;
+  margin-right: -0.08em;
 }
 
 .line {
