@@ -417,11 +417,13 @@ export class ServicesPage implements AfterViewInit, OnDestroy {
     };
     const TARGET_H = 46;
     const MAX_W    = 210;
+    const MIN_W    = 58;
     const getDisplaySize = (src: string) => {
       const d = naturalDims[src] ?? [140, 40];
       let w = (d[0] / d[1]) * TARGET_H;
       let h = TARGET_H;
       if (w > MAX_W) { h = Math.round(h * MAX_W / w); w = MAX_W; }
+      if (w < MIN_W) { const s = MIN_W / w; w = MIN_W; h = Math.min(60, Math.round(h * s)); }
       return { w: Math.round(w), h };
     };
 
@@ -448,14 +450,12 @@ export class ServicesPage implements AfterViewInit, OnDestroy {
 
     setTimeout(() => {
       const half  = track.scrollWidth / 2;
-      const tween = gsap.to(track, { x: -half, duration: 45, ease: 'none', repeat: -1 });
+      const tween = gsap.to(track, { x: -half, duration: 70, ease: 'none', repeat: -1 });
 
       ScrollTrigger.create({
         trigger: '.strip', start: 'top bottom', end: 'bottom top',
         onUpdate: (self) => {
-          const v    = self.getVelocity();
-          const skew = gsap.utils.clamp(-30, 30, v / -60);
-          gsap.to('.strip__item', { skewX: skew * 0.3, duration: 0.3, overwrite: 'auto' });
+          const v = self.getVelocity();
           tween.timeScale(1 + Math.abs(v) / 3000);
           gsap.to(tween, { timeScale: 1, duration: 0.6, overwrite: 'auto', delay: 0.1 });
         },
