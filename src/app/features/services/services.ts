@@ -433,13 +433,13 @@ export class ServicesPage implements AfterViewInit, OnDestroy {
       '/LOGOES/Artboard 1 copy 21.png',
     ]);
     const repeated  = Array(2).fill(logos).flat();
-    const itemStyle = 'display:flex;align-items:center;justify-content:center;height:64px;padding:0 12px';
+    const itemStyle = 'display:flex;align-items:center;justify-content:center;height:64px;padding:0 12px;background:#0a0517';
     const sepStyle  = 'color:rgba(138,79,255,0.4);font-size:0.8rem;flex-shrink:0;margin:0 0.5rem';
     const html = [...repeated, ...repeated]
       .map((src, i) => {
         const filter = lightOnTransparent.has(src) ? 'grayscale(1)' : 'invert(1) grayscale(1)';
         const { w, h } = getDisplaySize(src);
-        const imgStyle = `width:${w}px;height:${h}px;object-fit:contain;object-position:center;display:block;opacity:0.65;filter:${filter}`;
+        const imgStyle = `width:${w}px;height:${h}px;object-fit:contain;object-position:center;display:block;opacity:0.7;filter:${filter};mix-blend-mode:screen`;
         return `<div class="strip__item" style="${itemStyle}"><img src="${src}" alt="" style="${imgStyle}" /></div>` +
           (i % 2 === 1 ? `<span style="${sepStyle}">✦</span>` : '');
       })
@@ -448,7 +448,7 @@ export class ServicesPage implements AfterViewInit, OnDestroy {
 
     setTimeout(() => {
       const half  = track.scrollWidth / 2;
-      const tween = gsap.to(track, { x: -half, duration: 24, ease: 'none', repeat: -1 });
+      const tween = gsap.to(track, { x: -half, duration: 45, ease: 'none', repeat: -1 });
 
       ScrollTrigger.create({
         trigger: '.strip', start: 'top bottom', end: 'bottom top',

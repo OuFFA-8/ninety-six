@@ -1,6 +1,6 @@
 <canvas #starCanvas class="ct-stars"></canvas>
 
-<div #cursorEl  class="ct-cursor"></div>
+<div #cursorEl class="ct-cursor"></div>
 <div #cursorDot class="ct-cursor-dot"></div>
 <div #cursorLbl class="ct-cursor-label">Type</div>
 
@@ -13,12 +13,11 @@
 <div class="ct-glow" aria-hidden="true"></div>
 
 <main class="ct-contact">
-
   <!-- ── LEFT – INFO ── -->
   <div class="ct-info">
     <div class="ct-eyebrow">
       <span class="ct-eyebrow-dot"></span>
-      Contact · Let's talk
+      Contact · Start a project
     </div>
 
     <h1 class="ct-title">Got a target<br />in <em>mind</em>?</h1>
@@ -32,8 +31,16 @@
       <a href="mailto:hello&#64;ninetysix.studio" class="ct-row">
         <span class="ct-row-icon">
           <svg viewBox="0 0 16 16" fill="none">
-            <rect x="1.5" y="3" width="13" height="10" rx="1.5" stroke="currentColor" stroke-width="1.3"/>
-            <path d="M2 4L8 8.5L14 4" stroke="currentColor" stroke-width="1.3"/>
+            <rect
+              x="1.5"
+              y="3"
+              width="13"
+              height="10"
+              rx="1.5"
+              stroke="currentColor"
+              stroke-width="1.3"
+            />
+            <path d="M2 4L8 8.5L14 4" stroke="currentColor" stroke-width="1.3" />
           </svg>
         </span>
         <span class="ct-row-text">
@@ -45,8 +52,12 @@
       <a href="tel:+966110000000" class="ct-row">
         <span class="ct-row-icon">
           <svg viewBox="0 0 16 16" fill="none">
-            <path d="M3 2.5C3 2.5 5 2 5.5 3.5C6 5 6.5 6 5.5 7C7 9 9 11 11 12C12 11 13 11.5 14.5 12C16 12.5 13.5 14 13.5 14C9 14 2 7 2 2.5"
-                  stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/>
+            <path
+              d="M3 2.5C3 2.5 5 2 5.5 3.5C6 5 6.5 6 5.5 7C7 9 9 11 11 12C12 11 13 11.5 14.5 12C16 12.5 13.5 14 13.5 14C9 14 2 7 2 2.5"
+              stroke="currentColor"
+              stroke-width="1.3"
+              stroke-linejoin="round"
+            />
           </svg>
         </span>
         <span class="ct-row-text">
@@ -58,9 +69,12 @@
       <div class="ct-row">
         <span class="ct-row-icon">
           <svg viewBox="0 0 16 16" fill="none">
-            <path d="M8 1.5C5.5 1.5 3.5 3.5 3.5 6C3.5 9 8 14.5 8 14.5C8 14.5 12.5 9 12.5 6C12.5 3.5 10.5 1.5 8 1.5Z"
-                  stroke="currentColor" stroke-width="1.3"/>
-            <circle cx="8" cy="6" r="1.8" stroke="currentColor" stroke-width="1.3"/>
+            <path
+              d="M8 1.5C5.5 1.5 3.5 3.5 3.5 6C3.5 9 8 14.5 8 14.5C8 14.5 12.5 9 12.5 6C12.5 3.5 10.5 1.5 8 1.5Z"
+              stroke="currentColor"
+              stroke-width="1.3"
+            />
+            <circle cx="8" cy="6" r="1.8" stroke="currentColor" stroke-width="1.3" />
           </svg>
         </span>
         <span class="ct-row-text">
@@ -80,37 +94,49 @@
 
   <!-- ── RIGHT – FORM ── -->
   <div class="form-card">
-
     <div class="form-card__head">
       <h2 class="form-card__title">Start a <em>project</em></h2>
-      <span class="form-card__step"><strong>{{ stepDone }}</strong>/4 done</span>
+      <span class="form-card__step"
+        ><strong>{{ stepDone }}</strong
+        >/4 done</span
+      >
     </div>
 
     <form class="ct-form" (ngSubmit)="submitForm($event)" novalidate>
-
       <div class="ct-field field-name" [class.is-error]="nameErr">
         <label class="ct-label">Your name</label>
-        <input class="ct-input" type="text" name="name"
-               placeholder="e.g. Ahmed Khalil"
-               [(ngModel)]="formName"
-               (input)="clearError('name'); updateProgress()" />
+        <input
+          class="ct-input"
+          type="text"
+          name="name"
+          placeholder="e.g. Ahmed Khalil"
+          [(ngModel)]="formName"
+          (input)="clearError('name'); updateProgress()"
+        />
         <span class="ct-error">Please enter your name</span>
       </div>
 
       <div class="ct-field field-email" [class.is-error]="emailErr">
         <label class="ct-label">Email</label>
-        <input class="ct-input" type="email" name="email"
-               placeholder="you&#64;company.com"
-               [(ngModel)]="formEmail"
-               (input)="clearError('email'); updateProgress()" />
+        <input
+          class="ct-input"
+          type="email"
+          name="email"
+          placeholder="you&#64;company.com"
+          [(ngModel)]="formEmail"
+          (input)="clearError('email'); updateProgress()"
+        />
         <span class="ct-error">Enter a valid email</span>
       </div>
 
       <div class="ct-field field-service" [class.is-error]="serviceErr">
         <label class="ct-label">What do you need?</label>
-        <select class="ct-select" name="service"
-                [(ngModel)]="formService"
-                (change)="clearError('service'); updateProgress()">
+        <select
+          class="ct-select"
+          name="service"
+          [(ngModel)]="formService"
+          (change)="clearError('service'); updateProgress()"
+        >
           <option value="">Select a service</option>
           @for (svc of services; track svc) {
             <option [value]="svc">{{ svc }}</option>
@@ -123,10 +149,13 @@
         <label class="ct-label">Budget range</label>
         <div class="chips">
           @for (b of budgets; track b.val) {
-            <button type="button" class="chip"
-                    [attr.data-budget]="b.val"
-                    [class.is-active]="selectedBudget === b.val"
-                    (click)="selectBudget(b.val)">
+            <button
+              type="button"
+              class="chip"
+              [attr.data-budget]="b.val"
+              [class.is-active]="selectedBudget === b.val"
+              (click)="selectBudget(b.val)"
+            >
               {{ b.label }}
             </button>
           }
@@ -135,32 +164,54 @@
 
       <div class="ct-field field-message" [class.is-error]="messageErr">
         <label class="ct-label">Tell us about it</label>
-        <textarea class="ct-textarea" name="message" rows="5"
-                  placeholder="A few lines about your project, timeline, goals…"
-                  [(ngModel)]="formMessage"
-                  (input)="clearError('message'); updateProgress()"></textarea>
+        <textarea
+          class="ct-textarea"
+          name="message"
+          rows="5"
+          placeholder="A few lines about your project, timeline, goals…"
+          [(ngModel)]="formMessage"
+          (input)="clearError('message'); updateProgress()"
+        ></textarea>
         <span class="ct-error">A short brief helps us aim</span>
       </div>
 
       <button type="submit" class="form__submit">
         <span>Send the brief</span>
         <svg viewBox="0 0 24 24" fill="none">
-          <path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2.5"
-                stroke-linecap="round" stroke-linejoin="round"/>
+          <path
+            d="M5 12h14M13 6l6 6-6 6"
+            stroke="currentColor"
+            stroke-width="2.5"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
         </svg>
       </button>
-
     </form>
 
     <!-- SUCCESS overlay -->
     <div #successEl class="success" [class.is-shown]="showSuccess">
       <div class="success__ring">
         <svg viewBox="0 0 90 90" fill="none">
-          <circle cx="45" cy="45" r="42" stroke="rgba(196,155,255,.2)" stroke-width="2"/>
-          <circle #successCircle cx="45" cy="45" r="42" stroke="#8a4fff" stroke-width="2"
-                  stroke-linecap="round" transform="rotate(-90 45 45)"/>
-          <path #successCheck d="M28 46L40 58L62 34" stroke="#e0c4ff" stroke-width="3"
-                stroke-linecap="round" stroke-linejoin="round"/>
+          <circle cx="45" cy="45" r="42" stroke="rgba(196,155,255,.2)" stroke-width="2" />
+          <circle
+            #successCircle
+            cx="45"
+            cy="45"
+            r="42"
+            stroke="#8a4fff"
+            stroke-width="2"
+            stroke-linecap="round"
+            transform="rotate(-90 45 45)"
+          />
+          <path
+            #successCheck
+            d="M28 46L40 58L62 34"
+            stroke="#e0c4ff"
+            stroke-width="3"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
         </svg>
       </div>
       <h3 class="success__title">On <em>target</em>.</h3>
@@ -169,6 +220,5 @@
       </p>
       <button class="success__again" (click)="resetForm()">Send another</button>
     </div>
-
   </div>
 </main>

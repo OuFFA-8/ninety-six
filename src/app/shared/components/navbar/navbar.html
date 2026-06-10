@@ -1,6 +1,5 @@
 <nav #navbar class="navbar" [class.is-hidden]="isHidden">
   <div class="navbar__inner">
-
     <a routerLink="/" class="navbar__logo">
       <img src="/Logo.png" alt="Ninety Six" />
     </a>
@@ -22,8 +21,12 @@
       <div #dropdown class="navbar__dropdown" [class.is-open]="isMenuOpen">
         <ul class="navbar__nav">
           <li>
-            <a routerLink="/" routerLinkActive="active"
-               [routerLinkActiveOptions]="{ exact: true }" (click)="close()">
+            <a
+              routerLink="/"
+              routerLinkActive="active"
+              [routerLinkActiveOptions]="{ exact: true }"
+              (click)="close()"
+            >
               <span class="nav-num">01</span><span class="nav-label">Home</span>
             </a>
           </li>
@@ -35,10 +38,9 @@
         </ul>
 
         <a routerLink="/contact" class="navbar__cta-link" (click)="close()">
-          Let's Talk <span class="cta-arrow">→</span>
+          Start a project <span class="cta-arrow">→</span>
         </a>
       </div>
     </div>
-
   </div>
 </nav>
