@@ -42,6 +42,11 @@ const PROJECTS: Record<string, ProjectConfig> = {
     tag: 'Brand Identity · 2024',
     images: Array.from({ length: 17 }, (_, i) => `/BRADNING/ruh/New%20folder/${i + 1}.jpg`),
   },
+  nutriglow: {
+    title: 'NutriGlow .',
+    tag: 'Brand Identity · 2025',
+    images: ['/BRADNING/nutrigllow/Artboard%201-100%20(1).jpg'],
+  },
   'prince-festival': {
     title: 'Prince Abdul Aziz Festival .',
     tag: 'Brand Identity · 2025',
