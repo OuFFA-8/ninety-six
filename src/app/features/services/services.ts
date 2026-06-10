@@ -520,13 +520,13 @@ export class ServicesPage implements AfterViewInit, OnDestroy {
       'display:flex;align-items:center;justify-content:center;height:64px;padding:0 12px;background:#0a0517';
     const sepStyle = 'color:rgba(138,79,255,0.4);font-size:0.8rem;flex-shrink:0;margin:0 0.5rem';
     const html = [...repeated, ...repeated]
-      .map((src, i) => {
+      .map((src) => {
         const filter = lightOnTransparent.has(src) ? 'grayscale(1)' : 'invert(1) grayscale(1)';
         const { w, h } = getDisplaySize(src);
         const imgStyle = `width:${w}px;height:${h}px;object-fit:contain;object-position:center;display:block;opacity:0.7;filter:${filter};mix-blend-mode:screen`;
         return (
           `<div class="strip__item" style="${itemStyle}"><img src="${src}" alt="" style="${imgStyle}" /></div>` +
-          (i % 2 === 1 ? `<span style="${sepStyle}">✦</span>` : '')
+          `<span style="${sepStyle}">✦</span>`
         );
       })
       .join('');
