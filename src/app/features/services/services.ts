@@ -417,7 +417,7 @@ export class ServicesPage implements AfterViewInit, OnDestroy {
     };
     const TARGET_H = 46;
     const MAX_W    = 210;
-    const MIN_W    = 110;
+    const MIN_W    = 140;
     const getDisplaySize = (src: string) => {
       const d = naturalDims[src] ?? [140, 40];
       let w = (d[0] / d[1]) * TARGET_H;
