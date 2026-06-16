@@ -136,6 +136,7 @@
   font-size: clamp(3.5rem, 11vw, 12rem);
   line-height: .9;
   letter-spacing: -.05em;
+  text-transform: uppercase;
   color: #f5f1ff;
   margin-bottom: 2.5rem;
 
@@ -809,6 +810,7 @@
     font-size: clamp(1.8rem, 3vw, 2.6rem);
     line-height: 1.02;
     letter-spacing: -.02em;
+    text-transform: uppercase;
     color: #fff;
 
     em { font-style: italic; color: #e0c4ff; }
@@ -882,6 +884,7 @@
     font-size: clamp(2.5rem, 4.5vw, 4.5rem);
     line-height: .98;
     letter-spacing: -.035em;
+    text-transform: uppercase;
     color: #f5f1ff;
     margin-bottom: 1.8rem;
 
@@ -1130,6 +1133,7 @@
     font-size: clamp(3rem, 6vw, 6rem);
     line-height: 1;
     letter-spacing: -.04em;
+    text-transform: uppercase;
     color: #f5f1ff;
 
     em {
