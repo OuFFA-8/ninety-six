@@ -2,7 +2,9 @@
   "permissions": {
     "allow": [
       "Bash(npx ng *)",
-      "WebFetch(domain:drive.google.com)"
+      "WebFetch(domain:drive.google.com)",
+      "Bash(npm install *)",
+      "Bash(npx playwright *)"
     ]
   }
 }

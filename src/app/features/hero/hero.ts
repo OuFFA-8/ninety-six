@@ -31,14 +31,14 @@ export class Hero implements AfterViewInit, OnDestroy {
   private cycleTimer: ReturnType<typeof setInterval> | null = null;
   private wordIdx = 0;
   private readonly WORDS = [
-    'Chaos',
-    'Vision',
-    'Attention',
-    'Emotion',
-    'Memory',
-    'Culture',
-    'Courage',
-    'Momentum',
+    'Chaos .',
+    'Vision .',
+    'Attention .',
+    'Emotion .',
+    'Memory .',
+    'Culture .',
+    'Courage .',
+    'Momentum .',
   ];
 
   ngAfterViewInit(): void {
@@ -105,19 +105,25 @@ export class Hero implements AfterViewInit, OnDestroy {
     this.sts.push(st1);
 
     const anim = gsap.to(this.headline.nativeElement, {
-      opacity: 0, y: -40, ease: 'power2.in',
+      opacity: 0,
+      y: -40,
+      ease: 'power2.in',
       scrollTrigger: { trigger: section, start: 'top top', end: '+=20%', scrub: 0.6 },
     });
     if (anim.scrollTrigger) this.sts.push(anim.scrollTrigger);
 
     const anim2 = gsap.to('.hero__desc', {
-      opacity: 0, y: -20, ease: 'power2.in',
+      opacity: 0,
+      y: -20,
+      ease: 'power2.in',
       scrollTrigger: { trigger: section, start: 'top+=30% top', end: '+=15%', scrub: 0.6 },
     });
     if (anim2.scrollTrigger) this.sts.push(anim2.scrollTrigger);
 
     const anim3 = gsap.to('.hero__strip', {
-      opacity: 0, y: -20, ease: 'power2.in',
+      opacity: 0,
+      y: -20,
+      ease: 'power2.in',
       scrollTrigger: { trigger: section, start: 'top+=45% top', end: '+=12%', scrub: 0.6 },
     });
     if (anim3.scrollTrigger) this.sts.push(anim3.scrollTrigger);
