@@ -1,0 +1,87 @@
+@if (project) {
+  <div class="web-page">
+
+    <header class="web-header">
+      <a routerLink="/portfolio" class="web-back">
+        <svg viewBox="0 0 20 20" fill="none">
+          <path d="M12 4L6 10L12 16" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+        </svg>
+        Portfolio
+      </a>
+      <div class="web-info">
+        <span class="web-tag">{{ project.tag }}</span>
+        <h1 class="web-title"><span class="web-lw"><span class="web-ln">{{ project.title }}</span></span></h1>
+        <a [href]="project.liveUrl" target="_blank" rel="noopener" class="web-live">
+          <span class="web-live-label">Visit live site</span>
+          <span class="web-live-domain">{{ project.domain }}</span>
+          <svg viewBox="0 0 20 20" fill="none" class="web-live-icon">
+            <path d="M7 13L13 7M13 7H8M13 7V12" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </a>
+      </div>
+    </header>
+
+    <main class="web-stack">
+      @for (shot of project.desktopShots; track shot) {
+        <div class="browser-frame">
+          <div class="browser-frame__bar">
+            <div class="browser-frame__dots">
+              <span class="browser-frame__dot browser-frame__dot--red"></span>
+              <span class="browser-frame__dot browser-frame__dot--yellow"></span>
+              <span class="browser-frame__dot browser-frame__dot--green"></span>
+            </div>
+            <a [href]="project.liveUrl" target="_blank" rel="noopener" class="browser-frame__url">
+              <svg viewBox="0 0 16 16" fill="none" class="browser-frame__lock">
+                <rect x="3.5" y="7" width="9" height="6.5" rx="1.2" stroke="currentColor" stroke-width="1.2"/>
+                <path d="M5.5 7V5a2.5 2.5 0 0 1 5 0v2" stroke="currentColor" stroke-width="1.2"/>
+              </svg>
+              {{ project.domain }}
+            </a>
+          </div>
+          <img [src]="shot" [alt]="project.title" loading="lazy" class="browser-frame__img" />
+        </div>
+      }
+
+      @if (project.mobileShots.length) {
+        <div class="web-mobile">
+          <span class="web-mobile__label">Mobile</span>
+          <div class="web-mobile__row">
+            @for (shot of project.mobileShots; track shot) {
+              <div class="phone-frame">
+                <div class="phone-frame__notch"></div>
+                <img [src]="shot" [alt]="project.title + ' · mobile'" loading="lazy" class="phone-frame__img" />
+              </div>
+            }
+          </div>
+        </div>
+      }
+
+      <div class="web-live-preview">
+        <span class="web-live-preview__label">Live Preview — scroll it yourself</span>
+        <div class="browser-frame browser-frame--live">
+          <div class="browser-frame__bar">
+            <div class="browser-frame__dots">
+              <span class="browser-frame__dot browser-frame__dot--red"></span>
+              <span class="browser-frame__dot browser-frame__dot--yellow"></span>
+              <span class="browser-frame__dot browser-frame__dot--green"></span>
+            </div>
+            <a [href]="project.liveUrl" target="_blank" rel="noopener" class="browser-frame__url">
+              <svg viewBox="0 0 16 16" fill="none" class="browser-frame__lock">
+                <rect x="3.5" y="7" width="9" height="6.5" rx="1.2" stroke="currentColor" stroke-width="1.2"/>
+                <path d="M5.5 7V5a2.5 2.5 0 0 1 5 0v2" stroke="currentColor" stroke-width="1.2"/>
+              </svg>
+              {{ project.domain }}
+            </a>
+          </div>
+          <iframe
+            [src]="safeLiveUrl"
+            [title]="project.title + ' · live preview'"
+            loading="lazy"
+            class="browser-frame__iframe"
+          ></iframe>
+        </div>
+      </div>
+    </main>
+
+  </div>
+}

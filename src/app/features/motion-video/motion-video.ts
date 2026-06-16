@@ -11,28 +11,28 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 gsap.registerPlugin(ScrollTrigger);
 
 type Category = 'motion' | 'video';
-interface VideoItem { id: string; title: string; category: Category; }
+interface VideoItem { id: string; title: string; category: Category; cover: string; }
 
 const VIDEOS: VideoItem[] = [
   // ── Motion ──────────────────────────────────────────────
-  { id: '1-dHGGBddu6NQh-EgBdm6Vk6mYW4gV-bo', title: 'Bidksss',        category: 'motion' },
-  { id: '1jhTt5nCZiN11ltnhmydPN7IdXh8cOK5T',  title: 'STC',            category: 'motion' },
-  { id: '1BwwlScB6-kQz8TTqEUnztcauZwgbTgTt',  title: 'IELTS',          category: 'motion' },
-  { id: '1U33OzUJWzTGoyXSI5qswxj4od4R6K0Zs',  title: 'Al-Shamil',      category: 'motion' },
-  { id: '1sTLULKHx6FsAXr9Zzzwyr3oJhd8244qP',  title: 'Life Matters',   category: 'motion' },
-  { id: '1vzxy086wJurwZqMNCMSmPNnmwFsOduY0',   title: 'Ouch',           category: 'motion' },
-  { id: '1B_GsdINs2CDG0DTAtUAl6cPG08o1NaJv',  title: 'Tasheel',        category: 'motion' },
-  { id: '1pYfWdX18f_W6Uw0-9C7E6xir0_QxVSB0',  title: 'Matjar',         category: 'motion' },
-  { id: '1DkkP6sR2uNDHo9imYlFernBK-dZhfgoG',  title: 'Zakat Project',  category: 'motion' },
-  { id: '1HLkAh4jgBW-NNtXhCZbwhY4F2Ii9XkId',  title: 'Waqf Tomouh',   category: 'motion' },
+  { id: '1-dHGGBddu6NQh-EgBdm6Vk6mYW4gV-bo', title: 'Bidksss',        category: 'motion', cover: '/covers/motion/bidksss.png' },
+  { id: '1jhTt5nCZiN11ltnhmydPN7IdXh8cOK5T',  title: 'STC',            category: 'motion', cover: '/covers/motion/stc.png' },
+  { id: '1BwwlScB6-kQz8TTqEUnztcauZwgbTgTt',  title: 'IELTS',          category: 'motion', cover: '/covers/motion/ielts.png' },
+  { id: '1U33OzUJWzTGoyXSI5qswxj4od4R6K0Zs',  title: 'Al-Shamil',      category: 'motion', cover: '/covers/motion/al-shamil.png' },
+  { id: '1sTLULKHx6FsAXr9Zzzwyr3oJhd8244qP',  title: 'Life Matters',   category: 'motion', cover: '/covers/motion/life-matters.png' },
+  { id: '1vzxy086wJurwZqMNCMSmPNnmwFsOduY0',   title: 'Ouch',           category: 'motion', cover: '/covers/motion/ouch.png' },
+  { id: '1B_GsdINs2CDG0DTAtUAl6cPG08o1NaJv',  title: 'Tasheel',        category: 'motion', cover: '/covers/motion/tasheel.png' },
+  { id: '1pYfWdX18f_W6Uw0-9C7E6xir0_QxVSB0',  title: 'Matjar',         category: 'motion', cover: '/covers/motion/matjar.png' },
+  { id: '1DkkP6sR2uNDHo9imYlFernBK-dZhfgoG',  title: 'Zakat Project',  category: 'motion', cover: '/covers/motion/zakat-project.png' },
+  { id: '1HLkAh4jgBW-NNtXhCZbwhY4F2Ii9XkId',  title: 'Waqf Tomouh',   category: 'motion', cover: '/covers/motion/waqf-tomouh.png' },
   // ── Video ───────────────────────────────────────────────
-  { id: '13MfXEFwEipClaDVK26bwmo8A6VBmKEAr',  title: 'Do Good Vol. 1', category: 'video' },
-  { id: '1d6XXhxuPd9g-pp8-bIxADwQJns7tuJ8t',  title: 'Do Good Vol. 2', category: 'video' },
-  { id: '1_jAe7YdzuLEnLRAHwGpFzgen6wycGk4-',  title: 'First Day',      category: 'video' },
-  { id: '19fiPdowslzKbU8Kaa7z8R0HsBHIkiTIr',  title: 'Soon',           category: 'video' },
-  { id: '1tObr1RzgbJSPBj9q_Zyjpb5yFASOk1zt',  title: 'Saif Tamayoz',  category: 'video' },
-  { id: '1qN6C4V3dWVICs193ZvXiS-z6hqSrH5-A',  title: 'Wars',           category: 'video' },
-  { id: '1strJ7nNuroRg79ST983I2XWMfMOH74VH',   title: 'Orphan Day',     category: 'video' },
+  { id: '13MfXEFwEipClaDVK26bwmo8A6VBmKEAr',  title: 'Do Good Vol. 1', category: 'video', cover: '/covers/video/do-good-vol-1.png' },
+  { id: '1d6XXhxuPd9g-pp8-bIxADwQJns7tuJ8t',  title: 'Do Good Vol. 2', category: 'video', cover: '/covers/video/do-good-vol-2.png' },
+  { id: '1_jAe7YdzuLEnLRAHwGpFzgen6wycGk4-',  title: 'First Day',      category: 'video', cover: '/covers/video/first-day.png' },
+  { id: '19fiPdowslzKbU8Kaa7z8R0HsBHIkiTIr',  title: 'Soon',           category: 'video', cover: '/covers/video/soon.png' },
+  { id: '1tObr1RzgbJSPBj9q_Zyjpb5yFASOk1zt',  title: 'Saif Tamayoz',  category: 'video', cover: '/covers/video/saif-tamayoz.png' },
+  { id: '1qN6C4V3dWVICs193ZvXiS-z6hqSrH5-A',  title: 'Wars',           category: 'video', cover: '/covers/video/wars.png' },
+  { id: '1strJ7nNuroRg79ST983I2XWMfMOH74VH',   title: 'Orphan Day',     category: 'video', cover: '/covers/video/orphan-day.png' },
 ];
 
 @Component({
@@ -82,10 +82,6 @@ export class MotionVideoPage implements AfterViewInit, OnDestroy {
     return this.sanitizer.bypassSecurityTrustResourceUrl(
       `https://drive.google.com/file/d/${id}/preview`,
     );
-  }
-
-  thumbUrl(id: string): string {
-    return `https://drive.google.com/thumbnail?id=${id}&sz=w800`;
   }
 
   // ── Stars ─────────────────────────────────────────────────

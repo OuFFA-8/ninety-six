@@ -31,6 +31,10 @@ export const routes: Routes = [
         path: 'portfolio/motion&video',
         loadComponent: () => import('./features/motion-video/motion-video').then((m) => m.MotionVideoPage),
       },
+      {
+        path: 'portfolio/web/:slug',
+        loadComponent: () => import('./features/web/web').then((m) => m.WebProject),
+      },
     ],
   },
   {

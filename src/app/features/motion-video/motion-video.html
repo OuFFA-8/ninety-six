@@ -34,7 +34,7 @@
     @for (v of filtered(); track v.id) {
       <div class="mv-card" (click)="open(v.id)">
         <div class="mv-card__thumb">
-          <img [src]="thumbUrl(v.id)" [alt]="v.title" loading="lazy" />
+          <img [src]="v.cover" [alt]="v.title" loading="lazy" />
           <div class="mv-card__overlay">
             <div class="mv-card__play">
               <svg viewBox="0 0 24 24" fill="currentColor">

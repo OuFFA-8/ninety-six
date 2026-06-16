@@ -86,6 +86,13 @@
       >
         Motion
       </button>
+      <button
+        class="filter-btn"
+        [class.is-active]="activeFilter === 'web'"
+        (click)="setFilter('web')"
+      >
+        Web
+      </button>
     </div>
   </div>
 
@@ -171,7 +178,7 @@
     >
       <div class="work-item__media work-item__media--photo">
         <img
-          src="https://drive.google.com/thumbnail?id=1jhTt5nCZiN11ltnhmydPN7IdXh8cOK5T&sz=w800"
+          src="/covers/motion/stc.png"
           alt="STC"
           class="work-item__photo"
         />
@@ -477,7 +484,7 @@
     >
       <div class="work-item__media work-item__media--photo">
         <img
-          src="https://drive.google.com/thumbnail?id=1_jAe7YdzuLEnLRAHwGpFzgen6wycGk4-&sz=w800"
+          src="/covers/video/first-day.png"
           alt="First Day"
           class="work-item__photo"
         />
@@ -515,7 +522,7 @@
     >
       <div class="work-item__media work-item__media--photo">
         <img
-          src="https://drive.google.com/thumbnail?id=13MfXEFwEipClaDVK26bwmo8A6VBmKEAr&sz=w800"
+          src="/covers/video/do-good-vol-1.png"
           alt="Do Good"
           class="work-item__photo"
         />
@@ -723,6 +730,39 @@
           <div class="work-item__meta">
             <span class="work-item__meta-item"><strong>Year</strong> 2025</span>
             <span class="work-item__meta-item"><strong>Scope</strong> Brand</span>
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <!-- 19 Carpaccio — Web LG -->
+    <article
+      class="work-item work-item--lg"
+      data-cat="web"
+      style="--w-color: #1f1208; cursor: pointer"
+      routerLink="/portfolio/web/carpaccio"
+    >
+      <div class="work-item__media work-item__media--photo">
+        <img src="/website/carpaccio/home.jpg" alt="Carpaccio" class="work-item__photo" />
+      </div>
+      <div class="work-item__shade"></div>
+      <div class="work-item__view">
+        <svg viewBox="0 0 18 18" fill="none">
+          <path d="M3 15L15 3M15 3H6M15 3V12" stroke="currentColor" stroke-width="1.5" />
+        </svg>
+      </div>
+      <div class="work-item__content">
+        <div class="work-item__top">
+          <span class="work-item__tag">Web Design</span>
+          <span class="work-item__index">19</span>
+        </div>
+        <div class="work-item__bottom">
+          <div class="work-item__client">— Carpaccio</div>
+          <h3 class="work-item__title">A site as rich <em>as the menu</em></h3>
+          <p class="work-item__desc">Restaurant website design & development — home, menu, and mobile.</p>
+          <div class="work-item__meta">
+            <span class="work-item__meta-item"><strong>Year</strong> 2026</span>
+            <span class="work-item__meta-item"><strong>Scope</strong> Web</span>
           </div>
         </div>
       </div>

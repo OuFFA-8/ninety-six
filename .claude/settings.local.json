@@ -4,7 +4,13 @@
       "Bash(npx ng *)",
       "WebFetch(domain:drive.google.com)",
       "Bash(npm install *)",
-      "Bash(npx playwright *)"
+      "Bash(npx playwright *)",
+      "PowerShell(Get-ChildItem -Path \"$env:USERPROFILE\" -Directory | Select-Object Name)",
+      "Bash(curl -s http://localhost:4200/portfolio/web/carpaccio)",
+      "Bash(curl -s \"http://localhost:4200/@vite/client\" -o /dev/null -w \"%{http_code}\\\\n\")",
+      "Bash(node run.js \"/c/Users/yusef/AppData/Local/Temp/playwright-test-iframe2.js\")",
+      "Bash(node run.js \"/c/Users/yusef/AppData/Local/Temp/playwright-test-iframe3.js\")",
+      "Bash(node run.js \"/c/Users/yusef/AppData/Local/Temp/playwright-test-iframe4.js\")"
     ]
   }
 }
