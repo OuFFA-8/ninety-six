@@ -47,6 +47,11 @@ const PROJECTS: Record<string, ProjectConfig> = {
     tag: 'Brand Identity · 2025',
     images: ['/BRADNING/nutrigllow/Artboard%201-100%20(1).jpg'],
   },
+  'uboor-al-khaleej': {
+    title: 'Uboor Al-Khaleej .',
+    tag: 'Brand Identity · 2025',
+    images: Array.from({ length: 13 }, (_, i) => `/BRADNING/%D8%B9%D8%A8%D9%88%D8%B1%20%D8%A7%D9%84%D8%AE%D9%84%D9%8A%D8%AC/1x/${i + 1}.jpg`),
+  },
   'prince-festival': {
     title: 'Prince Abdul Aziz Festival .',
     tag: 'Brand Identity · 2025',
