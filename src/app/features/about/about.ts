@@ -32,11 +32,11 @@ export class AboutPage implements AfterViewInit, OnDestroy {
   private _starRaf = 0;
 
   readonly disciplines = [
-    { num: '01', name: 'Brand Identity', color: '#8a4fff' },
-    { num: '02', name: 'Social Media', color: '#00d4a8' },
-    { num: '03', name: 'Motion & Video', color: '#ff4757' },
-    { num: '04', name: 'Web Design', color: '#ff8c42' },
-    { num: '05', name: 'Print Design', color: '#4a9eff' },
+    { num: '01', name: 'Brand Identity',    color: '#8a4fff' },
+    { num: '02', name: 'Social Media',      color: '#00d4a8' },
+    { num: '03', name: 'Motion & Video',    color: '#ff4757' },
+    { num: '04', name: 'Web Design',        color: '#ff8c42' },
+    { num: '05', name: 'Print Design',      color: '#4a9eff' },
     { num: '06', name: 'Digital Marketing', color: '#e8b923' },
   ];
 
@@ -45,29 +45,6 @@ export class AboutPage implements AfterViewInit, OnDestroy {
     { num: '15+', label: 'Clients' },
     { num: '6',   label: 'Disciplines' },
     { num: '01',  label: 'Studio' },
-  ];
-
-  readonly process = [
-    {
-      num: '01',
-      title: 'Brief',
-      desc: 'We listen, define the target, and align on what success looks like before a single pixel moves.',
-    },
-    {
-      num: '02',
-      title: 'Strategy',
-      desc: 'We map the route — concept, positioning, tone — so every decision is grounded in intent.',
-    },
-    {
-      num: '03',
-      title: 'Craft',
-      desc: 'Design, motion, code. Precision at every layer. Nothing ships until it earns its place.',
-    },
-    {
-      num: '04',
-      title: 'Deliver',
-      desc: 'On time, on target. Then we measure, refine, and make it last.',
-    },
   ];
 
   ngAfterViewInit(): void {
@@ -169,90 +146,48 @@ export class AboutPage implements AfterViewInit, OnDestroy {
   }
 
   private initAnimations(): void {
-    // Hero entrance
+    // ── Hero entrance ──────────────────────────────────────
     const tl = gsap.timeline({ defaults: { ease: 'expo.out' } });
-    tl.from('.ab-hero__eyebrow', { opacity: 0, y: 20, duration: 0.8 }, 0.1);
-    tl.from('.ab-hero__ln', { yPercent: 115, duration: 1.2, stagger: 0.13 }, 0.25);
-    tl.from('.ab-hero__desc', { opacity: 0, y: 30, duration: 0.9 }, 0.75);
-    tl.from('.ab-hero__scroll', { opacity: 0, duration: 0.7 }, 1.1);
+    tl.from('.ab-hero__eyebrow', { opacity: 0, y: 16, duration: 0.8 }, 0.1);
+    tl.from('.ab-hero__ln',      { yPercent: 115, duration: 1.2, stagger: 0.13 }, 0.25);
+    tl.from('.ab-hero__desc',    { opacity: 0, y: 24, duration: 0.9 }, 0.75);
+    tl.from('.ab-hero__location',{ opacity: 0, y: 14, duration: 0.7 }, 0.88);
+    tl.from('.ab-hero__scroll',  { opacity: 0, duration: 0.7 }, 1.05);
+    tl.from('.ab-stat',          { opacity: 0, y: 28, duration: 0.7, stagger: 0.08 }, 0.5);
+    tl.from('.ab-hero__rule',    { scaleX: 0, transformOrigin: 'left', duration: 0.9 }, 0.7);
+    tl.from('.ab-disc__row',     { opacity: 0, x: -22, duration: 0.6, stagger: 0.06 }, 0.85);
 
+    // ── Scroll dot bounce ──────────────────────────────────
     gsap.fromTo(
       '.scroll-dot',
       { y: -8 },
       { y: 42, duration: 1.6, repeat: -1, ease: 'power1.inOut', repeatDelay: 0.2 },
     );
 
-    // Manifesto
+    // ── Manifesto lines ────────────────────────────────────
     gsap.from('.ab-mf__line', {
       yPercent: 110,
-      duration: 1.2,
-      stagger: 0.1,
+      duration: 1.3,
+      stagger: 0.12,
       ease: 'expo.out',
-      scrollTrigger: { trigger: '.ab-manifesto', start: 'top 78%' },
+      scrollTrigger: { trigger: '.ab-manifesto', start: 'top 75%' },
     });
 
-    // Story left text
-    gsap.from('.ab-story__eyebrow, .ab-story__heading, .ab-story__body, .ab-story__location', {
+    // ── Vertical rule reveal ───────────────────────────────
+    gsap.from('.ab-mf__rule', {
+      scaleY: 0,
+      transformOrigin: 'top',
+      duration: 0.9,
+      ease: 'expo.out',
+      scrollTrigger: { trigger: '.ab-mf__rule', start: 'top 85%' },
+    });
+
+    // ── CTA ────────────────────────────────────────────────
+    gsap.from('.ab-cta__title, .ab-cta__btn', {
       opacity: 0,
       y: 36,
       duration: 0.9,
-      stagger: 0.1,
-      ease: 'expo.out',
-      scrollTrigger: { trigger: '.ab-story', start: 'top 75%' },
-    });
-
-    // Stats
-    gsap.from('.ab-stat', {
-      opacity: 0,
-      y: 30,
-      duration: 0.8,
-      stagger: 0.1,
-      ease: 'expo.out',
-      scrollTrigger: { trigger: '.ab-stats', start: 'top 80%' },
-    });
-
-    // Disciplines
-    gsap.from('.ab-disc__header', {
-      opacity: 0,
-      y: 24,
-      duration: 0.8,
-      ease: 'expo.out',
-      scrollTrigger: { trigger: '.ab-disc', start: 'top 78%' },
-    });
-
-    gsap.from('.ab-disc__row', {
-      opacity: 0,
-      x: -28,
-      duration: 0.7,
-      stagger: 0.07,
-      ease: 'expo.out',
-      scrollTrigger: { trigger: '.ab-disc', start: 'top 72%' },
-    });
-
-    // Process
-    gsap.from('.ab-process__header', {
-      opacity: 0,
-      y: 24,
-      duration: 0.8,
-      ease: 'expo.out',
-      scrollTrigger: { trigger: '.ab-process', start: 'top 78%' },
-    });
-
-    gsap.from('.ab-step', {
-      opacity: 0,
-      y: 50,
-      duration: 0.9,
-      stagger: 0.12,
-      ease: 'expo.out',
-      scrollTrigger: { trigger: '.ab-process', start: 'top 72%' },
-    });
-
-    // CTA
-    gsap.from('.ab-cta__inner > *', {
-      opacity: 0,
-      y: 36,
-      duration: 0.9,
-      stagger: 0.12,
+      stagger: 0.14,
       ease: 'expo.out',
       scrollTrigger: { trigger: '.ab-cta', start: 'top 82%' },
     });
