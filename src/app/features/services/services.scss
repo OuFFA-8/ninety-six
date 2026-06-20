@@ -665,11 +665,12 @@
   }
 
   &__heading {
-    font-family: 'Space Grotesk', sans-serif;
+    font-family: 'Fraunces', serif;
     font-weight: 300;
     font-size: clamp(2rem, 4vw, 3.5rem);
     line-height: 1;
     letter-spacing: -.03em;
+    font-variant-caps: small-caps;
     color: #f5f1ff;
 
     em {
@@ -894,12 +895,12 @@
   }
 
   &__title {
-    font-family: 'Space Grotesk', sans-serif;
+    font-family: 'Fraunces', serif;
     font-weight: 300;
     font-size: clamp(2.5rem, 4.5vw, 4.5rem);
     line-height: .98;
     letter-spacing: -.035em;
-    text-transform: uppercase;
+    font-variant-caps: small-caps;
     color: #f5f1ff;
     margin-bottom: 1.8rem;
 

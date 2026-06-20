@@ -1,7 +1,7 @@
 $accent:  #8a4fff;
 $bg:      #06030c;
 $mono:    'JetBrains Mono', monospace;
-$display: 'Space Grotesk', sans-serif;
+$display: 'Fraunces', serif;
 
 :host {
   display: block;
@@ -155,7 +155,7 @@ $display: 'Space Grotesk', sans-serif;
   font-size: clamp(4rem, 9vw, 10rem);
   line-height: 0.92;
   letter-spacing: -0.04em;
-  text-transform: uppercase;
+  font-variant-caps: small-caps;
   color: #fff;
   margin: 0;
 
