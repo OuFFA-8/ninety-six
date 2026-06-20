@@ -40,9 +40,15 @@
               <span class="nav-num">03</span><span class="nav-label">About</span>
             </a>
           </li>
+          <li>
+            <a routerLink="/contact" routerLinkActive="active" (click)="close()">
+              <span class="nav-num">04</span><span class="nav-label">Contact</span>
+            </a>
+          </li>
         </ul>
 
-        <a routerLink="/contact" class="navbar__cta-link" (click)="close()">
+        <!-- TODO: replace 966500000000 with the real WhatsApp number -->
+        <a href="https://wa.me/966500000000" target="_blank" rel="noopener" class="navbar__cta-link" (click)="close()">
           Start a project <span class="cta-arrow">→</span>
         </a>
       </div>

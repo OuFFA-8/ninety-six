@@ -9,13 +9,14 @@ interface ProjectConfig {
   images: ImageItem[];
 }
 
-const F = '/BRADNING/%D9%85%D9%87%D8%B1%D8%AC%D8%A7%D9%86%20%D8%A7%D9%84%D8%A7%D9%85%D9%8A%D8%B1%20%D8%B9%D8%A8%D8%AF%20%D8%A7%D9%84%D8%B9%D8%B2%D9%8A%D8%B2';
+const F =
+  '/BRADNING/%D9%85%D9%87%D8%B1%D8%AC%D8%A7%D9%86%20%D8%A7%D9%84%D8%A7%D9%85%D9%8A%D8%B1%20%D8%B9%D8%A8%D8%AF%20%D8%A7%D9%84%D8%B9%D8%B2%D9%8A%D8%B2';
 
 const PROJECTS: Record<string, ProjectConfig> = {
   '310': {
     title: '310 .',
     tag: 'Brand Identity · 2024',
-    images: [1,2,3,5,6,7,8,9,10,11,12,13].map(n => `/BRADNING/310/1x/${n}.jpg`),
+    images: [1, 2, 3, 5, 6, 7, 8, 9, 10, 11, 12, 13].map((n) => `/BRADNING/310/1x/${n}.jpg`),
   },
   dot: {
     title: 'DOT .',
@@ -43,14 +44,21 @@ const PROJECTS: Record<string, ProjectConfig> = {
     images: Array.from({ length: 17 }, (_, i) => `/BRADNING/ruh/New%20folder/${i + 1}.jpg`),
   },
   nutriglow: {
-    title: 'NutriGlow .',
+    title: 'NutriGlow. ',
     tag: 'Brand Identity · 2025',
-    images: ['/BRADNING/nutrigllow/Artboard%201-100%20(1).jpg'],
+    images: [
+      '/BRADNING/nutrigllow/Artboard%201-100.jpg',
+      '/BRADNING/nutrigllow/Artboard%202-100.jpg',
+    ],
   },
   'uboor-al-khaleej': {
     title: 'Uboor Al-Khaleej .',
     tag: 'Brand Identity · 2025',
-    images: Array.from({ length: 13 }, (_, i) => `/BRADNING/%D8%B9%D8%A8%D9%88%D8%B1%20%D8%A7%D9%84%D8%AE%D9%84%D9%8A%D8%AC/1x/${i + 1}.jpg`),
+    images: Array.from(
+      { length: 13 },
+      (_, i) =>
+        `/BRADNING/%D8%B9%D8%A8%D9%88%D8%B1%20%D8%A7%D9%84%D8%AE%D9%84%D9%8A%D8%AC/1x/${i + 1}.jpg`,
+    ),
   },
   'prince-festival': {
     title: 'Prince Abdul Aziz Festival .',
