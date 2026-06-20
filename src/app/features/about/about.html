@@ -1,0 +1,176 @@
+<!-- Stars -->
+<canvas #starCanvas class="ab-stars"></canvas>
+
+<!-- Cursor -->
+<div #cursor class="ab-cursor"></div>
+<div #cursorDot class="ab-cursor-dot"></div>
+
+<!-- Arcs -->
+<div class="ab-arcs" aria-hidden="true">
+  <div class="ab-arc"></div>
+  <div class="ab-arc"></div>
+  <div class="ab-arc"></div>
+  <div class="ab-arc"></div>
+</div>
+<div class="ab-glow" aria-hidden="true"></div>
+
+<!-- ══════════════════════════════════════════
+     01  HERO
+══════════════════════════════════════════ -->
+<section class="ab-hero">
+  <div class="ab-hero__inner">
+    <div class="ab-hero__eyebrow">
+      <span class="ab-eyebrow-dot"></span>
+      About · Ninety Six Studio
+    </div>
+
+    <h1 class="ab-hero__title">
+      <span class="ab-hero__lw"><span class="ab-hero__ln">We don't</span></span>
+      <span class="ab-hero__lw"><span class="ab-hero__ln">miss our <em>shots</em>.</span></span>
+    </h1>
+
+    <p class="ab-hero__desc">
+      A creative studio built on precision — from identity systems to digital
+      experiences, we craft work that <em>lands where it counts</em>.
+    </p>
+  </div>
+
+  <div class="ab-hero__scroll">
+    <span class="ab-hero__scroll-text">Scroll to explore</span>
+    <div class="ab-hero__scroll-line">
+      <div class="scroll-dot"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════
+     02  MANIFESTO
+══════════════════════════════════════════ -->
+<section class="ab-manifesto">
+  <div class="ab-manifesto__inner">
+    <p class="ab-manifesto__text">
+      <span class="ab-mf__lw"><span class="ab-mf__line">Every brief is a target.</span></span>
+      <span class="ab-mf__lw"><span class="ab-mf__line">Every pixel, a decision.</span></span>
+      <span class="ab-mf__lw"><span class="ab-mf__line ab-mf__line--dim">Nothing left to chance.</span></span>
+    </p>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════
+     03  STORY + STATS
+══════════════════════════════════════════ -->
+<section class="ab-story">
+  <div class="ab-story__inner">
+    <div class="ab-story__left">
+      <div class="ab-story__eyebrow">
+        <span class="ab-eyebrow-dot"></span>
+        Studio · Est. 2024
+      </div>
+      <h2 class="ab-story__heading">Built to<br /><em>perform</em>.</h2>
+      <p class="ab-story__body">
+        Ninety Six Studio is a full-service creative agency working with
+        ambitious brands across the Gulf and beyond. We handle everything —
+        from ground-up brand identity to motion campaigns and live web
+        experiences — under one roof.
+      </p>
+      <p class="ab-story__body">
+        Our name comes from the idea of giving your full capacity to every
+        project. Not ninety percent. Not ninety-nine. Ninety-six — the
+        relentless pursuit of precision without losing the instinct that makes
+        work feel alive.
+      </p>
+      <div class="ab-story__location">
+        <svg viewBox="0 0 16 16" fill="none" class="ab-story__loc-icon">
+          <path d="M8 1.5C5.5 1.5 3.5 3.5 3.5 6C3.5 9 8 14.5 8 14.5C8 14.5 12.5 9 12.5 6C12.5 3.5 10.5 1.5 8 1.5Z" stroke="currentColor" stroke-width="1.3"/>
+          <circle cx="8" cy="6" r="1.8" stroke="currentColor" stroke-width="1.3"/>
+        </svg>
+        Istanbul, Turkey
+      </div>
+    </div>
+
+    <div class="ab-story__right">
+      <div class="ab-stats">
+        @for (stat of stats; track stat.label) {
+          <div class="ab-stat">
+            <span class="ab-stat__num">{{ stat.num }}</span>
+            <span class="ab-stat__label">{{ stat.label }}</span>
+          </div>
+        }
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════
+     04  DISCIPLINES
+══════════════════════════════════════════ -->
+<section class="ab-disc">
+  <div class="ab-disc__inner">
+    <div class="ab-disc__header">
+      <div class="ab-disc__eyebrow">
+        <span class="ab-eyebrow-dot"></span>
+        What we do
+      </div>
+      <a routerLink="/portfolio" class="ab-disc__all">
+        View work
+        <svg viewBox="0 0 18 18" fill="none">
+          <path d="M3 15L15 3M15 3H6M15 3V12" stroke="currentColor" stroke-width="1.5"/>
+        </svg>
+      </a>
+    </div>
+
+    <div class="ab-disc__list">
+      @for (d of disciplines; track d.num) {
+        <div class="ab-disc__row" [style.--disc-color]="d.color">
+          <span class="ab-disc__num">{{ d.num }}</span>
+          <span class="ab-disc__name">{{ d.name }}</span>
+          <span class="ab-disc__dot"></span>
+        </div>
+      }
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════
+     05  PROCESS
+══════════════════════════════════════════ -->
+<section class="ab-process">
+  <div class="ab-process__inner">
+    <div class="ab-process__header">
+      <div class="ab-disc__eyebrow">
+        <span class="ab-eyebrow-dot"></span>
+        How we work
+      </div>
+      <h2 class="ab-process__heading">Four steps.<br /><em>No detours.</em></h2>
+    </div>
+
+    <div class="ab-process__grid">
+      @for (step of process; track step.num) {
+        <div class="ab-step">
+          <span class="ab-step__num">{{ step.num }}</span>
+          <h3 class="ab-step__title">{{ step.title }}</h3>
+          <p class="ab-step__desc">{{ step.desc }}</p>
+        </div>
+      }
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════
+     06  CTA
+══════════════════════════════════════════ -->
+<section class="ab-cta">
+  <div class="ab-cta__glow"></div>
+  <div class="ab-cta__inner">
+    <h2 class="ab-cta__title">Got a target<br />in <em>mind</em>?</h2>
+    <p class="ab-cta__desc">
+      Tell us about your project and let's build something remarkable.
+    </p>
+    <a routerLink="/contact" class="ab-cta__btn">
+      <span>Start a Project</span>
+      <svg viewBox="0 0 24 24" fill="none">
+        <path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </a>
+  </div>
+</section>
