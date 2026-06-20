@@ -70,28 +70,21 @@
         [class.is-active]="activeFilter === 'brand'"
         (click)="setFilter('brand')"
       >
-        Brand
+        Branding
       </button>
       <button
         class="filter-btn"
         [class.is-active]="activeFilter === 'social'"
         (click)="setFilter('social')"
       >
-        Social
+        Social Media
       </button>
       <button
         class="filter-btn"
         [class.is-active]="activeFilter === 'motion'"
         (click)="setFilter('motion')"
       >
-        Motion
-      </button>
-      <button
-        class="filter-btn"
-        [class.is-active]="activeFilter === 'web'"
-        (click)="setFilter('web')"
-      >
-        Web
+        Motion & Video
       </button>
     </div>
   </div>
@@ -768,38 +761,6 @@
       </div>
     </article>
 
-    <!-- 20 Carpaccio — Web LG -->
-    <article
-      class="work-item work-item--lg"
-      data-cat="web"
-      style="--w-color: #1f1208; cursor: pointer"
-      routerLink="/portfolio/web/carpaccio"
-    >
-      <div class="work-item__media work-item__media--photo">
-        <img src="/website/carpaccio/home.jpg" alt="Carpaccio" class="work-item__photo" />
-      </div>
-      <div class="work-item__shade"></div>
-      <div class="work-item__view">
-        <svg viewBox="0 0 18 18" fill="none">
-          <path d="M3 15L15 3M15 3H6M15 3V12" stroke="currentColor" stroke-width="1.5" />
-        </svg>
-      </div>
-      <div class="work-item__content">
-        <div class="work-item__top">
-          <span class="work-item__tag">Web Design</span>
-          <span class="work-item__index">20</span>
-        </div>
-        <div class="work-item__bottom">
-          <div class="work-item__client">— Carpaccio</div>
-          <h3 class="work-item__title">A site as rich <em>as the menu</em></h3>
-          <p class="work-item__desc">Restaurant website design & development — home, menu, and mobile.</p>
-          <div class="work-item__meta">
-            <span class="work-item__meta-item"><strong>Year</strong> 2026</span>
-            <span class="work-item__meta-item"><strong>Scope</strong> Web</span>
-          </div>
-        </div>
-      </div>
-    </article>
   </div>
 
   <!-- All tab: Load More -->
@@ -850,117 +811,56 @@
     </div>
 
     <div class="showcase__track" id="showcaseTrack">
-      <!-- Browser / Web card -->
-      <div class="showcase__card showcase__card--browser" style="--sc-color: #0d1a33">
-        <div class="showcase__card-media"></div>
-        <div class="showcase__card-deco" data-sc-deco>
-          <svg viewBox="0 0 560 360" fill="none">
-            <!-- browser chrome -->
-            <rect
-              x="20"
-              y="20"
-              width="520"
-              height="320"
-              rx="12"
-              stroke="rgba(255,255,255,.18)"
-              stroke-width="1.5"
-            />
-            <rect x="20" y="20" width="520" height="44" rx="12" fill="rgba(255,255,255,.06)" />
-            <rect x="20" y="52" width="520" height="12" fill="rgba(255,255,255,.06)" />
-            <circle cx="44" cy="42" r="5" fill="rgba(255,80,80,.5)" />
-            <circle cx="62" cy="42" r="5" fill="rgba(255,180,0,.5)" />
-            <circle cx="80" cy="42" r="5" fill="rgba(80,200,80,.5)" />
-            <rect x="110" y="33" width="260" height="18" rx="9" fill="rgba(255,255,255,.08)" />
-            <!-- page skeleton -->
-            <rect x="40" y="82" width="480" height="120" rx="8" fill="rgba(255,255,255,.05)" />
-            <rect x="40" y="216" width="220" height="14" rx="4" fill="rgba(255,255,255,.1)" />
-            <rect x="40" y="238" width="160" height="10" rx="4" fill="rgba(255,255,255,.06)" />
-            <rect x="280" y="216" width="240" height="90" rx="8" fill="rgba(255,255,255,.05)" />
-          </svg>
+      <!-- Carpaccio -->
+      <div class="showcase__card showcase__card--browser" style="--sc-color: #1f1208; cursor: pointer" routerLink="/portfolio/web/carpaccio">
+        <div class="showcase__card-media">
+          <img src="/Websites/كارباتشيو.jpg" alt="Carpaccio" class="showcase__card-mockup" />
         </div>
         <div class="showcase__card-shade"></div>
         <div class="showcase__card-content">
           <span class="showcase__card-num">01</span>
           <div class="showcase__card-info">
-            <div class="showcase__card-cat">Web Design · Coming soon</div>
-            <h3 class="showcase__card-title">Next project,<br /><em>in progress</em></h3>
+            <div class="showcase__card-cat">Web Design & Development · 2026</div>
+            <h3 class="showcase__card-title">
+              <span class="sc-lw"><span class="sc-ln">Carpaccio,</span></span>
+              <span class="sc-lw"><span class="sc-ln"><em>taste it live</em></span></span>
+            </h3>
           </div>
         </div>
       </div>
 
-      <!-- Mobile app card -->
-      <div class="showcase__card showcase__card--mobile" style="--sc-color: #1a0d33">
-        <div class="showcase__card-media"></div>
-        <div class="showcase__card-deco" data-sc-deco>
-          <svg viewBox="0 0 260 480" fill="none">
-            <!-- phone frame -->
-            <rect
-              x="30"
-              y="10"
-              width="200"
-              height="460"
-              rx="32"
-              stroke="rgba(255,255,255,.2)"
-              stroke-width="2"
-            />
-            <rect x="38" y="18" width="184" height="444" rx="26" fill="rgba(255,255,255,.04)" />
-            <!-- notch -->
-            <rect x="90" y="18" width="80" height="22" rx="11" fill="rgba(0,0,0,.5)" />
-            <!-- screen content skeleton -->
-            <rect x="54" y="60" width="152" height="80" rx="10" fill="rgba(255,255,255,.07)" />
-            <rect x="54" y="152" width="70" height="10" rx="4" fill="rgba(255,255,255,.12)" />
-            <rect x="54" y="170" width="50" height="8" rx="4" fill="rgba(255,255,255,.07)" />
-            <rect x="54" y="192" width="152" height="60" rx="8" fill="rgba(255,255,255,.06)" />
-            <rect x="54" y="264" width="152" height="60" rx="8" fill="rgba(255,255,255,.06)" />
-            <!-- home bar -->
-            <rect x="100" y="442" width="60" height="5" rx="2.5" fill="rgba(255,255,255,.25)" />
-          </svg>
+      <!-- Gulf Transit -->
+      <div class="showcase__card showcase__card--browser" style="--sc-color: #0a1e2e; cursor: pointer" routerLink="/portfolio/web/gulftransit">
+        <div class="showcase__card-media">
+          <img src="/Websites/عبور الخليج.jpg" alt="Gulf Transit" class="showcase__card-mockup" />
         </div>
         <div class="showcase__card-shade"></div>
         <div class="showcase__card-content">
           <span class="showcase__card-num">02</span>
           <div class="showcase__card-info">
-            <div class="showcase__card-cat">Mobile App · Coming soon</div>
-            <h3 class="showcase__card-title">App design,<br /><em>landing soon</em></h3>
+            <div class="showcase__card-cat">Web Design & Development · 2026</div>
+            <h3 class="showcase__card-title">
+              <span class="sc-lw"><span class="sc-ln">Gulf Transit,</span></span>
+              <span class="sc-lw"><span class="sc-ln"><em>crossing borders</em></span></span>
+            </h3>
           </div>
         </div>
       </div>
 
-      <!-- Dashboard / Web app card -->
-      <div class="showcase__card showcase__card--browser" style="--sc-color: #0a1a0d">
-        <div class="showcase__card-media"></div>
-        <div class="showcase__card-deco" data-sc-deco>
-          <svg viewBox="0 0 560 360" fill="none">
-            <rect
-              x="20"
-              y="20"
-              width="520"
-              height="320"
-              rx="12"
-              stroke="rgba(255,255,255,.18)"
-              stroke-width="1.5"
-            />
-            <!-- sidebar -->
-            <rect x="20" y="20" width="120" height="320" rx="12" fill="rgba(255,255,255,.05)" />
-            <rect x="36" y="48" width="88" height="10" rx="4" fill="rgba(255,255,255,.15)" />
-            <rect x="36" y="72" width="70" height="8" rx="4" fill="rgba(255,255,255,.08)" />
-            <rect x="36" y="90" width="80" height="8" rx="4" fill="rgba(255,255,255,.08)" />
-            <rect x="36" y="108" width="60" height="8" rx="4" fill="rgba(255,255,255,.08)" />
-            <!-- main content -->
-            <rect x="156" y="36" width="110" height="60" rx="8" fill="rgba(255,255,255,.07)" />
-            <rect x="278" y="36" width="110" height="60" rx="8" fill="rgba(255,255,255,.07)" />
-            <rect x="400" y="36" width="120" height="60" rx="8" fill="rgba(255,255,255,.07)" />
-            <rect x="156" y="112" width="364" height="140" rx="8" fill="rgba(255,255,255,.05)" />
-            <rect x="156" y="264" width="174" height="60" rx="8" fill="rgba(255,255,255,.05)" />
-            <rect x="346" y="264" width="174" height="60" rx="8" fill="rgba(255,255,255,.05)" />
-          </svg>
+      <!-- Sea Rebbel -->
+      <div class="showcase__card showcase__card--browser" style="--sc-color: #0d1a33; cursor: pointer" routerLink="/portfolio/web/searebbel">
+        <div class="showcase__card-media">
+          <img src="/Websites/searebbel.png" alt="Sea Rebbel" class="showcase__card-mockup" />
         </div>
         <div class="showcase__card-shade"></div>
         <div class="showcase__card-content">
           <span class="showcase__card-num">03</span>
           <div class="showcase__card-info">
-            <div class="showcase__card-cat">Web App · Coming soon</div>
-            <h3 class="showcase__card-title">Dashboard,<br /><em>in the works</em></h3>
+            <div class="showcase__card-cat">Web Design & Development · 2026</div>
+            <h3 class="showcase__card-title">
+              <span class="sc-lw"><span class="sc-ln">Sea Rebbel,</span></span>
+              <span class="sc-lw"><span class="sc-ln"><em>built for the wild</em></span></span>
+            </h3>
           </div>
         </div>
       </div>

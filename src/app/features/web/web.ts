@@ -12,11 +12,25 @@ interface ProjectConfig {
 
 const PROJECTS: Record<string, ProjectConfig> = {
   carpaccio: {
-    title: 'Carpaccio .',
+    title: 'Carpaccio.',
     tag: 'Web Design & Development · 2026',
     liveUrl: 'https://carpaccio-restaurant.vercel.app/home',
     domain: 'carpaccio-restaurant.vercel.app',
     mockupImage: '/Websites/كارباتشيو.jpg',
+  },
+  gulftransit: {
+    title: 'Gulf Transit .',
+    tag: 'Web Design & Development · 2026',
+    liveUrl: 'https://gulftransiit.com/',
+    domain: 'gulftransiit.com',
+    mockupImage: '/Websites/عبور الخليج.jpg',
+  },
+  searebbel: {
+    title: 'Sea Rebbel .',
+    tag: 'Web Design & Development · 2026',
+    liveUrl: 'https://www.searebbel.com/',
+    domain: 'searebbel.com',
+    mockupImage: '/Websites/searebbel.png',
   },
 };
 

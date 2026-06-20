@@ -371,6 +371,27 @@ export class ServicesPage implements AfterViewInit, OnDestroy {
           },
         },
       );
+
+      // Text reveal
+      const num = card.querySelector<HTMLElement>('.showcase__card-num');
+      const cat = card.querySelector<HTMLElement>('.showcase__card-cat');
+      const lines = card.querySelectorAll<HTMLElement>('.sc-ln');
+
+      gsap.set(num, { opacity: 0, x: -16 });
+      gsap.set(cat, { opacity: 0, y: 10 });
+      gsap.set(lines, { yPercent: 110 });
+
+      ScrollTrigger.create({
+        trigger: card,
+        containerAnimation: scrollTween,
+        start: 'left 60%',
+        once: true,
+        onEnter: () => {
+          gsap.to(num, { opacity: 1, x: 0, duration: 0.7, ease: 'expo.out' });
+          gsap.to(cat, { opacity: 1, y: 0, duration: 0.7, delay: 0.12, ease: 'expo.out' });
+          gsap.to(lines, { yPercent: 0, duration: 1, delay: 0.2, stagger: 0.12, ease: 'expo.out' });
+        },
+      });
     });
   }
 
@@ -409,7 +430,7 @@ export class ServicesPage implements AfterViewInit, OnDestroy {
       },
     });
 
-    slides.forEach((s, i) => {
+    slides.forEach((_s, i) => {
       if (i === 0) return;
       tl.to(
         slides[i],
