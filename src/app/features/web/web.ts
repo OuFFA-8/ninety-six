@@ -7,8 +7,7 @@ interface ProjectConfig {
   tag: string;
   liveUrl: string;
   domain: string;
-  desktopShots: string[];
-  mobileShots: string[];
+  mockupImage: string;
 }
 
 const PROJECTS: Record<string, ProjectConfig> = {
@@ -17,12 +16,7 @@ const PROJECTS: Record<string, ProjectConfig> = {
     tag: 'Web Design & Development · 2026',
     liveUrl: 'https://carpaccio-restaurant.vercel.app/home',
     domain: 'carpaccio-restaurant.vercel.app',
-    desktopShots: [
-      '/website/carpaccio/home.jpg',
-      '/website/carpaccio/menu.jpg',
-      '/website/carpaccio/menu-detail.jpg',
-    ],
-    mobileShots: ['/website/carpaccio/mobile-home.jpg'],
+    mockupImage: '/Websites/كارباتشيو.jpg',
   },
 };
 

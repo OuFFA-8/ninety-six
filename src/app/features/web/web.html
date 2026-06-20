@@ -22,42 +22,15 @@
     </header>
 
     <main class="web-stack">
-      @for (shot of project.desktopShots; track shot) {
-        <div class="browser-frame">
-          <div class="browser-frame__bar">
-            <div class="browser-frame__dots">
-              <span class="browser-frame__dot browser-frame__dot--red"></span>
-              <span class="browser-frame__dot browser-frame__dot--yellow"></span>
-              <span class="browser-frame__dot browser-frame__dot--green"></span>
-            </div>
-            <a [href]="project.liveUrl" target="_blank" rel="noopener" class="browser-frame__url">
-              <svg viewBox="0 0 16 16" fill="none" class="browser-frame__lock">
-                <rect x="3.5" y="7" width="9" height="6.5" rx="1.2" stroke="currentColor" stroke-width="1.2"/>
-                <path d="M5.5 7V5a2.5 2.5 0 0 1 5 0v2" stroke="currentColor" stroke-width="1.2"/>
-              </svg>
-              {{ project.domain }}
-            </a>
-          </div>
-          <img [src]="shot" [alt]="project.title" loading="lazy" class="browser-frame__img" />
-        </div>
-      }
 
-      @if (project.mobileShots.length) {
-        <div class="web-mobile">
-          <span class="web-mobile__label">Mobile</span>
-          <div class="web-mobile__row">
-            @for (shot of project.mobileShots; track shot) {
-              <div class="phone-frame">
-                <div class="phone-frame__notch"></div>
-                <img [src]="shot" [alt]="project.title + ' · mobile'" loading="lazy" class="phone-frame__img" />
-              </div>
-            }
-          </div>
-        </div>
-      }
+      <!-- Wide mockup banner -->
+      <div class="web-mockup">
+        <img [src]="project.mockupImage" [alt]="project.title + ' mockup'" loading="lazy" class="web-mockup__img" />
+      </div>
 
-      <div class="web-live-preview">
-        <span class="web-live-preview__label">Live Preview — scroll it yourself</span>
+      <!-- Desktop live iframe -->
+      <div class="web-section">
+        <span class="web-section__label">Live Preview — scroll it yourself</span>
         <div class="browser-frame browser-frame--live">
           <div class="browser-frame__bar">
             <div class="browser-frame__dots">
@@ -81,6 +54,24 @@
           ></iframe>
         </div>
       </div>
+
+      <!-- Mobile live iframe -->
+      <div class="web-section">
+        <span class="web-section__label">Mobile</span>
+        <div class="phone-frame">
+          <div class="phone-frame__notch"></div>
+          <div class="phone-frame__screen">
+            <iframe
+              [src]="safeLiveUrl"
+              [title]="project.title + ' · mobile preview'"
+              loading="lazy"
+              class="phone-frame__iframe"
+            ></iframe>
+          </div>
+          <div class="phone-frame__home"></div>
+        </div>
+      </div>
+
     </main>
 
   </div>

@@ -10,7 +10,9 @@
       "Bash(curl -s \"http://localhost:4200/@vite/client\" -o /dev/null -w \"%{http_code}\\\\n\")",
       "Bash(node run.js \"/c/Users/yusef/AppData/Local/Temp/playwright-test-iframe2.js\")",
       "Bash(node run.js \"/c/Users/yusef/AppData/Local/Temp/playwright-test-iframe3.js\")",
-      "Bash(node run.js \"/c/Users/yusef/AppData/Local/Temp/playwright-test-iframe4.js\")"
+      "Bash(node run.js \"/c/Users/yusef/AppData/Local/Temp/playwright-test-iframe4.js\")",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\" http://localhost:4200/)",
+      "Bash(npx --yes playwright@latest screenshot --browser chromium \"http://localhost:4200/web/carpaccio\" /tmp/web-carpaccio.png)"
     ]
   }
 }
