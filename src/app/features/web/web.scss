@@ -17,7 +17,7 @@ $accent: #8a4fff;
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
-  font-family: 'JetBrains Mono', monospace;
+  font-family: 'Quicksand', sans-serif;
   font-size: 0.65rem;
   font-weight: 600;
   letter-spacing: 0.2em;
@@ -36,7 +36,7 @@ $accent: #8a4fff;
 }
 
 .web-tag {
-  font-family: 'JetBrains Mono', monospace;
+  font-family: 'Quicksand', sans-serif;
   font-size: 0.62rem;
   font-weight: 600;
   letter-spacing: 0.3em;
@@ -54,12 +54,11 @@ $accent: #8a4fff;
 .web-ln { display: block; }
 
 .web-title {
-  font-family: 'Fraunces', serif;
+  font-family: 'Space Mono', monospace;
   font-weight: 700;
   font-size: clamp(3.5rem, 7vw, 7.5rem);
   line-height: 0.95;
   letter-spacing: -0.035em;
-  font-variant-caps: small-caps;
   color: #fff;
   margin: 0 0 1.8rem;
 }
@@ -83,7 +82,7 @@ $accent: #8a4fff;
 }
 
 .web-live-label {
-  font-family: 'JetBrains Mono', monospace;
+  font-family: 'Quicksand', sans-serif;
   font-size: 0.62rem;
   font-weight: 600;
   letter-spacing: 0.15em;
@@ -92,7 +91,7 @@ $accent: #8a4fff;
 }
 
 .web-live-domain {
-  font-family: 'Fraunces', serif;
+  font-family: 'Space Mono', monospace;
   font-size: 0.92rem;
   font-weight: 600;
   color: #fff;
@@ -141,7 +140,7 @@ $accent: #8a4fff;
 }
 
 .web-section__label {
-  font-family: 'JetBrains Mono', monospace;
+  font-family: 'Quicksand', sans-serif;
   font-size: 0.62rem;
   font-weight: 600;
   letter-spacing: 0.3em;
@@ -197,7 +196,7 @@ $accent: #8a4fff;
   padding: 0.4rem 1rem;
   border-radius: 50px;
   background: rgba(255, 255, 255, 0.05);
-  font-family: 'JetBrains Mono', monospace;
+  font-family: 'Quicksand', sans-serif;
   font-size: 0.7rem;
   color: rgba(245, 241, 255, 0.65);
   text-decoration: none;

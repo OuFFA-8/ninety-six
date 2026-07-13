@@ -1,7 +1,7 @@
 $accent:  #8a4fff;
 $bg:      #06030c;
-$mono:    'JetBrains Mono', monospace;
-$display: 'Fraunces', serif;
+$mono:    'Quicksand', sans-serif;
+$display: 'Space Mono', monospace;
 
 :host {
   display: block;
@@ -155,7 +155,6 @@ $display: 'Fraunces', serif;
   font-size: clamp(4rem, 9vw, 10rem);
   line-height: 0.92;
   letter-spacing: -0.04em;
-  font-variant-caps: small-caps;
   color: #fff;
   margin: 0;
 
@@ -274,6 +273,7 @@ $display: 'Fraunces', serif;
   font-weight: 700;
   font-size: clamp(2.2rem, 4vw, 3.8rem);
   letter-spacing: -0.04em;
+  word-spacing: -0.3em;
   line-height: 1;
   color: #fff;
 }

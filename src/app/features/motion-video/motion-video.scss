@@ -18,7 +18,7 @@ $accent: #8a4fff;
 
 .mv-back {
   display: inline-flex; align-items: center; gap: 0.5rem;
-  font-family: 'JetBrains Mono', monospace; font-size: 0.65rem;
+  font-family: 'Quicksand', sans-serif; font-size: 0.65rem;
   font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase;
   color: rgba(196, 155, 255, 0.6); text-decoration: none;
   margin-bottom: 3rem; transition: color 0.3s;
@@ -29,7 +29,7 @@ $accent: #8a4fff;
 .mv-info { max-width: 640px; }
 
 .mv-tag {
-  font-family: 'JetBrains Mono', monospace; font-size: 0.62rem;
+  font-family: 'Quicksand', sans-serif; font-size: 0.62rem;
   font-weight: 600; letter-spacing: 0.3em; text-transform: uppercase;
   color: rgba($accent, 0.7); display: block; margin-bottom: 1.2rem;
 }
@@ -38,9 +38,9 @@ $accent: #8a4fff;
 .mv-ln { display: block; }
 
 .mv-title {
-  font-family: 'Fraunces', serif; font-weight: 700;
+  font-family: 'Space Mono', monospace; font-weight: 700;
   font-size: clamp(3.5rem, 7vw, 7.5rem); line-height: 0.95;
-  letter-spacing: -0.035em; font-variant-caps: small-caps; color: #fff; margin: 0 0 1.5rem;
+  letter-spacing: -0.035em; color: #fff; margin: 0 0 1.5rem;
 }
 
 .mv-desc {
@@ -49,7 +49,7 @@ $accent: #8a4fff;
 }
 
 .mv-meta {
-  font-family: 'JetBrains Mono', monospace; font-size: 0.62rem;
+  font-family: 'Quicksand', sans-serif; font-size: 0.62rem;
   letter-spacing: 0.2em; color: rgba(196, 155, 255, 0.4);
   display: flex; align-items: center; gap: 0.6rem;
 }
@@ -63,7 +63,7 @@ $accent: #8a4fff;
   @media (max-width: 768px) { padding: 0 1.5rem 2rem; }
 
   button {
-    font-family: 'JetBrains Mono', monospace; font-size: 0.6rem;
+    font-family: 'Quicksand', sans-serif; font-size: 0.6rem;
     font-weight: 700; letter-spacing: 0.22em; text-transform: uppercase;
     padding: 0.45rem 1.2rem; border-radius: 50px; cursor: pointer;
     border: 1px solid rgba($accent, 0.22);
@@ -127,7 +127,7 @@ $accent: #8a4fff;
 
   &__badge {
     position: absolute; top: 0.7rem; left: 0.7rem;
-    font-family: 'JetBrains Mono', monospace; font-size: 0.52rem;
+    font-family: 'Quicksand', sans-serif; font-size: 0.52rem;
     font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase;
     padding: 0.22rem 0.55rem; border-radius: 50px;
     background: rgba(6, 3, 12, 0.72); backdrop-filter: blur(8px);
