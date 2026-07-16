@@ -63,13 +63,36 @@
   will-change: transform;
 }
 
-.hero-arc--1 { width: 30vw;  height: 30vw;  border: 1px solid rgba(168, 72, 255, 0.70); }
-.hero-arc--2 { width: 60vw;  height: 60vw;  border: 1px solid rgba(150, 55, 240, 0.52); }
-.hero-arc--3 { width: 90vw;  height: 90vw;  border: 1px solid rgba(130, 40, 220, 0.38); }
-.hero-arc--4 { width: 120vw; height: 120vw; border: 1px solid rgba(110, 28, 200, 0.26); }
-.hero-arc--5 { width: 150vw; height: 150vw; border: 1px solid rgba(90,  18, 180, 0.16); }
-.hero-arc--6 { width: 180vw; height: 180vw; border: 1px solid rgba(75,  10, 160, 0.09); }
-
+.hero-arc--1 {
+  width: 30vw;
+  height: 30vw;
+  border: 1px solid rgba(168, 72, 255, 0.7);
+}
+.hero-arc--2 {
+  width: 60vw;
+  height: 60vw;
+  border: 1px solid rgba(150, 55, 240, 0.52);
+}
+.hero-arc--3 {
+  width: 90vw;
+  height: 90vw;
+  border: 1px solid rgba(130, 40, 220, 0.38);
+}
+.hero-arc--4 {
+  width: 120vw;
+  height: 120vw;
+  border: 1px solid rgba(110, 28, 200, 0.26);
+}
+.hero-arc--5 {
+  width: 150vw;
+  height: 150vw;
+  border: 1px solid rgba(90, 18, 180, 0.16);
+}
+.hero-arc--6 {
+  width: 180vw;
+  height: 180vw;
+  border: 1px solid rgba(75, 10, 160, 0.09);
+}
 
 // All direct content sits above the global star canvas
 app-hero,
@@ -202,7 +225,9 @@ app-hero,
       padding-right: 0.08em;
     }
 
-    @media (max-width: 900px) { max-width: 100%; }
+    @media (max-width: 900px) {
+      max-width: 100%;
+    }
   }
 
   // ── Centered variant ──────────────────────────────────────
@@ -526,7 +551,9 @@ app-hero,
   position: relative;
   z-index: 2;
 
-  @media (max-width: 768px) { padding: 5rem 1.5rem; }
+  @media (max-width: 768px) {
+    padding: 5rem 1.5rem;
+  }
 
   &__inner {
     max-width: 1200px;
@@ -593,7 +620,9 @@ app-hero,
       opacity: 0.75;
       transition: opacity 0.3s;
 
-      &:hover { opacity: 1; }
+      &:hover {
+        opacity: 1;
+      }
     }
   }
 
@@ -603,7 +632,9 @@ app-hero,
     flex-direction: column;
     gap: 1.8rem;
 
-    @media (max-width: 900px) { padding-top: 0; }
+    @media (max-width: 900px) {
+      padding-top: 0;
+    }
   }
 
   &__statement {
@@ -665,7 +696,10 @@ app-hero,
     color: rgba(245, 241, 255, 0.45);
     font-weight: 300;
 
-    em { font-style: italic; color: rgba(196, 155, 255, 0.8); }
+    em {
+      font-style: italic;
+      color: rgba(196, 155, 255, 0.8);
+    }
   }
 }
 
@@ -685,7 +719,9 @@ app-hero,
   isolation: isolate;
   padding: 0 5rem;
 
-  @media (max-width: 768px) { padding: 0 1.5rem; }
+  @media (max-width: 768px) {
+    padding: 0 1.5rem;
+  }
 }
 
 // ══════════════════════════════
@@ -759,7 +795,6 @@ app-hero,
     color: #fff;
     line-height: 1.05;
     letter-spacing: -0.025em;
-
   }
 
   p {
@@ -783,7 +818,9 @@ app-hero,
     border: 1px solid rgba(138, 79, 255, 0.35);
     border-radius: 50px;
     color: #8a4fff;
-    transition: color 0.5s ease, border-color 0.4s ease;
+    transition:
+      color 0.5s ease,
+      border-color 0.4s ease;
 
     span {
       position: relative;
@@ -803,8 +840,9 @@ app-hero,
       aspect-ratio: 1;
       background: #8a4fff;
       border-radius: 46% 54% 44% 56% / 28% 28% 72% 72%;
-      transition: top 0.6s cubic-bezier(0.4, 0, 0.15, 1),
-                  border-radius 0.7s ease;
+      transition:
+        top 0.6s cubic-bezier(0.4, 0, 0.15, 1),
+        border-radius 0.7s ease;
     }
 
     &:hover {
@@ -891,7 +929,9 @@ app-hero,
   transform: scale(1.18);
   transition: transform 0.6s cubic-bezier(0.7, 0, 0.3, 1);
 
-  .deck-card__media:hover & { transform: scale(1.24); }
+  .deck-card__media:hover & {
+    transform: scale(1.24);
+  }
 }
 
 .deck-card__play {
@@ -907,7 +947,10 @@ app-hero,
   z-index: 1;
   backdrop-filter: blur(8px);
   background: rgba(255, 255, 255, 0.05);
-  transition: border-color 0.3s, color 0.3s, transform 0.3s;
+  transition:
+    border-color 0.3s,
+    color 0.3s,
+    transform 0.3s;
 
   .deck-card__media:hover & {
     border-color: var(--c, #8a4fff);
@@ -923,7 +966,9 @@ app-hero,
   padding: 9rem 5rem 8rem;
   overflow: hidden;
 
-  @media (max-width: 768px) { padding: 7rem 1.5rem 6rem; }
+  @media (max-width: 768px) {
+    padding: 7rem 1.5rem 6rem;
+  }
 
   &__watermark {
     position: absolute;
@@ -957,7 +1002,6 @@ app-hero,
     justify-items: center;
     gap: 1.5rem;
     margin-bottom: 6rem;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.07);
     padding-bottom: 2.5rem;
   }
 
@@ -1020,7 +1064,9 @@ app-hero,
     border-top: 1px solid rgba(255, 255, 255, 0.07);
     border-bottom: 1px solid rgba(255, 255, 255, 0.07);
 
-    @media (max-width: 700px) { grid-template-columns: 1fr; }
+    @media (max-width: 700px) {
+      grid-template-columns: 1fr;
+    }
   }
 }
 
@@ -1031,13 +1077,19 @@ app-hero,
   transition: background 0.4s ease;
   cursor: default;
 
-  &:first-child { border-left: none; }
+  &:first-child {
+    border-left: none;
+  }
 
   &:hover {
     background: rgba(138, 79, 255, 0.04);
 
-    .stat-block__num { transform: translateY(-4px); }
-    .stat-block__num em { color: #8a4fff; }
+    .stat-block__num {
+      transform: translateY(-4px);
+    }
+    .stat-block__num em {
+      color: #8a4fff;
+    }
   }
 
   &__index {
@@ -1111,7 +1163,9 @@ app-hero,
   @media (max-width: 700px) {
     border-left: none;
     border-top: 1px solid rgba(255, 255, 255, 0.07);
-    &:first-child { border-top: none; }
+    &:first-child {
+      border-top: none;
+    }
   }
 }
 
@@ -1123,7 +1177,10 @@ app-hero,
   gap: 3rem;
   align-items: center;
 
-  @media (max-width: 700px) { grid-template-columns: 1fr; gap: 1.5rem; }
+  @media (max-width: 700px) {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
 
   &__label {
     display: flex;
@@ -1135,8 +1192,12 @@ app-hero,
     text-transform: uppercase;
   }
 
-  &__label-top { color: rgba(196, 155, 255, 0.8); }
-  &__label-bot { color: rgba(255, 255, 255, 0.2); }
+  &__label-top {
+    color: rgba(196, 155, 255, 0.8);
+  }
+  &__label-bot {
+    color: rgba(255, 255, 255, 0.2);
+  }
 
   &__logos {
     display: flex;
@@ -1152,7 +1213,9 @@ app-hero,
   &__logo {
     font-size: 1.5rem;
     letter-spacing: -0.02em;
-    transition: color 0.3s, transform 0.3s;
+    transition:
+      color 0.3s,
+      transform 0.3s;
     cursor: default;
 
     &::before {
@@ -1171,7 +1234,9 @@ app-hero,
       color: rgba(196, 155, 255, 0.85);
       transform: translateY(-2px);
 
-      &::before { background: #8a4fff; }
+      &::before {
+        background: #8a4fff;
+      }
     }
   }
 }
@@ -1289,7 +1354,9 @@ app-hero,
   position: relative;
   z-index: 1;
 
-  @media (max-width: 768px) { padding: 7rem 1.5rem 6rem; }
+  @media (max-width: 768px) {
+    padding: 7rem 1.5rem 6rem;
+  }
 }
 
 .gallery {
@@ -1326,17 +1393,27 @@ app-hero,
     text-decoration: none;
     display: block;
 
-    &--link { cursor: pointer; }
-    &--soon  { cursor: default; }
+    &--link {
+      cursor: pointer;
+    }
+    &--soon {
+      cursor: default;
+    }
 
     &--link:hover {
       transform: scale(1.03);
-      .gallery__item-overlay { opacity: 1; }
-      .gallery__item-img     { transform: scale(1.07); }
+      .gallery__item-overlay {
+        opacity: 1;
+      }
+      .gallery__item-img {
+        transform: scale(1.07);
+      }
     }
 
     &--soon:hover {
-      .gallery__item-overlay { opacity: 1; }
+      .gallery__item-overlay {
+        opacity: 1;
+      }
     }
   }
 
@@ -1371,7 +1448,12 @@ app-hero,
   &__item-overlay {
     position: absolute;
     inset: 0;
-    background: linear-gradient(to top, rgba(6, 3, 12, 0.88) 0%, rgba(6, 3, 12, 0.2) 55%, transparent 100%);
+    background: linear-gradient(
+      to top,
+      rgba(6, 3, 12, 0.88) 0%,
+      rgba(6, 3, 12, 0.2) 55%,
+      transparent 100%
+    );
     display: flex;
     flex-direction: column;
     justify-content: flex-end;
@@ -1440,7 +1522,6 @@ app-hero,
       display: block;
     }
   }
-
 
   &__grid {
     border-top: 1px solid rgba(255, 255, 255, 0.08);
@@ -1550,7 +1631,6 @@ app-hero,
       padding-right: 0.08em; // prevents last glyph from clipping at box boundary
     }
   }
-
 
   &__nav {
     display: flex;
@@ -1705,7 +1785,9 @@ app-hero,
   overflow: hidden;
   z-index: 1;
 
-  @media (max-width: 768px) { padding: 8rem 1.5rem 8rem; }
+  @media (max-width: 768px) {
+    padding: 8rem 1.5rem 8rem;
+  }
 
   &__inner {
     position: relative;
