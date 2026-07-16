@@ -1869,7 +1869,7 @@ app-hero,
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  padding: 4rem 5rem 2.5rem;
+  padding: 5rem 5rem 3rem;
   position: relative;
   overflow: hidden;
 
@@ -1913,9 +1913,9 @@ app-hero,
   }
 
   &__tagline {
-    font-size: 1rem;
+    font-size: 1.05rem;
     color: rgba(255, 255, 255, 0.45);
-    line-height: 1.7;
+    line-height: 1.8;
   }
 
   &__social {
@@ -1958,20 +1958,20 @@ app-hero,
   &__col {
     display: flex;
     flex-direction: column;
-    gap: 0.9rem;
+    gap: 1.1rem;
 
     h4 {
-      font-size: 0.72rem;
+      font-size: 0.75rem;
       font-weight: 700;
       letter-spacing: 0.2em;
       text-transform: uppercase;
-      color: rgba(138, 79, 255, 0.7);
-      margin-bottom: 0.3rem;
+      color: rgba(138, 79, 255, 0.8);
+      margin-bottom: 0.5rem;
     }
 
     a, span {
-      font-size: 0.9rem;
-      color: rgba(255, 255, 255, 0.4);
+      font-size: 1rem;
+      color: rgba(255, 255, 255, 0.45);
       text-decoration: none;
       transition: color 0.3s;
       width: fit-content;
