@@ -34,7 +34,8 @@ export class ContactPage implements AfterViewInit, OnDestroy {
   private platformId = inject(PLATFORM_ID);
   private _starRaf = 0;
 
-  selectedBudget = '';
+  budgetAmount = '';
+  budgetCurrency = 'USD';
   stepDone = 0;
   showSuccess = false;
 
@@ -47,13 +48,6 @@ export class ContactPage implements AfterViewInit, OnDestroy {
   formEmail = '';
   formService = '';
   formMessage = '';
-
-  readonly budgets = [
-    { val: '<25k', label: '< 25K' },
-    { val: '25-50k', label: '25–50K' },
-    { val: '50-100k', label: '50–100K' },
-    { val: '100k+', label: '100K+' },
-  ];
 
   readonly services = [
     'Branding & Identity',
@@ -81,15 +75,6 @@ export class ContactPage implements AfterViewInit, OnDestroy {
 
   // ── Form state ───────────────────────────────────────────
 
-  selectBudget(val: string): void {
-    this.selectedBudget = val;
-    this.updateProgress();
-    const chips = document.querySelectorAll<HTMLElement>('.chip');
-    chips.forEach((c) => {
-      if (c.dataset['budget'] === val)
-        gsap.fromTo(c, { scale: 0.9 }, { scale: 1, duration: 0.4, ease: 'back.out(2)' });
-    });
-  }
 
   updateProgress(): void {
     let done = 0;
@@ -124,7 +109,8 @@ export class ContactPage implements AfterViewInit, OnDestroy {
       onComplete: () => {
         this.showSuccess = false;
         this.formName = this.formEmail = this.formService = this.formMessage = '';
-        this.selectedBudget = '';
+        this.budgetAmount = '';
+        this.budgetCurrency = 'USD';
         this.stepDone = 0;
         this.nameErr = this.emailErr = this.serviceErr = this.messageErr = false;
       },

@@ -465,35 +465,63 @@ $line-strong:  rgba(196, 155, 255, 0.3);
   transition: all 0.3s;
 }
 
-// ── Budget chips ──────────────────────────────────────────
-.chips {
+// ── Budget input ──────────────────────────────────────────
+.budget-input {
   display: flex;
-  gap: 0.5rem;
-  flex-wrap: wrap;
+  align-items: stretch;
+  border: 1px solid $line;
+  border-radius: 10px;
+  overflow: hidden;
+  transition: border-color 0.3s;
+
+  &:focus-within {
+    border-color: $accent;
+  }
 }
 
-.chip {
-  padding: 0.6rem 1.1rem;
-  border: 1px solid $line;
-  border-radius: 100px;
-  background: transparent;
+.budget-currency {
+  padding: 0.85rem 1rem;
+  background: rgba(138, 79, 255, 0.08);
+  border: none;
+  border-right: 1px solid $line;
+  color: rgba(196, 155, 255, 0.9);
   font-family: 'Quicksand', sans-serif;
-  font-size: 0.62rem;
-  font-weight: 500;
-  letter-spacing: 0.1em;
-  color: $ink-dim;
-  transition: all 0.3s;
+  font-size: 0.78rem;
+  font-weight: 600;
+  cursor: pointer;
+  outline: none;
+  appearance: none;
+  -webkit-appearance: none;
+  padding-right: 1.4rem;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%238a4fff' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 0.4rem center;
+  background-color: rgba(138, 79, 255, 0.08);
 
-  &:hover {
-    border-color: $accent-soft;
+  option {
+    background: #0e0a1a;
     color: #fff;
   }
+}
 
-  &.is-active {
-    background: rgba(138, 79, 255, 0.18);
-    border-color: $accent;
-    color: #fff;
-    box-shadow: inset 0 0 0 1px $line-strong;
+.budget-amount {
+  flex: 1;
+  padding: 0.85rem 1.1rem;
+  background: transparent;
+  border: none;
+  color: #fff;
+  font-family: 'Quicksand', sans-serif;
+  font-size: 0.92rem;
+  font-weight: 500;
+  outline: none;
+
+  &::placeholder {
+    color: rgba(245, 241, 255, 0.25);
+  }
+
+  &::-webkit-outer-spin-button,
+  &::-webkit-inner-spin-button {
+    -webkit-appearance: none;
   }
 }
 

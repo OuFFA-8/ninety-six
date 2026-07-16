@@ -146,19 +146,21 @@
       </div>
 
       <div class="ct-field">
-        <label class="ct-label">Budget range</label>
-        <div class="chips">
-          @for (b of budgets; track b.val) {
-            <button
-              type="button"
-              class="chip"
-              [attr.data-budget]="b.val"
-              [class.is-active]="selectedBudget === b.val"
-              (click)="selectBudget(b.val)"
-            >
-              {{ b.label }}
-            </button>
-          }
+        <label class="ct-label">Budget</label>
+        <div class="budget-input">
+          <select class="budget-currency" [(ngModel)]="budgetCurrency" name="budgetCurrency">
+            <option value="USD">USD $</option>
+            <option value="SAR">SAR ﷼</option>
+            <option value="KWD">KWD د.ك</option>
+          </select>
+          <input
+            class="budget-amount"
+            type="number"
+            min="0"
+            placeholder="Enter your budget"
+            [(ngModel)]="budgetAmount"
+            name="budgetAmount"
+          />
         </div>
       </div>
 
