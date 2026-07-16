@@ -1931,11 +1931,11 @@ app-hero,
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 0.72rem;
-    font-weight: 700;
     color: rgba(255, 255, 255, 0.4);
     text-decoration: none;
     transition: all 0.3s;
+
+    svg { display: block; }
 
     &:hover {
       border-color: #8a4fff;
@@ -1969,7 +1969,7 @@ app-hero,
       margin-bottom: 0.3rem;
     }
 
-    a {
+    a, span {
       font-size: 0.9rem;
       color: rgba(255, 255, 255, 0.4);
       text-decoration: none;
