@@ -285,6 +285,7 @@ $line-strong:  rgba(196, 155, 255, 0.3);
 }
 
 .ct-row-val {
+  display: block;
   font-size: 0.95rem;
   color: $ink-dim;
   transition: color 0.3s;
