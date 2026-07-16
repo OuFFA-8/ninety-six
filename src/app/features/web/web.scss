@@ -111,6 +111,11 @@ $accent: #8a4fff;
   align-items: center;
   gap: 5rem;
   padding: 0 0 8rem;
+
+  @media (max-width: 768px) {
+    gap: 3rem;
+    padding: 0 0 5rem;
+  }
 }
 
 // ── Mockup banner ────────────────────────────────────────
@@ -232,7 +237,7 @@ $accent: #8a4fff;
 // ── Phone frame ──────────────────────────────────────────
 .phone-frame {
   position: relative;
-  width: 420px;
+  width: min(420px, calc(100vw - 3rem));
   background: #1a1228;
   border-radius: 56px;
   padding: 18px 10px 26px;

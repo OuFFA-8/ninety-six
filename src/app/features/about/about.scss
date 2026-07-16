@@ -59,6 +59,11 @@ $display: 'Space Mono', monospace;
   &:nth-child(2) { width: 650px; height: 650px; top: -220px; right: -80px; border-color: rgba($accent, 0.04); }
   &:nth-child(3) { width: 440px; height: 440px; top: -100px; right: 30px;  border-color: rgba($accent, 0.03); }
   &:nth-child(4) { width: 220px; height: 220px; top:  20px;  right: 120px; border-color: rgba($accent, 0.05); }
+
+  @media (max-width: 768px) {
+    &:nth-child(1), &:nth-child(2), &:nth-child(3) { display: none; }
+    &:nth-child(4) { width: 160px; height: 160px; top: 10px; right: 20px; }
+  }
 }
 
 .ab-glow {
