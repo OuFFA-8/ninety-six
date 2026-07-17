@@ -311,8 +311,6 @@ export class ServicesPage implements AfterViewInit, OnDestroy {
   // ── Horizontal showcase ─────────────────────────────────
 
   private initShowcase(): void {
-    if (window.innerWidth < 1100) return;
-
     const track = document.getElementById('showcaseTrack');
     if (!track) return;
 
@@ -372,7 +370,6 @@ export class ServicesPage implements AfterViewInit, OnDestroy {
         },
       );
 
-      // Text reveal
       const num = card.querySelector<HTMLElement>('.showcase__card-num');
       const cat = card.querySelector<HTMLElement>('.showcase__card-cat');
       const lines = card.querySelectorAll<HTMLElement>('.sc-ln');
@@ -398,8 +395,6 @@ export class ServicesPage implements AfterViewInit, OnDestroy {
   // ── Case study ──────────────────────────────────────────
 
   private initCase(): void {
-    if (window.innerWidth < 1100) return;
-
     const slides = Array.from(document.querySelectorAll<HTMLElement>('.case__slide'));
     const total = slides.length;
     if (!total) return;
