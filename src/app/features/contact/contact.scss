@@ -535,6 +535,16 @@ $line-strong:  rgba(196, 155, 255, 0.3);
   }
 }
 
+// ── Submit error ──────────────────────────────────────────
+.form__error {
+  display: block;
+  font-family: 'Quicksand', sans-serif;
+  font-size: 0.62rem;
+  letter-spacing: 0.05em;
+  color: #ff6b8a;
+  margin-top: -0.4rem;
+}
+
 // ── Submit ────────────────────────────────────────────────
 .form__submit {
   position: sticky;
@@ -582,6 +592,11 @@ $line-strong:  rgba(196, 155, 255, 0.3);
 
     &::before { transform: translateX(0); }
     svg { transform: translateX(4px); }
+  }
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
   }
 }
 

@@ -38,6 +38,8 @@ export class ContactPage implements AfterViewInit, OnDestroy {
   budgetCurrency = 'USD';
   stepDone = 0;
   showSuccess = false;
+  isSubmitting = false;
+  submitError = '';
 
   nameErr = false;
   emailErr = false;
@@ -98,8 +100,34 @@ export class ContactPage implements AfterViewInit, OnDestroy {
       gsap.fromTo('.form__submit', { x: -8 }, { x: 0, duration: 0.5, ease: 'elastic.out(1,.3)' });
       return;
     }
-    this.showSuccess = true;
-    setTimeout(() => this.animateSuccess(), 20);
+    if (this.isSubmitting) return;
+
+    this.isSubmitting = true;
+    this.submitError = '';
+
+    fetch('/api/send-email', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        name: this.formName,
+        email: this.formEmail,
+        service: this.formService,
+        budget: this.budgetAmount ? `${this.budgetAmount} ${this.budgetCurrency}` : '',
+        message: this.formMessage,
+      }),
+    })
+      .then((res) => {
+        if (!res.ok) throw new Error('Request failed');
+        this.showSuccess = true;
+        setTimeout(() => this.animateSuccess(), 20);
+      })
+      .catch(() => {
+        this.submitError = 'Something went wrong. Please try again or email us directly.';
+        gsap.fromTo('.form__submit', { x: -8 }, { x: 0, duration: 0.5, ease: 'elastic.out(1,.3)' });
+      })
+      .finally(() => {
+        this.isSubmitting = false;
+      });
   }
 
   resetForm(): void {

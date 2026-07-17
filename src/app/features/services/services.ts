@@ -398,6 +398,8 @@ export class ServicesPage implements AfterViewInit, OnDestroy {
   // ── Case study ──────────────────────────────────────────
 
   private initCase(): void {
+    if (window.innerWidth < 1100) return;
+
     const slides = Array.from(document.querySelectorAll<HTMLElement>('.case__slide'));
     const total = slides.length;
     if (!total) return;
