@@ -123,14 +123,17 @@
   color: rgba(245, 241, 255, 0.35);
 
   @media (max-width: 768px) {
-    gap: 1rem;
-    flex-wrap: wrap;
-    bottom: 2vh;
+    flex-direction: column;
+    gap: 0.35rem;
+    align-items: flex-start;
+    bottom: 2.5vh;
   }
 }
 
 .hero__strip-dot {
   color: rgba(138, 79, 255, 0.5);
+
+  @media (max-width: 768px) { display: none; }
 }
 
 // ── Mobile ─────────────────────────────────────────────────
