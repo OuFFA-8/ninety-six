@@ -688,17 +688,6 @@ app-hero,
   pointer-events: none;
   text-align: center;
 
-  @media (max-width: 900px) {
-    position: relative;
-    inset: auto;
-    padding-top: 0;
-    padding-bottom: 2.5rem;
-    align-items: flex-start;
-    text-align: left;
-    opacity: 1 !important;
-    transform: none !important;
-  }
-
   &__text {
     font-family: 'Space Mono', monospace;
     font-weight: 300;
@@ -738,10 +727,7 @@ app-hero,
   margin-top: 10vh;
   // height set by JS: (total * 60 + 100)vh
 
-  @media (max-width: 900px) {
-    margin-top: 3rem;
-    height: auto !important;
-  }
+  @media (max-width: 768px) { margin-top: 0; }
 }
 
 .deck-scene {
@@ -753,13 +739,7 @@ app-hero,
   isolation: isolate;
   padding: 0 5rem;
 
-  @media (max-width: 900px) {
-    position: relative;
-    height: auto;
-    padding: 3.5rem 1.5rem 4rem;
-    align-items: flex-start;
-    flex-direction: column;
-  }
+  @media (max-width: 768px) { padding: 0 1.5rem; }
 }
 
 // ══════════════════════════════
@@ -778,13 +758,6 @@ app-hero,
   margin: 0;
   position: relative;
   height: 600px;
-
-  @media (max-width: 900px) {
-    height: auto;
-    display: flex;
-    flex-direction: column;
-    gap: 1.5rem;
-  }
 }
 
 .deck-card {
@@ -792,14 +765,6 @@ app-hero,
   inset: 0;
   will-change: transform, opacity;
   pointer-events: none;
-
-  @media (max-width: 900px) {
-    position: relative;
-    inset: auto;
-    opacity: 1 !important;
-    transform: none !important;
-    pointer-events: auto;
-  }
 
   &__inner {
     background: linear-gradient(135deg, #0c0420 0%, #150830 100%);

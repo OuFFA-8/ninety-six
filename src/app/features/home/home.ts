@@ -536,8 +536,6 @@ export class Home implements AfterViewInit, OnDestroy {
     const total = cards.length;
     if (!total) return;
 
-    if (window.innerWidth < 900) return;
-
     const scrollSpace = document.querySelector<HTMLElement>('.deck-scroll-space');
     // +2 phases: title enter + card-0 rise
     if (scrollSpace) scrollSpace.style.height = `${(total + 2) * 60 + 100}vh`;
